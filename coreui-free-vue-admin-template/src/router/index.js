@@ -64,7 +64,7 @@ const Room = () => import("@/views/main-admin/sidebar-views/Room")
 const Semester = () => import("@/views/main-admin/sidebar-views/Semester")
 const Shift = () => import("@/views/main-admin/sidebar-views/Shift")
 const Student = () => import("@/views/main-admin/sidebar-views/Student")
-const Subject = () => import("@/views/main-admin/sidebar-views/Student")
+const Subject = () => import("@/views/main-admin/sidebar-views/Subject")
 
 Vue.use(Router);
 

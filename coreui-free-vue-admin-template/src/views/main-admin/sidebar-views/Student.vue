@@ -21,7 +21,7 @@
       <template #action="{item}">
           <td>
             <CForm inline>
-                <CButton color="outline-success" class="mr-sm-4" type="submit">Search</CButton>
+                <CButton color="outline-success" class="mr-sm-4" type="submit">Reset Password</CButton>
                 <CButton color="outline-warning" class="mr-sm-4" type="submit">Edit</CButton>
                 <CButton color="outline-danger" class="my-2 my-sm-0" type="submit">Delete</CButton>
             </CForm>

@@ -5,7 +5,7 @@ import Router from "vue-router";
 const TheContainer = () => import("@/containers/TheContainer");
 
 // Views
-const Dashboard = () => import("@/views/Dashboard");
+// const Dashboard = () => import("@/views/Dashboard");
 
 const Colors = () => import("@/views/theme/Colors");
 const Typography = () => import("@/views/theme/Typography");
@@ -57,6 +57,15 @@ const Register = () => import("@/views/pages/Register");
 const Users = () => import("@/views/users/Users");
 const User = () => import("@/views/users/User");
 
+// Main components 
+const Dashboard = () => import("@/views/main-admin/Dashboard")
+//Side bar
+const Room = () => import("@/views/main-admin/sidebar-views/Room")
+const Semester = () => import("@/views/main-admin/sidebar-views/Semester")
+const Shift = () => import("@/views/main-admin/sidebar-views/Shift")
+const Student = () => import("@/views/main-admin/sidebar-views/Student")
+const Subject = () => import("@/views/main-admin/sidebar-views/Student")
+
 Vue.use(Router);
 
 export default new Router({
@@ -71,15 +80,54 @@ function configRoutes() {
     {
       path: "/",
       redirect: "/dashboard",
-      name: "Home",
+      name: "Main",
       component: TheContainer,
       children: [
         {
           path: "dashboard",
-          name: "Sinh viên",
-          component: Tables
-        }
+          name: "",
+          component: Dashboard
+        },
+        {
+          path: "dashboard/room",
+          name: "Room",
+          component: Room
+        },
+        {
+          path: "/dashboard/semester",
+          name: "Semester",
+          component: Semester
+        },
+        {
+          path: "/dashboard/shift",
+          name: "Shift",
+          component: Shift
+        },
+        {
+          path: "/dashboard/student",
+          name: "Student",
+          component: Student
+        },
+        {
+          path: "/dashboard/subject",
+          name: "Subject",
+          component: Subject
+        },
       ]
     }
   ];
 }
+
+// function configRoutes() {
+//   return [{
+//     path: "/",
+//     redirect: "/dashboard",
+//     name: "ExamReg",
+//     component: TheContainer,
+//     children: [{
+//       path: "dashboard",
+//       name: "Sinh viên",
+//       component: Home
+//     }]
+//   }];
+// }

@@ -9,31 +9,31 @@ export default [
       {
         _name: "CSidebarNavItem",
         name: "Sinh viên",
-        to: "/dashboard",
+        to: "/dashboard/student",
         icon: "cil-speedometer"
       },
       {
         _name: "CSidebarNavItem",
         name: "Kỳ thi",
-        to: "/dashboard",
+        to: "/dashboard/semester",
         icon: "cil-drop"
       },
       {
         _name: "CSidebarNavItem",
         name: "Môn thi",
-        to: "/dashboard",
+        to: "/dashboard/subject",
         icon: "cil-pencil"
       },
       {
         _name: "CSidebarNavItem",
         name: "Ca thi",
-        to: "/",
+        to: "/dashboard/shift",
         icon: "cil-puzzle"
       },
       {
         _name: "CSidebarNavItem",
         name: "Phòng thi",
-        to: "/",
+        to: "/dashboard/room",
         icon: "cil-cursor"
       }
     ]

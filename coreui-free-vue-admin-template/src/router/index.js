@@ -60,11 +60,11 @@ const User = () => import("@/views/users/User");
 // Main components 
 const Dashboard = () => import("@/views/main-admin/Dashboard")
 //Side bar
-const Room = () => import("@/views/main-admin/sidebar-views/Room")
-const Semester = () => import("@/views/main-admin/sidebar-views/Semester")
-const Shift = () => import("@/views/main-admin/sidebar-views/Shift")
-const Student = () => import("@/views/main-admin/sidebar-views/Student")
-const Subject = () => import("@/views/main-admin/sidebar-views/Subject")
+const Room = () => import("@/views/main-admin/content-views/Room")
+const Semester = () => import("@/views/main-admin/content-views/Semester")
+const Shift = () => import("@/views/main-admin/content-views/Shift")
+const Student = () => import("@/views/main-admin/content-views/Student")
+const Subject = () => import("@/views/main-admin/content-views/Subject")
 
 Vue.use(Router);
 
@@ -117,17 +117,3 @@ function configRoutes() {
     }
   ];
 }
-
-// function configRoutes() {
-//   return [{
-//     path: "/",
-//     redirect: "/dashboard",
-//     name: "ExamReg",
-//     component: TheContainer,
-//     children: [{
-//       path: "dashboard",
-//       name: "Sinh viên",
-//       component: Home
-//     }]
-//   }];
-// }

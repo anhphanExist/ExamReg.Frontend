@@ -23,8 +23,7 @@
               <CDropdownItem>Download Student Term Template</CDropdownItem>
               <CDropdownItem>Export Student Term</CDropdownItem>
             </CDropdown>
-            <CButton color="outline-primary" class="float-right mr-3">Add More</CButton>
-            
+            <CButton color="outline-primary" @click="myModal = true" class="float-right mr-3">Add More</CButton>
           </CCol>
         </CRow>
       </slot>
@@ -52,6 +51,17 @@
         </template>
       </CDataTable>
     </CCardBody>
+    <CModal
+      title="Add more students"
+      :show.sync="myModal"
+    >
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </CModal>
   </CCard>
 </template>
 
@@ -59,6 +69,11 @@
 import studentsData from "../data/student";
 export default {
   name: "Table",
+  data() {
+    return {
+      myModal: false
+    }
+  },
   props: {
     fields: {
       type: Array,

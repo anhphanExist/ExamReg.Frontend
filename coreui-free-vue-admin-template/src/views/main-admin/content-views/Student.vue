@@ -39,11 +39,6 @@
         sorter
         pagination
       >
-        <template #status="{item}">
-          <td>
-            <CBadge :color="getBadge(item.status)">{{item.status}}</CBadge>
-          </td>
-        </template>
         <template #reset="{item, index}">
           <td class="py-2">
             <CButton
@@ -76,11 +71,6 @@
               @click="toggleDetails(index)"
             >Delete</CButton>
           </td>
-        </template>
-        <template #details="{item, index}">
-          <CCollapse :show="details.includes(index)">
-            <CCardBody>{{index + 1}} - {{item}}</CCardBody>
-          </CCollapse>
         </template>
       </CDataTable>
     </CCardBody>
@@ -154,7 +144,7 @@
 </template>
 
 <script>
-import user_data from './data/student'
+import user_data from './data/students'
 
 const fields = [
   { key: "mssv", _style: "width:17.5%"},
@@ -205,7 +195,6 @@ export default {
       },
       items,
       fields,
-      details: []
     };
   },
   methods: {

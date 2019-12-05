@@ -5,7 +5,8 @@
         <CRow>
           <CCol sm="5">
             <div class="pt-2">
-              <CIcon name="cil-grid" />Room List
+              <CIcon name="cil-grid" />
+              Room List
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
@@ -87,9 +88,9 @@
 <script>
 import rooms_data from "./data/rooms";
 const fields = [
-  { key: "room_number", _style: "width:25%" },
-  { key: "amphitheater", _style: "width:25%" },
-  { key: "pc_quantity", _style: "width:25%" },
+  { key: "room_number", _style: "width:17.5%" },
+  { key: "amphitheater", _style: "width:17.5%" },
+  { key: "pc_quantity", _style: "width:17.5%" },
   {
     key: "edit",
     label: "",

@@ -1,5 +1,5 @@
 <template>
     <div>
-        This is Room View
+      This is room view
     </div>
 </template>

@@ -5,8 +5,7 @@
         <CRow>
           <CCol sm="5">
             <div class="pt-2">
-              <CIcon name="cil-grid" />
-              Room List
+              <CIcon name="cil-grid" />Room List
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
@@ -77,7 +76,7 @@
           </CCardBody>
         </CCard>
       </CCols>
-            <template #footer>
+      <template #footer>
         <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
         <CButton @click="myModal = false" color="outline-success">Accept</CButton>
       </template>

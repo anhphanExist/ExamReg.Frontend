@@ -10,9 +10,7 @@
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
-            <CButton color="outline-info" class="float-right mr-3" @click="myModal = true">
-              Add More
-            </CButton>
+            <CButton color="outline-info" class="float-right mr-3" @click="myModal = true">Add More</CButton>
           </CCol>
         </CRow>
       </slot>
@@ -28,14 +26,15 @@
         sorter
         pagination
       >
-      <template #rooms="{item, index}">
-        <td class="">
-          <CSelect
-            :options=item.rooms
-          />
-        </td>
-      </template>
-      <template #edit="{item, index}">
+        <template #number="{item, index}">
+          <td>{{index + 1}}</td>
+        </template>
+        <template #rooms="{item, index}">
+          <td class>
+            <CSelect :options="item.rooms" />
+          </td>
+        </template>
+        <template #edit="{item, index}">
           <td class="py-3">
             <CButton
               color="warning"
@@ -69,37 +68,20 @@
           <CCardBody>
             <CRow>
               <CCol sm="12">
-                <CInput
-                label="Exam Program"
-                value="Final Term 2019-2020"
-                horizontal
-                plaintext
-              />
+                <CInput label="Exam Period" value="Final Term 2019-2020" horizontal plaintext />
               </CCol>
               <CCol sm="12">
-                <CInput
-                label="Exam Date"
-                horizontal
-                placeholder="Exam occures on which days?"
-                />
+                <CInput label="Exam Date" horizontal placeholder="Exam occures on which days?" />
               </CCol>
-              <CRow>
-              </CRow>
+              <CRow></CRow>
               <CCol sm="3">
-                <CInput
-                label="Start time"
-                />
+                <CInput label="Start time" />
               </CCol>
               <CCol sm="3">
-                <CInput
-                label="End time"
-                />
+                <CInput label="End time" />
               </CCol>
               <CCol sm="6">
-                <CSelect
-                  label="Subject Name"
-                  :options="[1, 2, 3, 4, 5]"
-                />
+                <CSelect label="Subject Name" :options="[1, 2, 3, 4, 5]" />
               </CCol>
             </CRow>
           </CCardBody>
@@ -114,9 +96,16 @@
 </template>
 
 <script>
-import shifts_data from './data/shifts'
+import shifts_data from "./data/shifts";
 
 const fields = [
+  {
+    key: "number",
+    label: "No",
+    _style: "width:1%",
+    sorter: false,
+    filter: false
+  },
   { key: "subject_name", _style: "width:12.5%" },
   { key: "exam_date", _style: "width:10%" },
   { key: "start_hour", _style: "width:10%" },
@@ -143,7 +132,7 @@ const fields = [
     filter: false
   }
 ];
-const items = shifts_data
+const items = shifts_data;
 
 export default {
   name: "shifts",
@@ -153,7 +142,7 @@ export default {
       myModal: false,
       items,
       fields
-    }
+    };
   }
 };
 </script>

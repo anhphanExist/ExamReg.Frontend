@@ -39,6 +39,9 @@
         sorter
         pagination
       >
+        <template #number="{item, index}">
+          <td>{{index + 1}}</td>
+        </template>
         <template #reset="{item, index}">
           <td class="py-2">
             <CButton
@@ -89,12 +92,22 @@
             </CRow>
             <CRow>
               <CCol sm="12">
-                <CInput v-model="student_add.firstname" horizontal label="First Name" placeholder="Enter student first name" />
+                <CInput
+                  v-model="student_add.firstname"
+                  horizontal
+                  label="First Name"
+                  placeholder="Enter student first name"
+                />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
-                <CInput v-model="student_add.lastname" horizontal label="Last Name" placeholder="Enter student last name" />
+                <CInput
+                  v-model="student_add.lastname"
+                  horizontal
+                  label="Last Name"
+                  placeholder="Enter student last name"
+                />
               </CCol>
             </CRow>
             <CRow>
@@ -119,10 +132,11 @@
                 />
               </CCol>
               <CCol sm="4">
-                <CSelect 
+                <CSelect
                   v-model="student_add.dob.month"
-                  label="Month-DOB" 
-                  :options="[1,2,3,4,5,6,7,8,9,10,11,12]" />
+                  label="Month-DOB"
+                  :options="[1,2,3,4,5,6,7,8,9,10,11,12]"
+                />
               </CCol>
               <CCol sm="4">
                 <CSelect
@@ -144,10 +158,17 @@
 </template>
 
 <script>
-import user_data from './data/students'
+import user_data from "./data/students";
 
 const fields = [
-  { key: "mssv", _style: "width:17.5%"},
+  {
+    key: "number",
+    label: "No",
+    _style: "width:1%",
+    sorter: false,
+    filter: false
+  },
+  { key: "mssv", _style: "width:17.5%" },
   { key: "fullname", _style: "width:17.5%" },
   { key: "DOB", _style: "width:17.5%;" },
   { key: "email", _style: "width:17.5%;" },
@@ -174,7 +195,7 @@ const fields = [
   }
 ];
 
-const items = user_data
+const items = user_data;
 
 export default {
   name: "tables",
@@ -183,25 +204,25 @@ export default {
     return {
       myModal: false,
       student_add: {
-        mssv: '',
-        firstname: '',
-        lastname: '',
-        email: '',
+        mssv: "",
+        firstname: "",
+        lastname: "",
+        email: "",
         dob: {
-          day: '',
-          month: '',
-          year: ''
+          day: "",
+          month: "",
+          year: ""
         }
       },
       items,
-      fields,
+      fields
     };
   },
   methods: {
     addStudent() {
-      this.myModal = false
-      console.log(this.selected)
-      console.log(this.student_add)
+      this.myModal = false;
+      console.log(this.selected);
+      console.log(this.student_add);
     }
   }
 };

@@ -6,11 +6,11 @@
           <CCol sm="5">
             <div class="pt-2">
               <CIcon name="cil-grid" />
-              Room List
+              Exam Period List
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
-            <CButton color="outline-info" @click="myModal = true" class="float-right mr-3">Add More</CButton>
+            <CButton color="outline-info" @click="myModal = true" class="float-right mr-4">Add more</CButton>
           </CCol>
         </CRow>
       </slot>
@@ -28,6 +28,23 @@
       >
         <template #number="{item, index}">
           <td>{{index + 1}}</td>
+        </template>
+        <template #current="{item}">
+          <td class="px-3">
+            <CIcon name="cil-star" v-if="item.current" />
+          </td>
+        </template>
+        <template #set_current="{item, index}">
+          <td class="py-2">
+            <CButton
+              v-if="!item.current"
+              color="success"
+              variant="outline"
+              square
+              size="sm"
+              @click="toggleDetails(index)"
+            >Set Current</CButton>
+          </td>
         </template>
         <template #edit="{item, index}">
           <td class="py-2">
@@ -54,32 +71,26 @@
       </CDataTable>
     </CCardBody>
     <!-- Modal -->
-    <CModal title="Add more rooms" :centered="true" :show.sync="myModal" color="info">
-      <CCols sm="12">
+    <CModal title="Add more Exam Period" :centered="true" :show.sync="myModal" color="info">
+      <CCol sm="12">
         <CCard>
           <CCardHeader>
-            <strong>Room Info</strong>
+            <strong>Exam Period Info</strong>
           </CCardHeader>
           <CCardBody>
-            <CRow>
-              <CCol sm="4">
-                <CInput label="Room Number"/>
-              </CCol>
-              <CCol sm="4">
-                <CInput label="Amphitheater"/>
-              </CCol>
-              <CCol sm="4">
-                <CInput label="PC Quantity"/>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol sm="12">
-                <CTextarea label="Description" placeholder="Some note to this room" rows="7" />
-              </CCol>
-            </CRow>
+            <CCol sm="12">
+              <CInput label="Name" placeholder="Enter exam period name" horizontal />
+            </CCol>
+            <CCol sm="12">
+              <CSelect
+                label="Code"
+                :options="['2019_2019_1', '2019_2020_2', '2019_2020_3']"
+                horizontal
+              />
+            </CCol>
           </CCardBody>
         </CCard>
-      </CCols>
+      </CCol>
       <template #footer>
         <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
         <CButton @click="myModal = false" color="outline-success">Accept</CButton>
@@ -87,9 +98,9 @@
     </CModal>
   </CCard>
 </template>
-
 <script>
-import rooms_data from "./data/rooms";
+import exam_period_data from "./data/exam_periods";
+const items = exam_period_data;
 const fields = [
   {
     key: "number",
@@ -98,9 +109,16 @@ const fields = [
     sorter: false,
     filter: false
   },
-  { key: "room_number", _style: "width:17.5%" },
-  { key: "amphitheater", _style: "width:17.5%" },
-  { key: "pc_quantity", _style: "width:17.5%" },
+  { key: "name", _style: "width:13.5%" },
+  { key: "semester_code", _style: "width: 13.5%" },
+  { key: "current", sorter: false, filter: false, _style: "width: 1%" },
+  {
+    key: "set_current",
+    label: "",
+    _style: "width:2%",
+    sorter: false,
+    filter: false
+  },
   {
     key: "edit",
     label: "",
@@ -116,16 +134,17 @@ const fields = [
     filter: false
   }
 ];
-const items = rooms_data;
+
 export default {
-  name: "rooms",
+  name: "exam_periods",
   props: [],
   data() {
     return {
-      myModal: false,
       items,
-      fields
+      fields,
+      myModal: false
     };
-  }
+  },
+  methods: {}
 };
 </script>

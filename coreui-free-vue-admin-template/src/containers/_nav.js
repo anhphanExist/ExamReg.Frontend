@@ -14,9 +14,15 @@ export default [
       },
       {
         _name: "CSidebarNavItem",
-        name: "Kỳ thi",
+        name: "Kỳ học",
         to: "/dashboard/semester",
         icon: "cil-drop"
+      },
+      {
+        _name: "CSidebarNavItem",
+        name: "Kì thi",
+        to: "/dashboard/exam_period",
+        icon: "cil-calculator"
       },
       {
         _name: "CSidebarNavItem",

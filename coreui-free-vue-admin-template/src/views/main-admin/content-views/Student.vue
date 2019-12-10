@@ -5,8 +5,7 @@
         <CRow>
           <CCol sm="5">
             <div class="pt-2">
-              <CIcon name="cil-grid" />
-              Student List
+              <CIcon name="cil-grid" />Student List
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
@@ -149,6 +148,10 @@
           </CCardBody>
         </CCard>
       </CCol>
+      <p v-if="$v.student_add.mssv.$invalid">Mã số sinh viên không hợp lệ</p>
+      <p v-if="$v.student_add.firstname.$invalid">Tên không hợp lệ</p>
+      <p v-if="$v.student_add.lastname.$invalid">Họ không hợp lệ</p>
+      <p v-if="$v.student_add.email.$invalid">Email không hợp lệ</p>
       <template #footer>
         <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
         <CButton @click="addStudent" color="outline-success">Accept</CButton>
@@ -159,6 +162,14 @@
 
 <script>
 import user_data from "./data/students";
+import {
+  required,
+  alpha,
+  numeric,
+  integer,
+  minLength,
+  email
+} from "vuelidate/lib/validators";
 
 const fields = [
   {
@@ -217,6 +228,27 @@ export default {
       items,
       fields
     };
+  },
+  validations: {
+    student_add: {
+      mssv: {
+        required,
+        numeric,
+        integer,
+        minLen: minLength(6)
+      },
+      firstname: {
+        required
+      },
+      lastname: {
+        required,
+        alpha
+      },
+      email: {
+        required,
+        email
+      }
+    }
   },
   methods: {
     addStudent() {

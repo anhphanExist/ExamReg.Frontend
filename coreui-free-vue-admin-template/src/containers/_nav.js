@@ -20,27 +20,27 @@ export default [
       },
       {
         _name: "CSidebarNavItem",
-        name: "Kì thi",
-        to: "/dashboard/exam_period",
-        icon: "cil-calculator"
-      },
-      {
-        _name: "CSidebarNavItem",
-        name: "Môn thi",
+        name: "Môn học",
         to: "/dashboard/subject",
         icon: "cil-pencil"
-      },
-      {
-        _name: "CSidebarNavItem",
-        name: "Ca thi",
-        to: "/dashboard/shift",
-        icon: "cil-puzzle"
       },
       {
         _name: "CSidebarNavItem",
         name: "Phòng thi",
         to: "/dashboard/room",
         icon: "cil-cursor"
+      },
+      {
+        _name: "CSidebarNavItem",
+        name: "Kì thi",
+        to: "/dashboard/exam_period",
+        icon: "cil-calculator"
+      },
+      {
+        _name: "CSidebarNavItem",
+        name: "Ca thi",
+        to: "/dashboard/shift",
+        icon: "cil-puzzle"
       }
     ]
   }

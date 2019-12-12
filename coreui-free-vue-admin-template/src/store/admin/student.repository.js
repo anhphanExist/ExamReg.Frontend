@@ -1,10 +1,30 @@
-const state = {};
+import studentService from "../../services/admin/student.service";
+const state = {
+    listStudent: [],
+    errors: []
+};
 
-const getters = {};
+const getters = {
+    listStudent(state) {
+        return state.listStudent;
+    }
+};
 
-const mutations = {};
+const mutations = {
+    listStudent(state, listStudent) {
+        state.listStudent = [...listStudent];
+    },
+    setErrors(state, errors) {
+        state.errors = [...errors];
+    }
+};
 
-const actions = {};
+const actions = {
+    async listStudent({ commit }) {
+        let data = await studentService.listStudent();
+        commit("listStudent", data);
+    }
+};
 
 export default {
     state,

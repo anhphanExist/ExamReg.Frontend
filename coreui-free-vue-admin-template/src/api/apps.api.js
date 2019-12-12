@@ -4,6 +4,6 @@ const axiosApps = axios.create({
   baseURL: "https://localhost:44317/api/ExamReg/APPS"
 });
 
-axiosApps.default.headers.common.get["Accepts"] = "application/json";
+axiosApps.defaults.headers.get["Accepts"] = "application/json";
 
 export default axiosApps;

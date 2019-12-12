@@ -4,7 +4,7 @@ const axiosAuth = axios.create({
   baseURL: "https://localhost:44380/api/ExamReg"
 });
 
-axiosAuth.default.headers.common.get["Accepts"] = "application/json";
+axiosAuth.defaults.headers.get["Accepts"] = "application/json";
 
 const login = async function(loginRequestDTO) {
   return await axiosAuth.post("/login", loginRequestDTO);

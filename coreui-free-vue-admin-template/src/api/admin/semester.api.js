@@ -1,16 +1,16 @@
 import axiosApps from "../apps.api";
 
-const listSemester = function() {
+const listSemester = async function () {
     return await axiosApps.post("/semester/list");
-}
+};
 
-const createSemester = function(semesterRequestDTO) {
+const createSemester = async function (semesterRequestDTO) {
     return await axiosApps.post("/semester/create", semesterRequestDTO);
-}
+};
 
-const deleteSemester = function(semesterRequestDTO) {
+const deleteSemester = async function (semesterRequestDTO) {
     return await axiosApps.post("/semester/delete", semesterRequestDTO);
-}
+};
 
 export default {
     listSemester,

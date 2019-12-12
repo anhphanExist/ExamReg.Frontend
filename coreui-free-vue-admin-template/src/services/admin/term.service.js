@@ -70,7 +70,10 @@ const exportTerm = async function() {
   link.click();
 };
 
-const dropListSemester = async function() {};
+const dropListSemester = async function() {
+  let response = await termApi.dropListSemester();
+  return response.data;
+};
 
 export default {
   listTerm,
@@ -79,5 +82,6 @@ export default {
   deleteTerm,
   importTerm,
   downloadTermTemplate,
-  exportTerm
+  exportTerm,
+  dropListSemester
 };

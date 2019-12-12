@@ -1,20 +1,20 @@
 import axiosApps from "../apps.api";
 
-const listExamRoom = function() {
+const listExamRoom = async function () {
     return await axiosApps.post("/exam-room/list");
-}
+};
 
-const createExamRoom = function(examRoomRequestDTO) {
+const createExamRoom = async function (examRoomRequestDTO) {
     return await axiosApps.post("/exam-room/create", examRoomRequestDTO);
-}
+};
 
-const updateExamRoom = function(examRoomRequestDTO) {
+const updateExamRoom = async function (examRoomRequestDTO) {
     return await axiosApps.post("/exam-room/update", examRoomRequestDTO);
-}
+};
 
-const deleteExamRoom = function(examRoomRequestDTO) {
+const deleteExamRoom = async function (examRoomRequestDTO) {
     return await axiosApps.post("/exam-room/delete", examRoomRequestDTO);
-}
+};
 
 export default {
     listExamRoom,

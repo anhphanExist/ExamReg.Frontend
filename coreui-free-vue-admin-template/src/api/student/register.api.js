@@ -1,18 +1,18 @@
 import axiosApps from "../../api/apps.api";
 
-const listTerm = function(termRequestFilterDTO) {
+const listTerm = async function(termRequestFilterDTO) {
     return await axiosApps.post("/exam-register/list-term", termRequestFilterDTO);
 };
 
-const listCurrentExamPeriod = function() {
+const listCurrentExamPeriod = async function() {
     return await axiosApps.post("/exam-register/list-current-exam-period");
 };
 
-const registerExam = function(registerRequestDTO) {
+const registerExam = async function(registerRequestDTO) {
     return await axiosApps.post("/exam-register/register-exam", registerRequestDTO);
 };
 
-const getCurrentExamProgram = function() {
+const getCurrentExamProgram = async function() {
     return await axiosApps.post("/exam-register/register-get-current-exam-program");
 };
 

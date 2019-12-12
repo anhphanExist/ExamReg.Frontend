@@ -4,6 +4,7 @@ import router from "./router";
 import CoreuiVue from "@coreui/vue";
 import Vuelidate from "vuelidate";
 import { iconsSet as icons } from "./assets/icons/icons.js";
+import store from "./store/store";
 
 Vue.config.performance = true;
 Vue.use(CoreuiVue);
@@ -12,6 +13,7 @@ Vue.use(Vuelidate);
 new Vue({
   el: "#app",
   router,
+  store,
   icons,
   template: "<App/>",
   components: {

@@ -256,6 +256,9 @@ export default {
       console.log(this.selected);
       console.log(this.student_add);
     }
-  }
+  },
+    created() {
+    
+    }
 };
 </script>

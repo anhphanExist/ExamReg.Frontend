@@ -1,44 +1,44 @@
 import axiosApps from "../apps.api";
 
-const listTerm = function(termRequestFilterDTO) {
+const listTerm = async function (termRequestFilterDTO) {
     return await axiosApps.post("/term/list", termRequestFilterDTO);
-}
+};
 
-const createTerm = function(termRequestDTO) {
+const createTerm = async function (termRequestDTO) {
     return await axiosApps.post("/term/create", termRequestDTO);
-}
+};
 
-const updateTerm = function(termRequestDTO) {
+const updateTerm = async function (termRequestDTO) {
     return await axiosApps.post("/term/update", termRequestDTO);
-}
+};
 
-const deleteTerm = function(termRequestDTO) {
+const deleteTerm = async function (termRequestDTO) {
     return await axiosApps.post("/term/delete", termRequestDTO);
-}
+};
 
-const importTerm = function(file) {
+const importTerm = async function (file) {
     return await axiosApps.post("/term/import", file, {
         headers: {
-          "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data"
         }
-      });
-}
+    });
+};
 
-const downloadTermTemplate = function() {
+const downloadTermTemplate = async function () {
     return await axiosApps.get("/term/download-template", {
         responseType: "blob"
-      });
-}
+    });
+};
 
-const exportTerm = function() {
+const exportTerm = async function () {
     return await axiosApps.get("/term/export", {
         responseType: "blob"
-      });
-}
+    });
+};
 
-const dropListSemester = function() {
+const dropListSemester = async function () {
     return await axiosApps.post("/term/list-semester");
-}
+};
 
 export default {
     listTerm,

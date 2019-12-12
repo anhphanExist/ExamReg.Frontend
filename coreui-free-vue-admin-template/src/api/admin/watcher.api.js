@@ -1,19 +1,19 @@
 import axiosApps from "../../api/apps.api";
 
-const listExamRoomExamPeriod = function() {
+const listExamRoomExamPeriod = async function () {
     return await axiosApps.post("/watcher/list");
-}
+};
 
-const getCurrentExamProgram = function() {
+const getCurrentExamProgram = async function () {
     return await axiosApps.post("/watcher/watcher-get-current-exam-program");
-}
+};
 
-const exportStudent = function(examPeriodId, examRoomId) {
+const exportStudent = async function (examPeriodId, examRoomId) {
     let url = "/watcher/export-student/" + examPeriodId + "/" + examRoomId;
     return await axiosApps.get(url, {
         responseType: "blob"
-      });
-}
+    });
+};
 
 export default {
     listExamRoomExamPeriod,

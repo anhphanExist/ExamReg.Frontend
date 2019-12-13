@@ -90,7 +90,7 @@ function configRoutes() {
           component: Dashboard
         },
         {
-          path: "dashboard/room",
+          path: "/dashboard/room",
           name: "Room",
           component: Room
         },
@@ -118,6 +118,23 @@ function configRoutes() {
           path: "/dashboard/exam_period",
           name: "ExamPeriod",
           component: ExamPeriod
+        }
+      ]
+    },
+    {
+      path: '/pages',
+      redirect: '/pages/login',
+      name: 'Page',
+      component: {
+        render(c) {
+          return c('router-view')
+        }
+      },
+      children: [
+        {
+          path: 'login',
+          name: 'Login',
+          component: Login
         }
       ]
     }

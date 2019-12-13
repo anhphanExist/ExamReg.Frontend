@@ -35,12 +35,7 @@ const updateStudent = async function (form) {
 const deleteStudent = async function (form) {
   let studentRequestDTO = {
     id: form.id,
-    studentNumber: form.studentNumber,
-    username: form.username,
-    lastName: form.lastName,
-    givenName: form.givenName,
-    birthday: form.birthday,
-    email: form.email
+    studentNumber: form.studentNumber
   };
   let response = await studentApi.deleteStudent(studentRequestDTO);
   return response.data;

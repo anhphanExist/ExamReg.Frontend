@@ -80,7 +80,7 @@ export default new Router({
 function configRoutes() {
   return [
     {
-      path: "/dashboard",
+      path: "/",
       name: "Main",
       component: TheContainer,
       beforeEnter(to, from, next) {

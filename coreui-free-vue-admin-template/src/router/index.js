@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Cookies from "js-cookie";
 
 // Containers
 const TheContainer = () => import("@/containers/TheContainer");
@@ -79,10 +80,16 @@ export default new Router({
 function configRoutes() {
   return [
     {
-      path: "/",
-      redirect: "/dashboard",
+      path: "/dashboard",
       name: "Main",
       component: TheContainer,
+      beforeEnter(to, from, next) {
+        if (Cookies.get("token")) {
+          next();
+        } else {
+          next("/login");
+        }
+      },
       children: [
         {
           path: "dashboard",
@@ -124,7 +131,18 @@ function configRoutes() {
     {
       path: "/login",
       name: "Login",
-      component: Login
+      component: Login,
+      beforeEnter(to, from, next) {
+        if (!Cookies.get("token")) {
+          next();
+        } else {
+          next("/dashboard");
+        }
+      }
+    },
+    {
+      path: "*",
+      redirect: "/login"
     }
   ];
 }

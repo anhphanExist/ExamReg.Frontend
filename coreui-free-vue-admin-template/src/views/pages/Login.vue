@@ -3,54 +3,68 @@
     <CRow class="justify-content-center">
       <CCol md="8">
         <CCardGroup>
-          <CCard class="p-4">
+          <CCard
+                  body-wrapper
+                  class="text-center py-5 d-md-down-none"
+                  color="success"
+                  style="width:44%"
+                  text-color="white"
+                  variant='outline'
+          >
+            <h2>EXAM REGISTRATION</h2>
+            <p class="text-muted">This is a a login pages, you need to login to access to the one of the best test registration product in
+              Vietnam, feels free to contact us if you have further discussion.</p>
+<!--            <CButton-->
+<!--                    class="mt-3"-->
+<!--                    color="danger"-->
+<!--                    size="sm"-->
+<!--                    square-->
+<!--            >-->
+<!--              Access Now!-->
+<!--            </CButton>-->
+          </CCard>
+          <CCard class="p-4 justify-content-center">
             <CCardBody>
               <CForm>
-                <h1>Login</h1>
                 <p class="text-muted">Sign In to your account</p>
                 <CInput
-                  placeholder="Username"
-                  autocomplete="username email"
+                        label="Username"
+                        :is-valid="!$v.username.$invalid"
+                        v-model = "username"
+                        autocomplete="username email"
+                        placeholder="Username"
+                        invalid-feedback="This field must be filled and accept only alphanumeric"
                 >
-                  <template #prepend-content><CIcon name="cil-user"/></template>
+                  <template #prepend-content>
+                    <CIcon name="cil-user"/>
+                  </template>
                 </CInput>
                 <CInput
-                  placeholder="Password"
-                  type="password"
-                  autocomplete="curent-password"
+                        label="Password"
+                        autocomplete="curent-password"
+                        placeholder="Password"
+                        type="password"
+                        :is-valid="!$v.password.$invalid"
+                        v-model = "password"
+                        invalid-feedback="This field must be filled and accept at least 5 characters"
                 >
-                  <template #prepend-content><CIcon name="cil-lock-locked"/></template>
+                  <template #prepend-content>
+                    <CIcon name="cil-lock-locked"/>
+                  </template>
                 </CInput>
                 <CRow>
                   <CCol col="6">
-                    <CButton color="success" class="px-4">Login</CButton>
+                    <CButton class="px-4" color="success" @click="login" :disabled="$v.$invalid">Login</CButton>
                   </CCol>
-                  <CCol col="6" class="text-right">
-                    <CButton color="link" class="px-0">Forgot password?</CButton>
+                  <CCol class="text-right" col="6">
+                    <CButton class="px-0" color="link">Forgot password?</CButton>
                   </CCol>
                 </CRow>
+                <p class="text-danger mt-2" v-if="errors.length > 0">{{ errors }}</p>
               </CForm>
             </CCardBody>
           </CCard>
-          <CCard
-            variant = 'outline'
-            color="success"
-            text-color="white"
-            class="text-center py-5 d-md-down-none"
-            style="width:44%"
-            body-wrapper
-          >
-            <h2>Exam Reg</h2>
-            <p>This is a a login pages, you need to login to access to the one of the best test registration product in Vietnam, feels free to contact us if you have further discussion.</p>
-            <CButton
-              color="danger"
-              class="mt-3"
-              square
-              size="sm"
-            >
-              Access Now!
-            </CButton>
-          </CCard>
+          
         </CCardGroup>
       </CCol>
     </CRow>
@@ -58,7 +72,44 @@
 </template>
 
 <script>
-export default {
-  name: 'Login'
-}
+  
+  import {alphaNum, minLength, required} from "vuelidate/lib/validators";
+  import authService from "../../services/authentication.service";
+  
+  export default {
+    name: 'Login',
+    data() {
+      return {
+        username: "",
+        password: "",
+        errors: ""
+      };
+    },
+    validations: {
+      username: {
+        required,
+        alphaNum
+      },
+      password: {
+        required,
+        minLength: minLength(5)
+      }
+    },
+    methods: {
+      async login() {
+        let form = {
+          username: this.username,
+          password: this.password
+        };
+        let res = await authService.login(form);
+        if (res.errors.length > 0) {
+          let temp = res.errors[0].split(".")[2];
+          this.errors = (" " + temp).slice(1);
+        }
+        else {
+          await this.$router.push("/dashboard");
+        }
+      }
+    }
+  }
 </script>

@@ -1,7 +1,7 @@
 import axiosApps from "../apps.api";
 
 const listStudent = async function() {
-  return await axiosApps.post("/student/list");
+  return await axiosApps.post("/student/list", {withCredentials : true});
 };
 
 const createStudent = async function(studentRequestDTO) {

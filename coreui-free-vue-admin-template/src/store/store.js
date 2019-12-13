@@ -23,6 +23,9 @@ export default new Vuex.Store({
     mutations: {
 
     },
+    actions: {
+    
+    },
     modules: {
         examPeriodRepository,
         examProgramRepository,

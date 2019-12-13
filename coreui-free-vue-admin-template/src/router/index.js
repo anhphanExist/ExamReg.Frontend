@@ -57,20 +57,20 @@ const Register = () => import("@/views/pages/Register");
 const Users = () => import("@/views/users/Users");
 const User = () => import("@/views/users/User");
 
-// Main components 
-const Dashboard = () => import("@/views/main-admin/Dashboard")
+// Main components
+const Dashboard = () => import("@/views/main-admin/Dashboard");
 //Side bar
-const Room = () => import("@/views/main-admin/content-views/Room")
-const Semester = () => import("@/views/main-admin/content-views/Semester")
-const ExamPeriod = () => import("@/views/main-admin/content-views/ExamPeriod")
-const Shift = () => import("@/views/main-admin/content-views/Shift")
-const Student = () => import("@/views/main-admin/content-views/Student")
-const Subject = () => import("@/views/main-admin/content-views/Subject")
+const Room = () => import("@/views/main-admin/content-views/Room");
+const Semester = () => import("@/views/main-admin/content-views/Semester");
+const ExamPeriod = () => import("@/views/main-admin/content-views/ExamPeriod");
+const Shift = () => import("@/views/main-admin/content-views/Shift");
+const Student = () => import("@/views/main-admin/content-views/Student");
+const Subject = () => import("@/views/main-admin/content-views/Subject");
 
 Vue.use(Router);
 
 export default new Router({
-  mode: "hash", // https://router.vuejs.org/api/#mode
+  mode: "history", // https://router.vuejs.org/api/#mode
   linkActiveClass: "active",
   scrollBehavior: () => ({ y: 0 }),
   routes: configRoutes()
@@ -122,21 +122,9 @@ function configRoutes() {
       ]
     },
     {
-      path: '/pages',
-      redirect: '/pages/login',
-      name: 'Page',
-      component: {
-        render(c) {
-          return c('router-view')
-        }
-      },
-      children: [
-        {
-          path: 'login',
-          name: 'Login',
-          component: Login
-        }
-      ]
+      path: "/login",
+      name: "Login",
+      component: Login
     }
   ];
 }

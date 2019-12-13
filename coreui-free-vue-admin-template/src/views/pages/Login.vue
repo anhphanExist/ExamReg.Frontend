@@ -23,7 +23,7 @@
                 </CInput>
                 <CRow>
                   <CCol col="6">
-                    <CButton color="primary" class="px-4">Login</CButton>
+                    <CButton color="success" class="px-4">Login</CButton>
                   </CCol>
                   <CCol col="6" class="text-right">
                     <CButton color="link" class="px-0">Forgot password?</CButton>
@@ -33,19 +33,22 @@
             </CCardBody>
           </CCard>
           <CCard
-            color="primary"
+            variant = 'outline'
+            color="success"
             text-color="white"
             class="text-center py-5 d-md-down-none"
             style="width:44%"
             body-wrapper
           >
-            <h2>Sign up</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <h2>Exam Reg</h2>
+            <p>This is a a login pages, you need to login to access to the one of the best test registration product in Vietnam, feels free to contact us if you have further discussion.</p>
             <CButton
-              color="primary"
-              class="active mt-3"
+              color="danger"
+              class="mt-3"
+              square
+              size="sm"
             >
-              Register Now!
+              Access Now!
             </CButton>
           </CCard>
         </CCardGroup>

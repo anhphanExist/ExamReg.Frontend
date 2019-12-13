@@ -124,15 +124,17 @@ function configRoutes() {
     {
       path: '/pages',
       redirect: '/pages/login',
-      name: 'Pages',
-      components: {
-        render (c) {return c('router-view')}
+      name: 'Page',
+      component: {
+        render(c) {
+          return c('router-view')
+        }
       },
       children: [
         {
-          path: '/pages/login',
+          path: 'login',
           name: 'Login',
-          components: Login
+          component: Login
         }
       ]
     }

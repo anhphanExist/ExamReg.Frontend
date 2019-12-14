@@ -106,12 +106,12 @@ const fields = [
     sorter: false,
     filter: false
   },
-  { key: "subject_name", _style: "width:12.5%" },
-  { key: "exam_date", _style: "width:10%" },
-  { key: "start_hour", _style: "width:10%" },
-  { key: "finish_hour", _style: "width:10%" },
+  { key: "subjectName", _style: "width:10%" },
+  { key: "examDate", _style: "width:5%" },
+  { key: "startHour", _style: "width:5%" },
+  { key: "finishHour", _style: "width:5%" },
   {
-    key: "rooms",
+    key: "examRooms",
     label: "Rooms",
     _style: "width:5%",
     sorter: false,

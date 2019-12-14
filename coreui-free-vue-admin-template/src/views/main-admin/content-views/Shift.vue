@@ -17,7 +17,7 @@
     </CCardHeader>
     <CCardBody>
       <CDataTable
-        :items="items"
+        :items="listExamPeriod"
         :fields="fields"
         :items-per-page="small ? 10 : 10"
         column-filter

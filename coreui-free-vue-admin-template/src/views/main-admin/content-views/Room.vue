@@ -17,7 +17,7 @@
     </CCardHeader>
     <CCardBody>
       <CDataTable
-        :items="items"
+        :items="listExamRoom"
         :fields="fields"
         :items-per-page="small ? 10 : 10"
         column-filter
@@ -98,9 +98,9 @@ const fields = [
     sorter: false,
     filter: false
   },
-  { key: "room_number", _style: "width:17.5%" },
-  { key: "amphitheater", _style: "width:17.5%" },
-  { key: "pc_quantity", _style: "width:17.5%" },
+  { key: "roomNumber", label: "Room",_style: "width:17.5%" },
+  { key: "amphitheaterName", label: "Amphitheater Name", _style: "width:17.5%" },
+  { key: "computerNumber", label:"PC Quantity",_style: "width:17.5%" },
   {
     key: "edit",
     label: "",

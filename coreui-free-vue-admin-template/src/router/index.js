@@ -67,6 +67,8 @@ const Shift = () => import("@/views/main-admin/content-views/Shift")
 const Student = () => import("@/views/main-admin/content-views/Student")
 const Subject = () => import("@/views/main-admin/content-views/Subject")
 
+const TestRegister = () => import ("@/views/main-student/TestRegister") 
+
 Vue.use(Router);
 
 export default new Router({
@@ -84,6 +86,10 @@ function configRoutes() {
       name: "Main",
       component: TheContainer,
       children: [
+        {
+          path: "dashboard/student/test-register",
+          component: TestRegister
+        },
         {
           path: "dashboard",
           name: "",

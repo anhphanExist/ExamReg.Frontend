@@ -130,8 +130,8 @@ function configRoutes() {
           component: Term
         },
         {
-          path: "/dashboard/exam_period",
-          name: "ExamPeriod",
+          path: "/dashboard/exam-program",
+          name: "ExamProgram",
           component: ExamProgram
         }
       ]

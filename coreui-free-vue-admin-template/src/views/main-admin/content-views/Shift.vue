@@ -143,6 +143,14 @@ export default {
       items,
       fields
     };
+  },
+  computed: {
+    listExamPeriod() {
+      return this.$store.getters.listExamPeriod;
+    }
+  },
+  async created() {
+    await this.$store.dispatch("listExamPeriod");
   }
 };
 </script>

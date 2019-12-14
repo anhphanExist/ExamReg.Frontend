@@ -17,7 +17,7 @@
     </CCardHeader>
     <CCardBody>
       <CDataTable
-        :items="items"
+        :items="listSemester"
         :fields="fields"
         :items-per-page="small ? 10 : 10"
         column-filter
@@ -126,6 +126,14 @@ export default {
       fields,
       myModal: false,
     }
+  },
+  computed: {
+    listSemester() {
+      return this.$store.getters.listSemester;
+    }
+  },
+  async created() {
+    await this.$store.dispatch("listSemester");
   }
 };
 </script>

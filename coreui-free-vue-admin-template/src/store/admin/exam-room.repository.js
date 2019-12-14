@@ -1,10 +1,28 @@
-const state = {};
+import examRoomService from "../../services/admin/exam-room.service";
 
-const getters = {};
+const state = {
+    listExamRoom: [],
+    errors: []
+};
 
-const mutations = {};
+const getters = {
+    listExamRoom(state) {
+        return state.listExamRoom;
+    }
+};
 
-const actions = {};
+const mutations = {
+    listExamRoom(state, listExamRoom) {
+        state.listExamRoom = [...listExamRoom];
+    }
+};
+
+const actions = {
+    async listExamRoom({ commit }) {
+        let data = await examRoomService.listExamRoom();
+        commit("listExamRoom", data);
+    }
+};
 
 export default {
     state,

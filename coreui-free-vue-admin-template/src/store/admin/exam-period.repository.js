@@ -1,10 +1,28 @@
-const state = {};
+import examPeriodService from "../../services/admin/exam-period.service";
 
-const getters = {};
+const state = {
+    listExamPeriod: [],
+    errors: []
+};
 
-const mutations = {};
+const getters = {
+    listExamPeriod(state) {
+        return state.listExamPeriod;
+    }
+};
 
-const actions = {};
+const mutations = {
+    listExamPeriod(state, listExamPeriod) {
+        state.listExamPeriod = [...listExamPeriod];
+    }
+};
+
+const actions = {
+    async listExamPeriod({ commit }) {
+        let data = await examPeriodService.listExamPeriod();
+        commit("listExamPeriod", data);
+    }
+};
 
 export default {
     state,

@@ -1,11 +1,7 @@
 import termApi from "../../api/admin/term.api";
 
-const listTerm = async function(form) {
-  let termRequestFilterDTO = {
-    semesterId: form.semesterId,
-    semesterCode: form.semesterCode
-  };
-  let response = await termApi.listTerm(termRequestFilterDTO);
+const listTerm = async function() {
+  let response = await termApi.listTerm();
   return response.data;
 };
 

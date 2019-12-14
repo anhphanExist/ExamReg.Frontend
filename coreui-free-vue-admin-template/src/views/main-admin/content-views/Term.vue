@@ -3,23 +3,47 @@
     <CCardHeader>
       <slot name="header">
         <CRow>
-          <CCol sm="5">
-            <div class="pt-2">
+          <CCol sm="1">
+            <div class="pt-3">
               <CIcon name="cil-grid" />
-              Exam Period List
+              Subjects
+            </div>
+          </CCol>
+          <CCol sm="4" class="d-none d-md-block">
+            <div class="py-2">
+              <CSelect
+                class="float-left"
+                :options="['Semster 2019_2020_1','Semster 2019_2020_2','Semster 2019_2020_3']"
+              />
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
-            <CButton color="outline-info" @click="myModal = true" class="float-right mr-4">Add more</CButton>
+            <div class="py-2">
+              <CDropdown
+                class="float-right"
+                toggler-text="More Action"
+                color="outline-info"
+                placement="bottom-end"
+              >
+                <CDropdownItem>1</CDropdownItem>
+                <CDropdownItem>2</CDropdownItem>
+                <CDropdownItem>3</CDropdownItem>
+              </CDropdown>
+              <CButton
+                color="outline-info"
+                @click="myModal = true"
+                class="float-right mr-3"
+              >Add More</CButton>
+            </div>
           </CCol>
         </CRow>
       </slot>
     </CCardHeader>
     <CCardBody>
       <CDataTable
-        :items="items"
+        :items="listTerm"
         :fields="fields"
-        :items-per-page="small ? 10 : 10"
+        :item-per-page="small ? 10:10"
         column-filter
         fixed
         hover
@@ -28,23 +52,6 @@
       >
         <template #number="{item, index}">
           <td>{{index + 1}}</td>
-        </template>
-        <template #current="{item}">
-          <td class="px-3">
-            <CIcon name="cil-star" v-if="item.current" />
-          </td>
-        </template>
-        <template #set_current="{item, index}">
-          <td class="py-2">
-            <CButton
-              v-if="!item.current"
-              color="success"
-              variant="outline"
-              square
-              size="sm"
-              @click="toggleDetails(index)"
-            >Set Current</CButton>
-          </td>
         </template>
         <template #edit="{item, index}">
           <td class="py-2">
@@ -71,23 +78,27 @@
       </CDataTable>
     </CCardBody>
     <!-- Modal -->
-    <CModal title="Add more Exam Period" :centered="true" :show.sync="myModal" color="info">
+    <CModal title="Add more subject" :centered="true" :show.sync="myModal" color="info">
       <CCol sm="12">
         <CCard>
           <CCardHeader>
-            <strong>Exam Period Info</strong>
+            <strong>Subject Info</strong>
           </CCardHeader>
           <CCardBody>
-            <CCol sm="12">
-              <CInput label="Name" placeholder="Enter exam period name" horizontal />
-            </CCol>
-            <CCol sm="12">
-              <CSelect
-                label="Code"
-                :options="['2019_2019_1', '2019_2020_2', '2019_2020_3']"
-                horizontal
-              />
-            </CCol>
+            <CRow>
+              <CCol sm="12">
+                <CInput horizontal label="Name" placeholder="Enter Subject Name" />
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol sm="12">
+                <CSelect
+                  horizontal
+                  label="Semester"
+                  :options="['Semster 2019_2020_1','Semster 2019_2020_2','Semster 2019_2020_3']"
+                />
+              </CCol>
+            </CRow>
           </CCardBody>
         </CCard>
       </CCol>
@@ -98,9 +109,10 @@
     </CModal>
   </CCard>
 </template>
+
 <script>
-import exam_period_data from "./data/exam_periods";
-const items = exam_period_data;
+import subjects from "./data/subjects";
+const items = subjects;
 const fields = [
   {
     key: "number",
@@ -109,15 +121,10 @@ const fields = [
     sorter: false,
     filter: false
   },
-  { key: "name", _style: "width:13.5%" },
-  { key: "semester_code", _style: "width: 13.5%" },
-  { key: "current", sorter: false, filter: false, _style: "width: 1%" },
   {
-    key: "set_current",
-    label: "",
-    _style: "width:2%",
-    sorter: false,
-    filter: false
+    key: "name",
+    label: "Subject Name",
+    _style: "width:17.5%"
   },
   {
     key: "edit",
@@ -134,17 +141,21 @@ const fields = [
     filter: false
   }
 ];
-
 export default {
-  name: "exam_periods",
-  props: [],
   data() {
     return {
+      myModal: false,
       items,
-      fields,
-      myModal: false
+      fields
     };
   },
-  methods: {}
+  computed: {
+    listTerm() {
+      return this.$store.getters.listTerm;
+    }
+  },
+  async created() {
+    await this.$store.dispatch("listTerm");
+  }
 };
 </script>

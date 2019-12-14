@@ -63,10 +63,10 @@ const Dashboard = () => import("@/views/main-admin/Dashboard");
 //Side bar
 const Room = () => import("@/views/main-admin/content-views/Room");
 const Semester = () => import("@/views/main-admin/content-views/Semester");
-const ExamPeriod = () => import("@/views/main-admin/content-views/ExamPeriod");
+const ExamProgram = () => import("@/views/main-admin/content-views/ExamProgram");
 const Shift = () => import("@/views/main-admin/content-views/Shift");
 const Student = () => import("@/views/main-admin/content-views/Student");
-const Subject = () => import("@/views/main-admin/content-views/Subject");
+const Term = () => import("@/views/main-admin/content-views/Term");
 
 Vue.use(Router);
 
@@ -119,12 +119,12 @@ function configRoutes() {
         {
           path: "/dashboard/subject",
           name: "Subject",
-          component: Subject
+          component: Term
         },
         {
           path: "/dashboard/exam_period",
           name: "ExamPeriod",
-          component: ExamPeriod
+          component: ExamProgram
         }
       ]
     },

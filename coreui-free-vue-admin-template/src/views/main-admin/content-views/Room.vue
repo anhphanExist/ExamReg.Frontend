@@ -126,6 +126,14 @@ export default {
       items,
       fields
     };
+  },
+  computed: {
+    listExamRoom() {
+      return this.$store.getters.listExamRoom;
+    }
+  },
+  async created() {
+    await this.$store.dispatch("listExamRoom");
   }
 };
 </script>

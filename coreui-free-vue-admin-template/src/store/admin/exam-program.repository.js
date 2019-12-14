@@ -1,10 +1,28 @@
-const state = {};
+import examProgramService from "../../services/admin/exam-program.service";
 
-const getters = {};
+const state = {
+    listExamProgram: [],
+    errors: []
+};
 
-const mutations = {};
+const getters = {
+    listExamProgram(state) {
+        return state.listExamProgram;
+    }
+};
 
-const actions = {};
+const mutations = {
+    listExamProgram(state, listExamProgram) {
+        state.listExamProgram = [...listExamProgram];
+    }
+};
+
+const actions = {
+    async listExamProgram({ commit }) {
+        let data = await examProgramService.listExamProgram();
+        commit("listExamProgram", data);
+    }
+};
 
 export default {
     state,

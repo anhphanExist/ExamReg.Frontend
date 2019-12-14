@@ -1,7 +1,7 @@
 import axiosApps from "../apps.api";
 
-const listTerm = async function (termRequestFilterDTO) {
-    return await axiosApps.post("/term/list", termRequestFilterDTO);
+const listTerm = async function () {
+    return await axiosApps.post("/term/list");
 };
 
 const createTerm = async function (termRequestDTO) {

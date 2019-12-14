@@ -1,10 +1,28 @@
-const state = {};
+import semesterService from "../../services/admin/semester.service";
 
-const getters = {};
+const state = {
+    listSemester: [],
+    errors: []
+};
 
-const mutations = {};
+const getters = {
+    listSemester(state) {
+        return state.listSemester;
+    }
+};
 
-const actions = {};
+const mutations = {
+    listSemester(state, listSemester) {
+        state.listSemester = [...listSemester];
+    }
+};
+
+const actions = {
+    async listSemester({ commit }) {
+        let data = await semesterService.listSemester();
+        commit("listSemester", data);
+    }
+};
 
 export default {
     state,

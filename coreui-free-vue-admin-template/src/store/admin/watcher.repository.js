@@ -1,10 +1,28 @@
-const state = {};
+import watcherService from "../../services/admin/watcher.service";
 
-const getters = {};
+const state = {
+    listWatcher: [],
+    errors: []
+};
 
-const mutations = {};
+const getters = {
+    listWatcher(state) {
+        return state.listWatcher;
+    }
+};
 
-const actions = {};
+const mutations = {
+    listWatcher(state, listWatcher) {
+        state.listWatcher = [...listWatcher];
+    }
+};
+
+const actions = {
+    async listWatcher({ commit }) {
+        let data = await watcherService.listWatcher();
+        commit("listWatcher", data);
+    }
+};
 
 export default {
     state,

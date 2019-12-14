@@ -60,6 +60,8 @@
                         horizontal
                         label="Start year"
                         placeholder="Enter start year"
+                        v-model="startYear"
+                        :is-valid="!$v.startYear.$invalid"
                 />
               </CCol>
             </CRow>
@@ -69,16 +71,27 @@
                         horizontal
                         label="End year"
                         placeholder="Enter end year"
+                        v-model="endYear"
+                        :is-valid="!$v.endYear.$invalid"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
-                <CSelect
-                        :options="['First', 'Second']"
-                        horizontal
-                        label="Half"
-                />
+<!--                <CSelect-->
+<!--                        :options="['true', 'false']"-->
+<!--                        horizontal-->
+<!--                        label="IsFirstHalf"-->
+<!--                        :value="isFirstHalf"-->
+<!--                        @input="isFirstHalf = $event.target.value"-->
+<!--                />-->
+                <label>
+                  Half
+                  <select v-model="isFirstHalf">
+                    <option selected label="First Half" value="true">true</option>
+                    <option label="Second Half" value="false">false</option>
+                  </select>
+                </label>
               </CCol>
             </CRow>
             <CRow>
@@ -100,7 +113,7 @@
 
 <script>
   import semester from './data/semesters'
-  
+  import {required, numeric, maxLength, minLength, integer} from "vuelidate/lib/validators";
   const items = semester;
   const fields = [
     {
@@ -129,11 +142,30 @@
         items,
         fields,
         myModal: false,
+        isFirstHalf: false,
+        startYear: "",
+        endYear: ""
       }
     },
     computed: {
       listSemester() {
         return this.$store.getters.listSemester;
+      }
+    },
+    validations: {
+      startYear: {
+        required,
+        numeric,
+        integer,
+        maxLength: maxLength(4),
+        minLength: minLength(4)
+      },
+      endYear: {
+        required,
+        numeric,
+        integer,
+        maxLength: maxLength(4),
+        minLength: minLength(4)
       }
     },
     async created() {

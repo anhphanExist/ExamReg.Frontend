@@ -90,7 +90,13 @@
           <CCardBody>
             <CRow>
               <CCol sm="12">
-                <CInput horizontal label="MSSV" placeholder="00000000" v-model="student_add.mssv"/>
+                <CInput
+                        horizontal label="MSSV"
+                        placeholder="00000000"
+                        v-model="student_add.mssv"
+                        :is-valid="!$v.student_add.mssv.$invalid"
+                        invalid-feedback="This field must be filled and only accepts 8 digit integer"
+                />
               </CCol>
             </CRow>
             <CRow>
@@ -99,7 +105,9 @@
                         horizontal
                         label="First Name"
                         placeholder="Enter student first name"
-                        v-model="student_add.firstname"
+                        v-model="student_add.firstName"
+                        :is-valid="!$v.student_add.firstName.$invalid"
+                        invalid-feedback="This field must be filled"
                 />
               </CCol>
             </CRow>
@@ -109,7 +117,9 @@
                         horizontal
                         label="Last Name"
                         placeholder="Enter student last name"
-                        v-model="student_add.lastname"
+                        v-model="student_add.lastName"
+                        :is-valid="!$v.student_add.lastName.$invalid"
+                        invalid-feedback="This field must be filled"
                 />
               </CCol>
             </CRow>
@@ -122,6 +132,8 @@
                         placeholder="Enter student email"
                         type="email"
                         v-model="student_add.email"
+                        :is-valid="!$v.student_add.email.$invalid"
+                        invalid-feedback="This field must be filled and only accepts valid email"
                 />
               </CCol>
             </CRow>
@@ -152,13 +164,9 @@
           </CCardBody>
         </CCard>
       </CCol>
-      <p v-if="$v.student_add.mssv.$invalid">Mã số sinh viên không hợp lệ</p>
-      <p v-if="$v.student_add.firstname.$invalid">Tên không hợp lệ</p>
-      <p v-if="$v.student_add.lastname.$invalid">Họ không hợp lệ</p>
-      <p v-if="$v.student_add.email.$invalid">Email không hợp lệ</p>
       <template #footer>
         <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
-        <CButton @click="addStudent" color="outline-success">Accept</CButton>
+        <CButton @click="addStudent" color="outline-success" :disabled="$v.$invalid">Accept</CButton>
       </template>
     </CModal>
   </CCard>
@@ -166,7 +174,7 @@
 
 <script>
   import user_data from "./data/students";
-  import {alpha, email, integer, minLength, numeric, required} from "vuelidate/lib/validators";
+  import {alpha, email, integer, minLength, maxLength, numeric, required} from "vuelidate/lib/validators";
 
   const fields = [
     {
@@ -177,8 +185,9 @@
       filter: false
     },
     {key: "studentNumber", _style: "width:17.5%"},
-    {key: "lastName", _style: "width:17.5%"},
-    {key: "DOB", _style: "width:17.5%;"},
+    {key: "lastName", _style: "width:10%"},
+    {key: "givenName", _style: "width: 17.5%"},
+    {key: "birthday", _style: "width:17.5%;"},
     {key: "email", _style: "width:17.5%;"},
     {
       key: "reset",
@@ -213,8 +222,8 @@
         myModal: false,
         student_add: {
           mssv: "",
-          firstname: "",
-          lastname: "",
+          firstName: "",
+          lastName: "",
           email: "",
           dob: {
             day: "",
@@ -232,12 +241,13 @@
           required,
           numeric,
           integer,
-          minLen: minLength(6)
+          minLen: minLength(8),
+          maxLen: maxLength(8)
         },
-        firstname: {
+        firstName: {
           required
         },
-        lastname: {
+        lastName: {
           required,
           alpha
         },

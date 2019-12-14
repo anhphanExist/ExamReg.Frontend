@@ -122,9 +122,14 @@ const fields = [
     filter: false
   },
   {
-    key: "name",
+    key: "subjectName",
     label: "Subject Name",
     _style: "width:17.5%"
+  },
+  {
+    key: "semesterCode",
+    label: "Semester Code",
+    _style: "width: 10%"
   },
   {
     key: "edit",

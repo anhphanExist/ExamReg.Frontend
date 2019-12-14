@@ -15,7 +15,7 @@
     <CCardBody>
       <CDataTable
               :fields="fields"
-              :items="items"
+              :items="listExamRoomExamPeriod"
               :items-per-page="small ? 10 : 10"
               column-filter
               fixed
@@ -56,13 +56,13 @@
       sorter: false,
       filter: false
     },
-    {key: "subject", _style: "width:12%"},
-    {key: "room_number", _style: "width:12%"},
-    {key: "amphitheater", _style: "width:12%"},
-    {key: "exam_date", _style: "width:12%"},
-    {key: "duration", _style: "width:12%"},
-    {key: "pc_quantity", _style: "width:12%"},
-    {key: "pc_available", _style: "width:12%"},
+    {key: "subject", _style: "width:7.5%"},
+    {key: "roomNumber", label: "Room" ,_style: "width:5%"},
+    {key: "amphitheaterName", label: "amphi" ,_style: "width:5%"},
+    {key: "examDate", _style: "width:5%"},
+    {key: "startHour", label: "s" , _style: "width:5%"},
+    {key: "finishHour", label: "f" ,_style: "width:5%"},
+    {key: "computerNumber", label: "PC", _style: "width:5%"},
     {
       key: "export",
       label: "",

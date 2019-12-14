@@ -6,7 +6,7 @@
           <CCol sm="5">
             <div class="pt-2">
               <CIcon name="cil-grid" />
-              Exam Period List
+              Exam Program List
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
@@ -75,7 +75,7 @@
       <CCol sm="12">
         <CCard>
           <CCardHeader>
-            <strong>Exam Period Info</strong>
+            <strong>Exam Program Info</strong>
           </CCardHeader>
           <CCardBody>
             <CCol sm="12">
@@ -110,8 +110,8 @@ const fields = [
     filter: false
   },
   { key: "name", _style: "width:13.5%" },
-  { key: "semester_code", _style: "width: 13.5%" },
-  { key: "current", sorter: false, filter: false, _style: "width: 1%" },
+  { key: "semesterCode", _style: "width: 13.5%" },
+  { key: "isCurrent", sorter: false, filter: false, _style: "width: 1%" },
   {
     key: "set_current",
     label: "",

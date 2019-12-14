@@ -3,7 +3,7 @@
     <template #toggler>
       <CHeaderNavLink>
         <div class="c-avatar">
-          <img class="c-avatar-img" src="./img/6.jpg"/>
+          <img class="c-avatar-img" src="./img/2.jpg"/>
         </div>
       </CHeaderNavLink>
     </template>

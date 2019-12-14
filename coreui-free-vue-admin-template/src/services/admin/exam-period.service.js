@@ -6,27 +6,61 @@ const listExamPeriod = async function () {
 };
 
 const createExamPeriod = async function (form) {
-
+  let examPeriodRequestDTO = {
+    examDate: form.examDate,
+    startHour: form.startHour,
+    finishHour: form.finishHour,
+    subjectName: form.subjectName,
+    examProgramName: form.examProgramName
+  };
+  let response = await examPeriodApi.createExamPeriod(examPeriodRequestDTO);
+  return response.data;
 };
 
 const updateExamPeriod = async function (form) {
-
+  let examPeriodRequestDTO = {
+    id: form.id,
+    examDate: form.examDate,
+    startHour: form.startHour,
+    finishHour: form.finishHour,
+    subjectName: form.subjectName,
+    examProgramName: form.examProgramName,
+    examRooms: form.examRooms
+  };
+  let response = await examPeriodApi.updateExamPeriod(examPeriodRequestDTO);
+  return response.data;
 };
 
 const deleteExamPeriod = async function (form) {
-
+  let examPeriodRequestDTO = {
+    id: form.id
+  };
+  let response = await examPeriodApi.deleteExamPeriod(examPeriodRequestDTO);
+  return response.data;
 };
 
 const getCurrentExamProgram = async function () {
-
+  let response = await examPeriodApi.getCurrentExamProgram();
+  return response.data;
 };
 
 const dropListTerm = async function (form) {
-
+  let termRequestFilterDTO = {
+    semesterId: form.semesterId,
+    semesterCode: form.semesterCode
+  };
+  let response = await examPeriodApi.dropListTerm(termRequestFilterDTO);
+  return response.data;
 };
 
 const selectListAvailableExamRoom = async function (form) {
-
+  let examRoomRequestFilterDTO = {
+    examDate: form.examDate,
+    startHour: form.startHour,
+    finishHour: form.finishHour
+  };
+  let response = await examPeriodApi.selectListAvailableExamRoom(examRoomRequestFilterDTO);
+  return response.data;
 };
 
 export default {

@@ -68,6 +68,8 @@ const Shift = () => import("@/views/main-admin/content-views/Shift");
 const Student = () => import("@/views/main-admin/content-views/Student");
 const Term = () => import("@/views/main-admin/content-views/Term");
 
+// Student-role component
+const StudentContainer = () => import("@/containers-student/TheContainer");
 const TestRegister = () => import ("@/views/main-student/TestRegister") 
 
 Vue.use(Router);
@@ -132,6 +134,22 @@ function configRoutes() {
           name: "ExamPeriod",
           component: ExamProgram
         }
+      ]
+    },
+    {
+      path: "/student-role",
+      name: "Student Role",
+      component: StudentContainer,
+      redirect: "student-role/exam-registration",
+      children: [{
+          path: "/student-role/exam-registration",
+          name: "Exam Reistration",
+          component: TestRegister,
+        },
+        {
+          path: "/student-role/registration-result",
+          name: "Reistration Result",
+        },
       ]
     },
     {

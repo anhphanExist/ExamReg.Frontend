@@ -33,7 +33,7 @@ export default [
       {
         _name: "CSidebarNavItem",
         name: "Kì thi",
-        to: "/dashboard/exam_period",
+        to: "/dashboard/exam-program",
         icon: "cil-calculator"
       },
       {

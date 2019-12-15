@@ -7,6 +7,7 @@
             <div class="pt-3">
               <CIcon name="cil-grid" />
               Subjects
+              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
           <CCol sm="4" class="d-none d-md-block">
@@ -25,9 +26,9 @@
                 color="outline-info"
                 placement="bottom-end"
               >
-                <CDropdownItem>1</CDropdownItem>
-                <CDropdownItem>2</CDropdownItem>
-                <CDropdownItem>3</CDropdownItem>
+                <CDropdownItem>Import Term</CDropdownItem>
+                <CDropdownItem>Download Term Template</CDropdownItem>
+                <CDropdownItem>Export Term</CDropdownItem>
               </CDropdown>
               <CButton
                 color="outline-info"
@@ -71,7 +72,7 @@
               variant="outline"
               square
               size="sm"
-              @click="toggleDetails(index)"
+              @click="deleteTerm(item, index)"
             >Delete</CButton>
           </td>
         </template>
@@ -87,24 +88,35 @@
           <CCardBody>
             <CRow>
               <CCol sm="12">
-                <CInput horizontal label="Name" placeholder="Enter Subject Name" />
+                <CInput
+                        horizontal label="Name"
+                        placeholder="Enter Subject Name"
+                        v-model="subjectName"
+                        :is-valid="!$v.subjectName.$invalid"
+                />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
-                <CSelect
-                  horizontal
-                  label="Semester"
-                  :options="['Semster 2019_2020_1','Semster 2019_2020_2','Semster 2019_2020_3']"
-                />
+<!--                <CSelect-->
+<!--                  horizontal-->
+<!--                  label="Semester"-->
+<!--                  :options="['Semster 2019_2020_1','Semster 2019_2020_2','Semster 2019_2020_3']"-->
+<!--                />-->
+                <label>
+                  Semester
+                  <select class="form-control" v-model="semesterCode">
+                    <option v-for="semester in dropListSemester" :key="semester.id">{{ semester.code }}</option>
+                  </select>
+                </label>
               </CCol>
             </CRow>
           </CCardBody>
         </CCard>
       </CCol>
       <template #footer>
-        <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
-        <CButton @click="myModal = false" color="outline-success">Accept</CButton>
+        <CButton @click="discardModal" color="outline-danger">Discard</CButton>
+        <CButton @click="addTerm" color="outline-success">Accept</CButton>
       </template>
     </CModal>
   </CCard>
@@ -112,6 +124,9 @@
 
 <script>
 import subjects from "./data/subjects";
+import {required} from "vuelidate/lib/validators";
+import termService from "../../../services/admin/term.service";
+
 const items = subjects;
 const fields = [
   {
@@ -151,16 +166,69 @@ export default {
     return {
       myModal: false,
       items,
-      fields
+      fields,
+      subjectName: "",
+      semesterCode: "",
+      errors: "",
+      modalErrors: ""
     };
   },
   computed: {
     listTerm() {
       return this.$store.getters.listTerm;
+    },
+    dropListSemester() {
+      return this.$store.getters.dropListSemester;
+    }
+  },
+  validations: {
+    subjectName: {
+      required
+    }
+  },
+  methods: {
+    discardModal() {
+      this.modalErrors = "";
+      this.myModal = false;
+      this.subjectName = "";
+      this.semesterCode = "";
+    },
+    async addTerm() {
+      let form = {
+        subjectName: this.subjectName,
+        semesterCode: this.semesterCode
+      };
+      let res = await termService.createTerm(form);
+      if (res.errors.length > 0) {
+        let temp = res.errors[0].split(".")[2];
+        this.modalErrors = (" " + temp).slice(1);
+      }
+      else {
+        this.myModal = false;
+        this.modalErrors = "";
+        this.subjectName = "";
+        this.semesterCode = "";
+        await this.$store.dispatch("listTerm");
+      }
+    },
+    async deleteTerm(item, index) {
+      const form = {
+        id: item.id
+      };
+      let res = await termService.deleteTerm(form);
+      if (!res.errors.length > 0) {
+        this.errors = "";
+        await this.$store.dispatch("listTerm");
+      }
+      else {
+        let temp = res.errors[0].split(".")[2];
+        this.errors = (" " + temp).slice(1);
+      }
     }
   },
   async created() {
     await this.$store.dispatch("listTerm");
+    await this.$store.dispatch("dropListSemester");
   }
 };
 </script>

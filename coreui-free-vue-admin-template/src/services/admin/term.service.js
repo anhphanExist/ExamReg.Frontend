@@ -26,9 +26,7 @@ const updateTerm = async function(form) {
 
 const deleteTerm = async function(form) {
   let termRequestDTO = {
-    id: form.id,
-    subjectName: form.subjectName,
-    semesterCode: form.semesterCode
+    id: form.id
   };
   let response = await termApi.deleteTerm(termRequestDTO);
   return response.data;

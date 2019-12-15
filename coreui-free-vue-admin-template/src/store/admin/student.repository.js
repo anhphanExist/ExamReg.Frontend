@@ -25,6 +25,7 @@ const actions = {
         let data = await studentService.listStudent();
         commit("listStudent", data);
     }
+    
 };
 
 export default {

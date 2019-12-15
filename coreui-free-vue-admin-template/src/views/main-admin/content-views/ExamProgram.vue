@@ -7,6 +7,7 @@
             <div class="pt-2">
               <CIcon name="cil-grid" />
               Exam Program List
+              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
@@ -42,7 +43,8 @@
               variant="outline"
               square
               size="sm"
-              @click="toggleDetails(index)"
+              @click="setCurrent(item, index)"
+              :disabled="item.isCurrent"
             >Set Current</CButton>
           </td>
         </template>
@@ -54,6 +56,7 @@
               square
               size="sm"
               @click="toggleDetails(index)"
+              :disabled="item.isCurrent"
             >Edit</CButton>
           </td>
         </template>
@@ -64,7 +67,8 @@
               variant="outline"
               square
               size="sm"
-              @click="toggleDetails(index)"
+              @click="deleteExamProgram(item, index)"
+              :disabled="item.isCurrent"
             >Delete</CButton>
           </td>
         </template>
@@ -79,27 +83,42 @@
           </CCardHeader>
           <CCardBody>
             <CCol sm="12">
-              <CInput label="Name" placeholder="Enter exam period name" horizontal />
+              <CInput
+                      label="Name"
+                      placeholder="Enter exam period name"
+                      horizontal
+                      v-model="name"
+                      :is-valid="!$v.name.$invalid"
+              />
             </CCol>
             <CCol sm="12">
-              <CSelect
-                label="Code"
-                :options="['2019_2019_1', '2019_2020_2', '2019_2020_3']"
-                horizontal
-              />
+<!--              <CSelect-->
+<!--                label="Code"-->
+<!--                :options="['2019_2019_1', '2019_2020_2', '2019_2020_3']"-->
+<!--                horizontal-->
+<!--              />-->
+              <label>
+                Semester Code
+                <select class="form-control" v-model="semesterCode">
+                  <option v-for="semester in dropListSemester" :key="semester.id">{{ semester.code }}</option>
+                </select>
+              </label>
             </CCol>
           </CCardBody>
         </CCard>
       </CCol>
+      <p class="text-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</p>
       <template #footer>
-        <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
-        <CButton @click="myModal = false" color="outline-success">Accept</CButton>
+        <CButton @click="discardModal" color="outline-danger">Discard</CButton>
+        <CButton @click="addExamProgram" color="outline-success">Accept</CButton>
       </template>
     </CModal>
   </CCard>
 </template>
 <script>
 import exam_period_data from "./data/exam_periods";
+import {required} from "vuelidate/lib/validators";
+import examProgramService from "../../../services/admin/exam-program.service";
 const items = exam_period_data;
 const fields = [
   {
@@ -142,16 +161,82 @@ export default {
     return {
       items,
       fields,
-      myModal: false
+      myModal: false,
+      name: "",
+      semesterCode: "",
+      modalErrors: "",
+      errors: ""
     };
   },
   computed: {
     listExamProgram() {
       return this.$store.getters.listExamProgram;
+    },
+    dropListSemester() {
+      return this.$store.getters.dropListSemester;
     }
   },
-  methods: {},
+  validations: {
+    name: {
+      required
+    }
+  },
+  methods: {
+    discardModal() {
+      this.myModal = false;
+      this.modalErrors = "";
+      this.name = "";
+      this.semesterCode = "";
+    },
+    async addExamProgram() {
+      const form = {
+        name: this.name,
+        semesterCode: this.semesterCode
+      };
+      let res = await examProgramService.createExamProgram(form);
+      if (res.errors.length > 0) {
+        let temp = res.errors[0].split(".")[2];
+        this.modalErrors = (" " + temp).slice(1);
+      }
+      else {
+        this.myModal = false;
+        this.modalErrors = "";
+        await this.$store.dispatch("listExamProgram");
+        this.name = "";
+        this.semesterCode = "";
+      }
+    },
+    async deleteExamProgram(item, index) {
+      const form = {
+        id: item.id
+      };
+      let res = await examProgramService.deleteExamProgram(form);
+      if (!res.errors.length > 0) {
+        this.errors = "";
+        await this.$store.dispatch("listExamProgram");
+      }
+      else {
+        let temp = res.errors[0].split(".")[2];
+        this.errors = (" " + temp).slice(1);
+      }
+    },
+    async setCurrent(item, index) {
+      const form = {
+        id: item.id
+      };
+      let res = await examProgramService.setCurrentExamProgram(form);
+      if (!res.errors.length > 0) {
+        this.errors = "";
+        await this.$store.dispatch("listExamProgram");
+      }
+      else {
+        let temp = res.errors[0].split(".")[2];
+        this.errors = (" " + temp).slice(1);
+      }
+    }
+  },
   async created() {
+    await this.$store.dispatch("dropListSemester");
     await this.$store.dispatch("listExamProgram");
   }
 };

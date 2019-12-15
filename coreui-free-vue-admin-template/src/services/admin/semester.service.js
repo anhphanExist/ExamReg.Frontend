@@ -17,8 +17,7 @@ const createSemester = async function (form) {
 
 const deleteSemester = async function (form) {
   let semesterRequestDTO = {
-    id: form.id,
-    code: form.code
+    id: form.id
   };
   let response = await semesterApi.deleteSemester(semesterRequestDTO);
   return response.data;

@@ -7,6 +7,7 @@
             <div class="pt-2">
               <CIcon name="cil-grid"/>
               Student List
+              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
           <CCol class="d-none d-md-block" sm="7">
@@ -45,7 +46,7 @@
         <template #reset="{item, index}">
           <td class="py-2">
             <CButton
-                    @click="toggleDetails(index)"
+                    @click="resetPassword(item, index)"
                     color="success"
                     size="sm"
                     square
@@ -69,7 +70,7 @@
         <template #delete="{item, index}">
           <td class="py-2">
             <CButton
-                    @click="toggleDetails(index)"
+                    @click="deleteStudent(item, index)"
                     color="danger"
                     size="sm"
                     square
@@ -147,7 +148,7 @@
 <!--                />-->
                 <label>
                   Birth date
-                  <select v-model="student_add.dob.day">
+                  <select class="form-control" v-model="student_add.dob.day">
                     <option v-for="index in 31" :key="index">{{ index }}</option>
                   </select>
                 </label>
@@ -160,7 +161,7 @@
 <!--                />-->
                 <label>
                   Birth month
-                  <select v-model="student_add.dob.month">
+                  <select class="form-control" v-model="student_add.dob.month">
                     <option v-for="index in 12" :key="index">{{ index }}</option>
                   </select>
                 </label>
@@ -173,7 +174,7 @@
 <!--                />-->
                 <label>
                   Birth year
-                  <select v-model="student_add.dob.year">
+                  <select class="form-control" v-model="student_add.dob.year">
                     <option v-for="index in 50" :key="index">{{ index + 1970 }}</option>
                   </select>
                 </label>
@@ -182,8 +183,9 @@
           </CCardBody>
         </CCard>
       </CCol>
+      <p class="text-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</p>
       <template #footer>
-        <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
+        <CButton @click="discardModal" color="outline-danger">Discard</CButton>
         <CButton @click="addStudent" color="outline-success" :disabled="$v.$invalid">Accept</CButton>
       </template>
     </CModal>
@@ -192,7 +194,8 @@
 
 <script>
   import user_data from "./data/students";
-  import {alpha, email, integer, minLength, maxLength, numeric, required} from "vuelidate/lib/validators";
+  import {email, integer, minLength, maxLength, numeric, required} from "vuelidate/lib/validators";
+  import studentService from "../../../services/admin/student.service";
 
   const fields = [
     {
@@ -250,7 +253,9 @@
           }
         },
         items,
-        fields
+        fields,
+        modalErrors: "",
+        errors: ""
       };
     },
     validations: {
@@ -266,8 +271,7 @@
           required
         },
         lastName: {
-          required,
-          alpha
+          required
         },
         email: {
           required,
@@ -281,11 +285,81 @@
       }
     },
     methods: {
-      addStudent() {
+      discardModal() {
         this.myModal = false;
-        console.log(this.selected);
-        console.log(this.student_add);
-      }
+        this.modalErrors = "";
+        this.student_add.mssv = "";
+        this.student_add.firstName = "";
+        this.student_add.lastName = "";
+        this.student_add.email = "";
+        this.student_add.dob.day = "";
+        this.student_add.dob.month = "";
+        this.student_add.dob.year = "";
+      },
+      async addStudent() {
+        const birthday = new Date(Date.UTC(this.student_add.dob.year, this.student_add.dob.month - 1, this.student_add.dob.day));
+        const form = {
+          studentNumber: this.student_add.mssv,
+          lastName: this.student_add.lastName,
+          givenName: this.student_add.firstName,
+          birthday: birthday,
+          email: this.student_add.email
+        };
+        
+        let res = await studentService.createStudent(form);
+        if (res.errors.length > 0) {
+          let temp = res.errors[0].split(".")[2];
+          this.modalErrors = (" " + temp).slice(1);
+        }
+        else {
+          this.myModal = false;
+          this.modalErrors = "";
+          await this.$store.dispatch("listStudent");
+          this.student_add.mssv = "";
+          this.student_add.firstName = "";
+          this.student_add.lastName = "";
+          this.student_add.email = "";
+          this.student_add.dob.day = "";
+          this.student_add.dob.month = "";
+          this.student_add.dob.year = "";
+        }
+      },
+      async deleteStudent(item, index) {
+        const form = {
+          id: item.id,
+          studentNumber: item.studentNumber
+        };
+        let res = await studentService.deleteStudent(form);
+        if (!res.errors.length > 0) {
+          this.errors = "";
+          await this.$store.dispatch("listStudent");
+        }
+        else {
+          let temp = res.errors[0].split(".")[2];
+          this.errors = (" " + temp).slice(1);
+        }
+      },
+      async resetPassword(item, index) {
+        const form = {
+          id: item.id,
+          studentNumber: item.studentNumber
+        };
+        let res = await studentService.resetPassword(form);
+        if (!res.errors.length > 0) {
+          this.errors = "";
+          await this.$store.dispatch("listStudent");
+        }
+        else {
+          let temp = res.errors[0].split(".")[2];
+          this.errors = (" " + temp).slice(1);
+        }
+      },
+      async importStudent() {},
+      async downloadStudentTemplate() {},
+      async exportStudent() {},
+      async importStudentTerm() {},
+      async downloadStudentTermTemplate() {},
+      async exportStudentTerm() {}
     },
     async created() {
       await this.$store.dispatch("listStudent");

@@ -197,7 +197,7 @@
         }
         else {
           this.myModal = false;
-          this.modalErrors = [];
+          this.modalErrors = "";
           this.startYear = "";
           this.endYear = "";
           this.isFirstHalf = true;

@@ -71,6 +71,7 @@ const Term = () => import("@/views/main-admin/content-views/Term");
 // Student-role component
 const StudentContainer = () => import("@/containers-student/TheContainer");
 const TestRegister = () => import ("@/views/main-student/TestRegister") 
+const RegistrationResult = () => import("@/views/main-student/RegistrationResult");
 
 Vue.use(Router);
 
@@ -156,7 +157,7 @@ function configRoutes() {
           next("/login");
         }
       },
-      redirect: "student-role/exam-registration",
+      redirect: "student-role/registration-result",
       children: [{
           path: "/student-role/exam-registration",
           name: "Exam Registration",
@@ -165,6 +166,7 @@ function configRoutes() {
         {
           path: "/student-role/registration-result",
           name: "Registration Result",
+          component: RegistrationResult
         },
       ]
     },
@@ -180,9 +182,9 @@ function configRoutes() {
         }
       }
     },
-    {
-      path: "*",
-      redirect: "/login"
-    }
+    // {
+    //   path: "*",
+    //   redirect: "/login"
+    // }
   ];
 }

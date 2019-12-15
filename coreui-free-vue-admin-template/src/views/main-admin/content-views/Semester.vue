@@ -7,6 +7,7 @@
             <div class="pt-2">
               <CIcon name="cil-grid"/>
               Semester List
+              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
           <CCol class="d-none d-md-block" sm="7">
@@ -107,6 +108,7 @@
           </CCardBody>
         </CCard>
       </CCol>
+      <p class="text-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</p>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
         <CButton @click="addSemester" color="outline-success" :disabled="$v.$invalid">Accept</CButton>

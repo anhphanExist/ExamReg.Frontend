@@ -183,7 +183,7 @@
           </CCardBody>
         </CCard>
       </CCol>
-      <p class="text-danger" v-if="modalErrors.length > 0">{{ modalErrors[0] }}</p>
+      <p class="text-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</p>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
         <CButton @click="addStudent" color="outline-success" :disabled="$v.$invalid">Accept</CButton>

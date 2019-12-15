@@ -7,6 +7,7 @@
             <div class="pt-2">
               <CIcon name="cil-grid" />
               Room List
+              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
@@ -47,7 +48,7 @@
               variant="outline"
               square
               size="sm"
-              @click="toggleDetails(index)"
+              @click="deleteExamRoom(item, index)"
             >Delete</CButton>
           </td>
         </template>
@@ -55,7 +56,7 @@
     </CCardBody>
     <!-- Modal -->
     <CModal title="Add more rooms" :centered="true" :show.sync="myModal" color="info">
-      <CCols sm="12">
+      <CCol sm="12">
         <CCard>
           <CCardHeader>
             <strong>Room Info</strong>
@@ -63,26 +64,34 @@
           <CCardBody>
             <CRow>
               <CCol sm="4">
-                <CInput label="Room Number"/>
+                <CInput
+                        label="Room Number"
+                        v-model="roomNumber"
+                        :is-valid="!$v.roomNumber.$invalid"
+                />
               </CCol>
               <CCol sm="4">
-                <CInput label="Amphitheater"/>
+                <CInput
+                        label="Amphitheater"
+                        v-model="amphitheaterName"
+                        :is-valid="!$v.amphitheaterName.$invalid"
+                />
               </CCol>
               <CCol sm="4">
-                <CInput label="PC Quantity"/>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol sm="12">
-                <CTextarea label="Description" placeholder="Some note to this room" rows="7" />
+                <CInput
+                        label="PC Quantity"
+                        v-model="computerNumber"
+                        :is-valid="!$v.computerNumber.$invalid"
+                />
               </CCol>
             </CRow>
           </CCardBody>
         </CCard>
-      </CCols>
+      </CCol>
+      <p class="text-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</p>
       <template #footer>
-        <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
-        <CButton @click="myModal = false" color="outline-success">Accept</CButton>
+        <CButton @click="discardModal" color="outline-danger">Discard</CButton>
+        <CButton @click="addExamRoom" color="outline-success">Accept</CButton>
       </template>
     </CModal>
   </CCard>
@@ -90,6 +99,8 @@
 
 <script>
 import rooms_data from "./data/rooms";
+import {required, integer, numeric} from "vuelidate/lib/validators";
+import examRoomService from "../../../services/admin/exam-room.service";
 const fields = [
   {
     key: "number",
@@ -124,12 +135,74 @@ export default {
     return {
       myModal: false,
       items,
-      fields
+      fields,
+      roomNumber: "",
+      amphitheaterName: "",
+      computerNumber: "",
+      modalErrors: "",
+      errors: ""
     };
   },
   computed: {
     listExamRoom() {
       return this.$store.getters.listExamRoom;
+    }
+  },
+  validations: {
+    roomNumber: {
+      required,
+      integer,
+      numeric
+    },
+    amphitheaterName: {
+      required
+    },
+    computerNumber: {
+      required,
+      numeric
+    }
+  },
+  methods: {
+    discardModal() {
+      this.myModal = false;
+      this.roomNumber = "";
+      this.amphitheaterName = "";
+      this.computerNumber = "";
+      this.modalErrors = ""
+    },
+    async addExamRoom() {
+      const form = {
+        roomNumber: this.roomNumber,
+        amphitheaterName: this.amphitheaterName,
+        computerNumber: this.computerNumber
+      };
+      let res = await examRoomService.createExamRoom(form);
+      if (res.errors.length > 0) {
+        let temp = res.errors[0].split(".")[2];
+        this.modalErrors = (" " + temp).slice(1);
+      }
+      else {
+        this.myModal = false;
+        this.modalErrors = "";
+        await this.$store.dispatch("listExamRoom");
+        this.roomNumber = "";
+        this.amphitheaterName = "";
+        this.computerNumber = "";
+      }
+    },
+    async deleteExamRoom(item, index) {
+      const form = {
+        id: item.id
+      };
+      let res = await examRoomService.deleteExamRoom(form);
+      if (!res.errors.length > 0) {
+        this.errors = "";
+        await this.$store.dispatch("listExamRoom");
+      }
+      else {
+        let temp = res.errors[0].split(".")[2];
+        this.errors = (" " + temp).slice(1);
+      }
     }
   },
   async created() {

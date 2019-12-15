@@ -7,6 +7,7 @@
             <div class="pt-3">
               <CIcon name="cil-grid" />
               Subjects
+              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
           <CCol sm="4" class="d-none d-md-block">

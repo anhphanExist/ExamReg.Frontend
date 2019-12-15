@@ -44,12 +44,8 @@ const getCurrentExamProgram = async function () {
   return response.data;
 };
 
-const dropListTerm = async function (form) {
-  let termRequestFilterDTO = {
-    semesterId: form.semesterId,
-    semesterCode: form.semesterCode
-  };
-  let response = await examPeriodApi.dropListTerm(termRequestFilterDTO);
+const dropListTerm = async function () {
+  let response = await examPeriodApi.dropListTerm();
   return response.data;
 };
 

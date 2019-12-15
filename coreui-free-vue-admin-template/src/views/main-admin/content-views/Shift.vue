@@ -7,10 +7,11 @@
             <div class="pt-2">
               <CIcon name="cil-grid" />
               Shift List
+              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
           <CCol sm="7" class="d-none d-md-block">
-            <CButton color="outline-info" class="float-right mr-3" @click="myModal = true">Add More</CButton>
+            <CButton color="outline-info" class="float-right mr-3" @click="addExamPeriodModal = true">Add More</CButton>
           </CCol>
         </CRow>
       </slot>
@@ -31,7 +32,10 @@
         </template>
         <template #rooms="{item, index}">
           <td class>
-            <CSelect :options="item.rooms" />
+<!--            <CSelect :options="item.rooms" />-->
+              <select class="form-control">
+                <option v-for="examRoom in listExamPeriod.examRooms" :key="examRoom.id">{{ examRoom.code }}</option>
+              </select>
           </td>
         </template>
         <template #edit="{item, index}">
@@ -41,7 +45,6 @@
               variant="outline"
               square
               size="sm"
-              @click="toggleDetails(index)"
             >Edit Room</CButton>
           </td>
         </template>
@@ -52,14 +55,14 @@
               variant="outline"
               square
               size="sm"
-              @click="toggleDetails(index)"
+              @click="deleteExamPeriod(item, index)"
             >Delete</CButton>
           </td>
         </template>
       </CDataTable>
     </CCardBody>
-    <!-- Modal -->
-    <CModal title="Add more shifts" :centered="true" :show.sync="myModal" color="info">
+    <!-- Add Modal -->
+    <CModal title="Add more shifts" :centered="true" :show.sync="addExamPeriodModal" color="info">
       <CCol sm="14">
         <CCard>
           <CCardHeader>
@@ -68,28 +71,55 @@
           <CCardBody>
             <CRow>
               <CCol sm="12">
-                <CInput label="Exam Period" value="Final Term 2019-2020" horizontal plaintext />
+                <CInput
+                        label="Exam Period"
+                        :value="currentExamProgram.name"
+                        horizontal
+                        plaintext
+                />
               </CCol>
               <CCol sm="12">
-                <CInput label="Exam Date" horizontal placeholder="Exam occures on which days?" />
+                <CInput
+                        label="Exam Date"
+                        horizontal
+                        type="date"
+                        v-model="examDate"
+                        :is-valid="!$v.examDate.$invalid"
+                />
               </CCol>
               <CRow></CRow>
               <CCol sm="3">
-                <CInput label="Start time" />
+                <CInput
+                        label="Start time"
+                        v-model="startHour"
+                        :is-valid="!$v.startHour.$invalid"
+                />
               </CCol>
               <CCol sm="3">
-                <CInput label="End time" />
+                <CInput
+                        label="End time"
+                        v-model="finishHour"
+                        :is-valid="!$v.finishHour.$invalid"
+                />
               </CCol>
               <CCol sm="6">
-                <CSelect label="Subject Name" :options="[1, 2, 3, 4, 5]" />
+<!--                <CSelect -->
+<!--                        label="Subject Name" :options="[1, 2, 3, 4, 5]" />-->
+                <label>
+                  Subject Name
+                  <select class="form-control" v-model="selectedSubjectName" required>
+                    <option v-for="term in dropListTerm" :key="term.id">{{ term.subjectName }}</option>
+                  </select>
+                </label>
               </CCol>
             </CRow>
           </CCardBody>
         </CCard>
       </CCol>
+      <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
-        <CButton @click="myModal = false" color="outline-danger">Discard</CButton>
-        <CButton @click="myModal = false" color="outline-success">Accept</CButton>
+        <CButton @click="discardModal" color="outline-danger">Discard</CButton>
+        <CButton @click="addExamPeriod" color="outline-success" :disabled="$v.$invalid">Accept</CButton>
       </template>
     </CModal>
   </CCard>
@@ -97,6 +127,8 @@
 
 <script>
 import shifts_data from "./data/shifts";
+import {required, integer, numeric} from "vuelidate/lib/validators";
+import examPeriodService from "../../../services/admin/exam-period.service";
 
 const fields = [
   {
@@ -139,17 +171,96 @@ export default {
   props: [],
   data() {
     return {
-      myModal: false,
+      addExamPeriodModal: false,
+      editExamPeriodModal: false,
       items,
-      fields
+      fields,
+      selectedSubjectName: "",
+      examDate: "",
+      startHour: "",
+      finishHour: "",
+      modalErrors: "",
+      errors: ""
     };
   },
   computed: {
     listExamPeriod() {
       return this.$store.getters.listExamPeriod;
+    },
+    dropListTerm() {
+      return this.$store.getters.examPeriodDropListTerm;
+    },
+    currentExamProgram() {
+      return this.$store.getters.examPeriodCurrentExamProgram;
+    }
+  },
+  validations: {
+    examDate: {
+      required
+    },
+    startHour: {
+      required,
+      numeric,
+      integer
+    },
+    finishHour: {
+      required,
+      numeric,
+      integer
+    }
+  },
+  methods: {
+    discardModal() {
+      this.addExamPeriodModal = false;
+      this.modalErrors = "";
+      this.selectedSubjectName = "";
+      this.examDate = "";
+      this.startHour = "";
+      this.finishHour = ""
+    },
+    async addExamPeriod() {
+      const form = {
+        examDate: this.examDate,
+        startHour: this.startHour,
+        finishHour: this.finishHour,
+        subjectName: this.selectedSubjectName,
+        examProgramName: this.currentExamProgram.name
+      };
+      let res = await examPeriodService.createExamPeriod(form);
+      if (res.errors.length > 0) {
+        let temp = res.errors[0].split(".")[2];
+        this.modalErrors = (" " + temp).slice(1);
+      }
+      else {
+        this.addExamPeriodModal = false;
+        this.modalErrors = "";
+        await this.$store.dispatch("listExamPeriod");
+        this.selectedSubjectName = "";
+        this.examDate = "";
+        this.startHour = "";
+        this.finishHour = ""
+      }
+    },
+    async deleteExamPeriod(item, index) {
+      const form = {
+        id: item.id
+      };
+      let res = await examPeriodService.deleteExamPeriod(form);
+      if (!res.errors.length > 0) {
+        this.errors = "";
+        await this.$store.dispatch("listExamPeriod");
+      }
+      else {
+        let temp = res.errors[0].split(".")[2];
+        this.errors = (" " + temp).slice(1);
+      }
+    },
+    async editExamPeriod(item, index) {
     }
   },
   async created() {
+    await this.$store.dispatch("examPeriodCurrentExamProgram");
+    await this.$store.dispatch("examPeriodDropListTerm");
     await this.$store.dispatch("listExamPeriod");
   }
 };

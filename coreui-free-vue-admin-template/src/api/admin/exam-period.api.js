@@ -20,8 +20,8 @@ const getCurrentExamProgram = async function () {
     return await axiosApps.post("/exam-period/period-get-current-exam-program")
 };
 
-const dropListTerm = async function (termRequestFilterDTO) {
-    return await axiosApps.post("/exam-period/list-term", termRequestFilterDTO);
+const dropListTerm = async function () {
+    return await axiosApps.post("/exam-period/list-term");
 };
 
 const selectListAvailableExamRoom = async function (examRoomFilterDTO) {

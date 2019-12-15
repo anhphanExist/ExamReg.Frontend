@@ -25,9 +25,9 @@
                 color="outline-info"
                 placement="bottom-end"
               >
-                <CDropdownItem>1</CDropdownItem>
-                <CDropdownItem>2</CDropdownItem>
-                <CDropdownItem>3</CDropdownItem>
+                <CDropdownItem>Import Term</CDropdownItem>
+                <CDropdownItem>Download Term Template</CDropdownItem>
+                <CDropdownItem>Export Term</CDropdownItem>
               </CDropdown>
               <CButton
                 color="outline-info"
@@ -105,7 +105,7 @@
                 <label>
                   Semester
                   <select v-model="semesterCode">
-                    <option v-for="semester in dropListSemester" value="semester.code" :key="semester.id">{{ semester.code }}</option>
+                    <option v-for="semester in dropListSemester" :key="semester.id">{{ semester.code }}</option>
                   </select>
                 </label>
               </CCol>

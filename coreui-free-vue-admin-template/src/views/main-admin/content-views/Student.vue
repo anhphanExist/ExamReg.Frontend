@@ -313,7 +313,7 @@
         }
         else {
           this.myModal = false;
-          this.modalErrors = [];
+          this.modalErrors = "";
           await this.$store.dispatch("listStudent");
           this.student_add.mssv = "";
           this.student_add.firstName = "";

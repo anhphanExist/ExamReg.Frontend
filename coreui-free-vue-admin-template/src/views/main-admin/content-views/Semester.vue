@@ -47,7 +47,7 @@
     
     </CCardBody>
     <!-- Modal -->
-    <CModal :centered="true" :show.sync="myModal" color="info" title="Add more Modal">
+    <CModal :centered="true" :show.sync="myModal" color="info" title="Add more Semesters">
       <CCol sm="12">
         <CCard>
           <CCardHeader>
@@ -107,13 +107,18 @@
           </CCardBody>
         </CCard>
       </CCol>
+      <template #footer>
+        <CButton @click="discardModal" color="outline-danger">Discard</CButton>
+        <CButton @click="addSemester" color="outline-success" :disabled="$v.$invalid">Accept</CButton>
+      </template>
     </CModal>
   </CCard>
 </template>
 
 <script>
   import semester from './data/semesters'
-  import {required, numeric, maxLength, minLength, integer} from "vuelidate/lib/validators";
+  import {required, numeric, maxLength, minLength, integer, not, sameAs} from "vuelidate/lib/validators";
+  import semesterService from "../../../services/admin/semester.service";
   const items = semester;
   const fields = [
     {
@@ -142,9 +147,11 @@
         items,
         fields,
         myModal: false,
-        isFirstHalf: false,
+        isFirstHalf: true,
         startYear: "",
-        endYear: ""
+        endYear: "",
+        modalErrors: "",
+        errors: ""
       }
     },
     computed: {
@@ -165,7 +172,51 @@
         numeric,
         integer,
         maxLength: maxLength(4),
-        minLength: minLength(4)
+        minLength: minLength(4),
+        notSameAs: not(sameAs("startYear"))
+      }
+    },
+    methods: {
+      discardModal() {
+        this.myModal = false;
+        this.modalErrors = [];
+        this.startYear = "";
+        this.endYear = "";
+        this.isFirstHalf = true;
+      },
+      async addSemester() {
+        const form = {
+          startYear: this.startYear,
+          endYear: this.endYear,
+          isFirstHalf: this.isFirstHalf
+        };
+        let res = await semesterService.createSemester(form);
+        if (res.errors.length > 0) {
+          let temp = res.errors[0].split(".")[2];
+          this.modalErrors = (" " + temp).slice(1);
+        }
+        else {
+          this.myModal = false;
+          this.modalErrors = [];
+          this.startYear = "";
+          this.endYear = "";
+          this.isFirstHalf = true;
+          await this.$store.dispatch("listSemester");
+        }
+      },
+      async deleteSemester(item, index) {
+        const form = {
+          id: item.id
+        };
+        let res = await semesterService.deleteSemester(form);
+        if (!res.errors.length > 0) {
+          this.errors = "";
+          await this.$store.dispatch("listSemester");
+        }
+        else {
+          let temp = res.errors[0].split(".")[2];
+          this.errors = (" " + temp).slice(1);
+        }
       }
     },
     async created() {

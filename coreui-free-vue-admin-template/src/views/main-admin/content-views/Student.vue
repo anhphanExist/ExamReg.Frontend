@@ -7,6 +7,7 @@
             <div class="pt-2">
               <CIcon name="cil-grid"/>
               Student List
+              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
           <CCol class="d-none d-md-block" sm="7">
@@ -45,7 +46,7 @@
         <template #reset="{item, index}">
           <td class="py-2">
             <CButton
-                    @click="toggleDetails(index)"
+                    @click="resetPassword(item, index)"
                     color="success"
                     size="sm"
                     square
@@ -253,7 +254,8 @@
         },
         items,
         fields,
-        modalErrors: []
+        modalErrors: "",
+        errors: ""
       };
     },
     validations: {
@@ -323,17 +325,41 @@
         }
       },
       async deleteStudent(item, index) {
-        console.log(item);
-        console.log(index);
         const form = {
           id: item.id,
           studentNumber: item.studentNumber
         };
         let res = await studentService.deleteStudent(form);
         if (!res.errors.length > 0) {
+          this.errors = "";
           await this.$store.dispatch("listStudent");
         }
-      }
+        else {
+          let temp = res.errors[0].split(".")[2];
+          this.errors = (" " + temp).slice(1);
+        }
+      },
+      async resetPassword(item, index) {
+        const form = {
+          id: item.id,
+          studentNumber: item.studentNumber
+        };
+        let res = await studentService.resetPassword(form);
+        if (!res.errors.length > 0) {
+          this.errors = "";
+          await this.$store.dispatch("listStudent");
+        }
+        else {
+          let temp = res.errors[0].split(".")[2];
+          this.errors = (" " + temp).slice(1);
+        }
+      },
+      async importStudent() {},
+      async downloadStudentTemplate() {},
+      async exportStudent() {},
+      async importStudentTerm() {},
+      async downloadStudentTermTemplate() {},
+      async exportStudentTerm() {}
     },
     async created() {
       await this.$store.dispatch("listStudent");

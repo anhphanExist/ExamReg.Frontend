@@ -1,26 +1,26 @@
 import watcherService from "../../services/admin/watcher.service";
 
 const state = {
-    listWatcher: [],
+    listExamRoomExamPeriod: [],
     errors: []
 };
 
 const getters = {
-    listWatcher(state) {
-        return state.listWatcher;
+    listExamRoomExamPeriod(state) {
+        return state.listExamRoomExamPeriod;
     }
 };
 
 const mutations = {
-    listWatcher(state, listWatcher) {
-        state.listWatcher = [...listWatcher];
+    listExamRoomExamPeriod(state, listExamRoomExamPeriod) {
+        state.listExamRoomExamPeriod = [...listExamRoomExamPeriod];
     }
 };
 
 const actions = {
-    async listWatcher({ commit }) {
-        let data = await watcherService.listWatcher();
-        commit("listWatcher", data);
+    async listExamRoomExamPeriod({ commit }) {
+        let data = await watcherService.listExamRoomExamPeriod();
+        commit("listExamRoomExamPeriod", data);
     }
 };
 

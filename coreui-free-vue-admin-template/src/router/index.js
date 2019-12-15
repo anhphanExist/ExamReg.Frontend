@@ -90,7 +90,11 @@ function configRoutes() {
       component: TheContainer,
       beforeEnter(to, from, next) {
         if (Cookies.get("token")) {
-          next();
+          let isAdmin = JSON.parse(Cookies.get("isAdmin"));
+          if (isAdmin)
+            next();
+          else
+            next("/student-role");
         } else {
           next("/login");
         }
@@ -141,15 +145,26 @@ function configRoutes() {
       path: "/student-role",
       name: "Student Role",
       component: StudentContainer,
+      beforeEnter(to, from, next) {
+        if (Cookies.get("token")) {
+          let isAdmin = JSON.parse(Cookies.get("isAdmin"));
+          if (!isAdmin)
+            next();
+          else
+            next("/dashboard");
+        } else {
+          next("/login");
+        }
+      },
       redirect: "student-role/exam-registration",
       children: [{
           path: "/student-role/exam-registration",
-          name: "Exam Reistration",
+          name: "Exam Registration",
           component: TestRegister,
         },
         {
           path: "/student-role/registration-result",
-          name: "Reistration Result",
+          name: "Registration Result",
         },
       ]
     },

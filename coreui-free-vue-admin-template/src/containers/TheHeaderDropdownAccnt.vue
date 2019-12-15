@@ -37,6 +37,7 @@
     methods: {
       async logout() {
         await Cookies.remove("token");
+        await Cookies.remove("isAdmin");
         await this.$router.push("/login");
       }
     }

@@ -7,8 +7,10 @@ const login = async function (form) {
     password: form.password
   };
   let response = await authApi.login(loginRequestDTO);
-  if (response.data.token != null)
+  if (response.data.token != null) {
     Cookies.set("token", response.data.token);
+    Cookies.set("isAdmin", response.data.isAdmin);
+  }
   return response.data;
 };
 

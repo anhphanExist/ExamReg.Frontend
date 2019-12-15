@@ -23,7 +23,7 @@
                 </CCol>
                 <CCol col="3">
                     <select class="form-control mt-2" v-model="selectedExamPeriods[index]">
-                      <option v-for="examPeriod in term.examPeriods" :key="examPeriod.id" :value="examPeriod">{{ extractDate(examPeriod.examDate) }}. {{ examPeriod.startHour }}:00 - {{examPeriod.finishHour}}:00</option>
+                      <option v-for="examPeriod in term.examPeriods" :key="examPeriod.id" :value="examPeriod">{{ examPeriod.examDate }}. {{ examPeriod.startHour }}:00 - {{examPeriod.finishHour}}:00</option>
                     </select>
                 </CCol>
               </CRow>
@@ -104,9 +104,6 @@
       }
     },
     methods: {
-      extractDate(date) {
-        return examRegUtils.extractDate(date);
-      },
       discardModal() {
         this.alertModal = false;
         this.errors = "";

@@ -44,7 +44,7 @@
       <CDataTable
         :items="listTerm"
         :fields="fields"
-        :item-per-page="small ? 10:10"
+        :items-per-page=50
         column-filter
         fixed
         hover
@@ -97,18 +97,17 @@
               </CCol>
             </CRow>
             <CRow>
-              <CCol sm="12">
-<!--                <CSelect-->
-<!--                  horizontal-->
-<!--                  label="Semester"-->
-<!--                  :options="['Semster 2019_2020_1','Semster 2019_2020_2','Semster 2019_2020_3']"-->
-<!--                />-->
-                <label>
+              <CCol sm="3">
+                <label class="py-2">
                   Semester
-                  <select class="form-control" v-model="semesterCode">
+                </label>
+              </CCol>
+              <CCol sm="9">
+                <select 
+                style="width:92%; left:10px;"
+                class="form-control position-absolute" v-model="semesterCode">
                     <option v-for="semester in dropListSemester" :key="semester.id">{{ semester.code }}</option>
                   </select>
-                </label>
               </CCol>
             </CRow>
           </CCardBody>

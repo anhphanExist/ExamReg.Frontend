@@ -86,6 +86,7 @@ function configRoutes() {
     {
       path: "/",
       name: "Main",
+      redirect: "/dashboard",
       component: TheContainer,
       beforeEnter(to, from, next) {
         if (Cookies.get("token")) {

@@ -2,7 +2,7 @@ import examProgramService from "../../services/admin/exam-program.service";
 
 const state = {
     listExamProgram: [],
-    dropListSemester: [],
+    examProgramDropListSemester: [],
     errors: []
 };
 
@@ -10,8 +10,8 @@ const getters = {
     listExamProgram(state) {
         return state.listExamProgram;
     },
-    dropListSemester(state) {
-        return state.dropListSemester;
+    examProgramDropListSemester(state) {
+        return state.examProgramDropListSemester;
     }
 };
 
@@ -19,8 +19,8 @@ const mutations = {
     listExamProgram(state, listExamProgram) {
         state.listExamProgram = [...listExamProgram];
     },
-    dropListSemester(state, dropListSemester) {
-        state.dropListSemester = [...dropListSemester];
+    examProgramDropListSemester(state, examProgramDropListSemester) {
+        state.examProgramDropListSemester = [...examProgramDropListSemester];
     }
 };
 
@@ -29,9 +29,9 @@ const actions = {
         let data = await examProgramService.listExamProgram();
         commit("listExamProgram", data);
     },
-    async dropListSemester({ commit }) {
+    async examProgramDropListSemester({ commit }) {
         let data = await examProgramService.dropListSemester();
-        commit("dropListSemester", data);
+        commit("examProgramDropListSemester", data);
     }
 };
 

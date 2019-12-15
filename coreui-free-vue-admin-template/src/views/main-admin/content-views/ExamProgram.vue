@@ -173,7 +173,7 @@ export default {
       return this.$store.getters.listExamProgram;
     },
     dropListSemester() {
-      return this.$store.getters.dropListSemester;
+      return this.$store.getters.examProgramDropListSemester;
     }
   },
   validations: {
@@ -236,7 +236,7 @@ export default {
     }
   },
   async created() {
-    await this.$store.dispatch("dropListSemester");
+    await this.$store.dispatch("examProgramDropListSemester");
     await this.$store.dispatch("listExamProgram");
   }
 };

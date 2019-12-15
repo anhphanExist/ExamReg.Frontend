@@ -2,7 +2,7 @@ import termService from "../../services/admin/term.service";
 
 const state = {
     listTerm: [],
-    dropListSemester: [],
+    termDropListSemester: [],
     errors: []
 };
 
@@ -10,8 +10,8 @@ const getters = {
     listTerm(state) {
         return state.listTerm;
     },
-    dropListSemester(state) {
-        return state.dropListSemester;
+    termDropListSemester(state) {
+        return state.termDropListSemester;
     }
 };
 
@@ -19,8 +19,8 @@ const mutations = {
     listTerm(state, listTerm) {
         state.listTerm = [...listTerm];
     },
-    dropListSemester(state, dropListSemester) {
-        state.dropListSemester = [...dropListSemester];
+    termDropListSemester(state, termDropListSemester) {
+        state.termDropListSemester = [...termDropListSemester];
     }
 };
 
@@ -29,9 +29,9 @@ const actions = {
         let data = await termService.listTerm();
         commit("listTerm", data);
     },
-    async dropListSemester({ commit }) {
+    async termDropListSemester({ commit }) {
         let data = await termService.dropListSemester();
-        commit("dropListSemester", data);
+        commit("termDropListSemester", data);
     }
 };
 

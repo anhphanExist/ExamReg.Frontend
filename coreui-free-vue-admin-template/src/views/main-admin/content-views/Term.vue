@@ -178,7 +178,7 @@ export default {
       return this.$store.getters.listTerm;
     },
     dropListSemester() {
-      return this.$store.getters.dropListSemester;
+      return this.$store.getters.termDropListSemester;
     }
   },
   validations: {
@@ -228,7 +228,7 @@ export default {
   },
   async created() {
     await this.$store.dispatch("listTerm");
-    await this.$store.dispatch("dropListSemester");
+    await this.$store.dispatch("termDropListSemester");
   }
 };
 </script>

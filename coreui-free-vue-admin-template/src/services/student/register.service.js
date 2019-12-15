@@ -1,12 +1,7 @@
 import registerApi from "../../api/student/register.api";
 
-const listTerm = async function (form) {
-  let termRequestFilterDTO = {
-    studentNumber: form.studentNumber,
-    semesterId: form.semesterId,
-    semesterCode: form.semesterCode
-  };
-  let response = await registerApi.listTerm(termRequestFilterDTO);
+const listTerm = async function () {
+  let response = await registerApi.listTerm();
   return response.data;
 };
 

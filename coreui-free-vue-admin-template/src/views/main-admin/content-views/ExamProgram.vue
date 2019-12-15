@@ -20,7 +20,7 @@
       <CDataTable
         :items="listExamProgram"
         :fields="fields"
-        :items-per-page="small ? 10 : 10"
+        :items-per-page=50
         column-filter
         fixed
         hover
@@ -82,7 +82,8 @@
             <strong>Exam Program Info</strong>
           </CCardHeader>
           <CCardBody>
-            <CCol sm="12">
+            <CRow>
+               <CCol sm="12">
               <CInput
                       label="Name"
                       placeholder="Enter exam period name"
@@ -91,19 +92,23 @@
                       :is-valid="!$v.name.$invalid"
               />
             </CCol>
-            <CCol sm="12">
-<!--              <CSelect-->
-<!--                label="Code"-->
-<!--                :options="['2019_2019_1', '2019_2020_2', '2019_2020_3']"-->
-<!--                horizontal-->
-<!--              />-->
-              <label>
-                Semester Code
-                <select class="form-control" v-model="semesterCode">
-                  <option v-for="semester in dropListSemester" :key="semester.id">{{ semester.code }}</option>
-                </select>
+            </CRow>
+           <CRow>
+             <CCol sm="3">
+              <label class="py-2">
+                Code
               </label>
             </CCol>
+            <CCol sm="9">
+              <select 
+              style="width:92%;left:10px;"
+              class="form-control position-absolute" 
+              v-model="semesterCode">
+                  <option v-for="semester in dropListSemester" :key="semester.id">{{ semester.code }}</option>
+                </select>
+            </CCol>
+           </CRow>
+            
           </CCardBody>
         </CCard>
       </CCol>

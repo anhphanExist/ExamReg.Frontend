@@ -33,7 +33,7 @@
       <CDataTable
               :fields="fields"
               :items="listStudent"
-              :items-per-page="small ? 10 : 10"
+              :items-per-page=50
               column-filter
               fixed
               hover
@@ -140,44 +140,39 @@
             </CRow>
             
             <CRow>
-              <CCol sm="4">
-<!--                <CSelect-->
-<!--                        :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]"-->
-<!--                        label="Day-DOB"-->
-<!--                        v-model="student_add.dob.day"-->
-<!--                />-->
-                <label>
-                  Birth date
-                  <select class="form-control" v-model="student_add.dob.day">
+
+              <Ccol sm="3">
+                <label class="py-2 px-3">
+                  DOB
+                </label>
+              </Ccol>
+              
+              <CCol sm="3">                 
+                  <select
+                  style="width: 75%; left:57px;" 
+                  class="form-control position-absolute" 
+                  v-model="student_add.dob.day">
                     <option v-for="index in 31" :key="index">{{ index }}</option>
                   </select>
-                </label>
+               
               </CCol>
-              <CCol sm="4">
-<!--                <CSelect-->
-<!--                        :options="[1,2,3,4,5,6,7,8,9,10,11,12]"-->
-<!--                        label="Month-DOB"-->
-<!--                        v-model="student_add.dob.month"-->
-<!--                />-->
-                <label>
-                  Birth month
-                  <select class="form-control" v-model="student_add.dob.month">
+              <CCol sm="3">
+                  <select 
+                  style="width: 75%;left:57px;" 
+                  class="form-control position-absolute" 
+                  v-model="student_add.dob.month">
                     <option v-for="index in 12" :key="index">{{ index }}</option>
                   </select>
-                </label>
+                
               </CCol>
-              <CCol sm="4">
-<!--                <CSelect-->
-<!--                        :options="[1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009]"-->
-<!--                        label="Year-DOB"-->
-<!--                        v-model="student_add.dob.year"-->
-<!--                />-->
-                <label>
-                  Birth year
-                  <select class="form-control" v-model="student_add.dob.year">
+              <CCol sm="3">
+                  <select 
+                  style="width: 75%;left:57px" 
+                  class="form-control position-absolute" 
+                  v-model="student_add.dob.year">
                     <option v-for="index in 50" :key="index">{{ index + 1970 }}</option>
                   </select>
-                </label>
+                
               </CCol>
             </CRow>
           </CCardBody>

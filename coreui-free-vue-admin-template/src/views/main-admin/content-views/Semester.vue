@@ -20,7 +20,7 @@
       <CDataTable
               :fields="fields"
               :items="listSemester"
-              :items-per-page="small ? 10 : 10"
+              :items-per-page=50
               column-filter
               fixed
               hover
@@ -78,21 +78,18 @@
               </CCol>
             </CRow>
             <CRow>
-              <CCol sm="12">
-<!--                <CSelect-->
-<!--                        :options="['true', 'false']"-->
-<!--                        horizontal-->
-<!--                        label="IsFirstHalf"-->
-<!--                        :value="isFirstHalf"-->
-<!--                        @input="isFirstHalf = $event.target.value"-->
-<!--                />-->
-                <label>
-                  Half
-                  <select class="form-control" v-model="isFirstHalf">
+              <CCol sm="3">
+                <label class="py-2"> Half</label>
+              </CCol>
+              <CCol sm="9">
+                <select 
+                class="form-control position-absolute"
+                v-model="isFirstHalf"
+                style="right: 115px;width:195px;"
+                >
                     <option selected label="First Half" value="true">true</option>
                     <option label="Second Half" value="false">false</option>
                   </select>
-                </label>
               </CCol>
             </CRow>
             <CRow>

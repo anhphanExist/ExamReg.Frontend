@@ -19,7 +19,7 @@
       <CDataTable
         :items="listExamPeriod"
         :fields="fields"
-        :items-per-page="small ? 10 : 10"
+        :items-per-page=50
         column-filter
         fixed
         hover

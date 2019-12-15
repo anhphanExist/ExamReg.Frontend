@@ -82,6 +82,7 @@
 
 <script>
   import registerService from "../../services/student/register.service";
+  import examRegUtils from "../../utils/exam-reg-utils";
   
   export default {
     data() {
@@ -104,18 +105,7 @@
     },
     methods: {
       extractDate(date) {
-        let d = new Date(date);
-        let dd = d.getDate();
-        let mm = d.getMonth() + 1; //January is 0!
-  
-        let yyyy = d.getFullYear();
-        if (dd < 10) {
-          dd = '0' + dd;
-        }
-        if (mm < 10) {
-          mm = '0' + mm;
-        }
-        return dd + '/' + mm + '/' + yyyy;
+        return examRegUtils.extractDate(date);
       },
       discardModal() {
         this.alertModal = false;

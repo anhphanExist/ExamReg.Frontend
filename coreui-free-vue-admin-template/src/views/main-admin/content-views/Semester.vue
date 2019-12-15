@@ -88,7 +88,7 @@
 <!--                />-->
                 <label>
                   Half
-                  <select v-model="isFirstHalf">
+                  <select class="form-control" v-model="isFirstHalf">
                     <option selected label="First Half" value="true">true</option>
                     <option label="Second Half" value="false">false</option>
                   </select>

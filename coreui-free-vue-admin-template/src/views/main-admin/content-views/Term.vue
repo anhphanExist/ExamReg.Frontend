@@ -105,7 +105,7 @@
 <!--                />-->
                 <label>
                   Semester
-                  <select v-model="semesterCode">
+                  <select class="form-control" v-model="semesterCode">
                     <option v-for="semester in dropListSemester" :key="semester.id">{{ semester.code }}</option>
                   </select>
                 </label>

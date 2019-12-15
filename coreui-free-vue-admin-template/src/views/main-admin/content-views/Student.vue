@@ -148,7 +148,7 @@
 <!--                />-->
                 <label>
                   Birth date
-                  <select v-model="student_add.dob.day">
+                  <select class="form-control" v-model="student_add.dob.day">
                     <option v-for="index in 31" :key="index">{{ index }}</option>
                   </select>
                 </label>
@@ -161,7 +161,7 @@
 <!--                />-->
                 <label>
                   Birth month
-                  <select v-model="student_add.dob.month">
+                  <select class="form-control" v-model="student_add.dob.month">
                     <option v-for="index in 12" :key="index">{{ index }}</option>
                   </select>
                 </label>
@@ -174,7 +174,7 @@
 <!--                />-->
                 <label>
                   Birth year
-                  <select v-model="student_add.dob.year">
+                  <select class="form-control" v-model="student_add.dob.year">
                     <option v-for="index in 50" :key="index">{{ index + 1970 }}</option>
                   </select>
                 </label>

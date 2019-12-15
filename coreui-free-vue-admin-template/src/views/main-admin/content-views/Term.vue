@@ -87,7 +87,12 @@
           <CCardBody>
             <CRow>
               <CCol sm="12">
-                <CInput horizontal label="Name" placeholder="Enter Subject Name" />
+                <CInput
+                        horizontal label="Name"
+                        placeholder="Enter Subject Name"
+                        v-model="subjectName"
+                        :is-valid="!$v.subjectName.$invalid"
+                />
               </CCol>
             </CRow>
             <CRow>
@@ -112,6 +117,8 @@
 
 <script>
 import subjects from "./data/subjects";
+import {required} from "vuelidate/lib/validators";
+
 const items = subjects;
 const fields = [
   {
@@ -151,12 +158,19 @@ export default {
     return {
       myModal: false,
       items,
-      fields
+      fields,
+      subjectName: "",
+      semesterCode: ""
     };
   },
   computed: {
     listTerm() {
       return this.$store.getters.listTerm;
+    }
+  },
+  validations: {
+    subjectName: {
+      required
     }
   },
   async created() {

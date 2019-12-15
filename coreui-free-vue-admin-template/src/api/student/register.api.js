@@ -1,7 +1,7 @@
 import axiosApps from "../../api/apps.api";
 
-const listTerm = async function(termRequestFilterDTO) {
-    return await axiosApps.post("/exam-register/list-term", termRequestFilterDTO);
+const listTerm = async function() {
+    return await axiosApps.post("/exam-register/list-term");
 };
 
 const listCurrentExamPeriod = async function() {

@@ -14,7 +14,8 @@
                   <CAlert class="alert-dismissible" color="success">
                     {{ term.subjectName }}
                     <CButton
-                            class="position-absolute text-muted"
+                            class="position-absolute"
+                            color="success"
                             style="right:10px;top: 50%;transform: translateY(-50%);"
                             :disabled="true"
                     >Pick your exam time
@@ -61,13 +62,13 @@
       <CCol sm="12">
         <CCard>
           <CCardHeader>
-            <strong>Student Info</strong>
+            <strong>Register Result Message</strong>
           </CCardHeader>
           <CCardBody>
             <CRow>
               <CCol sm="12">
-                <div class="alert-success" v-if="!errors.length > 0">Register Success</div>
-                <div class="alert-danger" v-if="errors.length > 0">Register Failed, error: {{ errors }}</div>
+                <div class="alert-success" v-if="!errors.length > 0">{{ registerMessageResult }}</div>
+                <div class="alert-danger" v-if="errors.length > 0">{{ registerMessageResult }}</div>
               </CCol>
             </CRow>
           </CCardBody>
@@ -89,7 +90,8 @@
       return {
         alertModal: false,
         selectedExamPeriods: [],
-        errors: ""
+        errors: "",
+        registerMessageResult: ""
       };
     },
     computed: {
@@ -115,11 +117,13 @@
         let res = await registerService.registerExam(form);
         if (!res.errors.length > 0) {
           this.errors = "";
+          this.registerMessageResult = res.message;
           await this.$store.dispatch("registerListCurrentExamPeriod");
         }
         else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
+          this.registerMessageResult = res.message;
         }
         this.alertModal = true;
       }

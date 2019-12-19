@@ -16,7 +16,7 @@
       <CRow>
           <CCol sm=4></CCol>
           <CCol sm=5>
-              <h3>Registration Result - 10/12/2019</h3>
+              <h3>{{ currentExamProgram.name }}</h3>
           </CCol>
           <CCol sm=3></CCol>
       </CRow>
@@ -26,7 +26,7 @@
                 horizontal
                 label="Name:"
                 plaintext
-                value="Student Name"
+                :value="studentInfo.lastName + ' ' + studentInfo.givenName"
               />
           </CCol>
           <CCol sm="3">
@@ -34,7 +34,7 @@
                 horizontal
                 label="MSSV:"
                 plaintext
-                value="17020000"
+                :value="studentInfo.studentNumber"
               />
           </CCol>
           <CCol sm="3">
@@ -42,7 +42,7 @@
                 horizontal
                 label="Email:"
                 plaintext
-                value="student@mail.com"
+                :value="studentInfo.email"
               />
           </CCol>
           <CCol sm="3">
@@ -50,13 +50,13 @@
                 horizontal
                 label="DOB:"
                 plaintext
-                value="29/02/1999"
+                :value="studentInfo.birthday"
               />
           </CCol>
       </CRow>
       <CDataTable
         :fields="fields"
-        :items="items"
+        :items="listExamRoomExamPeriod"
         :items-per-page="50"
         fixed
         hover
@@ -77,20 +77,20 @@
 <script>
 const items = [
   {
-    subject: "Computer Network",
-    exam_date: "12/12/2019",
-    start_hour: "07:00",
-    finish_hour: "09:00",
-    room: "303",
-    amphitheater: "GD2"
+    subjectName: "Computer Network",
+    examDate: "12/12/2019",
+    startHour: "07:00",
+    finishHour: "09:00",
+    examRoomNumber: "303",
+    examRoomAmphitheaterName: "GD2"
   },
   {
-    subject: "Optimization",
-    exam_date: "13/12/2019",
-    start_hour: "07:00",
-    finish_hour: "09:00",
-    room: "303",
-    amphitheater: "GD2"
+    subjectName: "Optimization",
+    examDate: "13/12/2019",
+    startHour: "07:00",
+    finishHour: "09:00",
+    examRoomNumber: "303",
+    examRoomAmphitheaterName: "GD2"
   }
 ];
 const fields = [
@@ -100,12 +100,12 @@ const fields = [
     _style: "width:1%",
     sorter: false
   },
-  { key: "subject", _style: "width:10%" },
-  { key: "exam_date", label: "Exam Date", _style: "width:10%" },
-  { key: "start_hour", _style: "width:10%" },
-  { key: "finish_hour", _style: "width:10%" },
-  { key: "room", _style: "width:10%" },
-  { key: "amphitheater", _style: "width:10%" }
+  { key: "subjectName", label: "Subject",_style: "width:10%" },
+  { key: "examDate", label: "Exam Date", _style: "width:10%" },
+  { key: "startHour", label: "Start Hour",_style: "width:10%" },
+  { key: "finishHour", label: "Finish Hour",_style: "width:10%" },
+  { key: "examRoomNumber", label: "Room",_style: "width:10%" },
+  { key: "examRoomAmphitheaterName", label: "Amphitheater",_style: "width:10%" }
 ];
 export default {
   data() {
@@ -113,6 +113,22 @@ export default {
       items,
       fields
     };
+  },
+  computed: {
+    currentExamProgram() {
+      return this.$store.getters.registerResultCurrentExamProgram;
+    },
+    studentInfo() {
+      return this.$store.getters.registerResultStudentInfo;
+    },
+    listExamRoomExamPeriod() {
+      return this.$store.getters.registerResultListExamRoomExamPeriod;
+    }
+  },
+  async created() {
+    await this.$store.dispatch("registerResultCurrentExamProgram");
+    await this.$store.dispatch("registerResultStudentInfo");
+    await this.$store.dispatch("registerResultListExamRoomExamPeriod");
   }
 };
 </script>

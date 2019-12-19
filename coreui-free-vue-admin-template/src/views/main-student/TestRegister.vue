@@ -5,7 +5,7 @@
         <CCard>
           <CCardHeader>
             <CIcon name="cil-justify-center"/>
-            <strong>Your subjects list</strong>
+            <strong>{{ currentExamProgram.name }}</strong>
           </CCardHeader>
           <CCardBody>
             <div :key="term.id" v-for="(term, index) in listTerm">

@@ -1,15 +1,18 @@
 import registerResultApi from "../../api/student/register-result.api";
 
 const getStudentInfo = async function () {
-  return await registerResultApi.getStudentInfo();
+  let response = await registerResultApi.getStudentInfo();
+  return response.data;
 };
 
 const getCurrentExamProgram = async function () {
-  return await registerResultApi.getCurrentExamProgram();
+  let response = await registerResultApi.getCurrentExamProgram();
+  return response.data;
 };
 
 const listExamRoomExamPeriod = async function () {
-  return await registerResultApi.listExamRoomExamPeriod();
+  let response = await registerResultApi.listExamRoomExamPeriod();
+  return response.data;
 };
 
 const printExamRegisterResult = async function () {

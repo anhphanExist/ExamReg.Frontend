@@ -19,11 +19,11 @@
                       toggler-text="More Action"
               >
                 <CDropdownItem>Import Student</CDropdownItem>
-                <CDropdownItem>Download Student Template</CDropdownItem>
-                <CDropdownItem>Export Student</CDropdownItem>
+                <CDropdownItem @click="downloadStudentTemplate">Download Student Template</CDropdownItem>
+                <CDropdownItem @click="exportStudent">Export Student</CDropdownItem>
                 <CDropdownItem>Import Student</CDropdownItem>
-                <CDropdownItem>Download Student Term Template</CDropdownItem>
-                <CDropdownItem>Export Student Term</CDropdownItem>
+                <CDropdownItem @click="downloadStudentTermTemplate">Download Student Term Template</CDropdownItem>
+                <CDropdownItem @click="exportStudentTerm">Export Student Term</CDropdownItem>
               </CDropdown>
               <CButton @click="myModal = true" class="float-right mr-3" color="outline-info">Add More</CButton>
             </CCol>
@@ -143,11 +143,11 @@
             
             <CRow>
               
-              <Ccol sm="3">
+              <CCol sm="3">
                 <label class="py-2 px-3">
                   DOB
                 </label>
-              </Ccol>
+              </CCol>
               
               <CCol sm="3">
                 <select
@@ -186,6 +186,9 @@
         <CButton :disabled="$v.$invalid" @click="addStudent" color="outline-success">Accept</CButton>
       </template>
     </CModal>
+    
+    
+    
     
     
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
@@ -357,14 +360,26 @@
       async importStudent() {
       },
       async downloadStudentTemplate() {
+        this.spinner = true;
+        await studentService.downloadStudentTemplate();
+        this.spinner = false;
       },
       async exportStudent() {
+        this.spinner = true;
+        await studentService.exportStudent();
+        this.spinner = false;
       },
       async importStudentTerm() {
       },
       async downloadStudentTermTemplate() {
+        this.spinner = true;
+        await studentService.downloadStudentTermTemplate();
+        this.spinner = false;
       },
       async exportStudentTerm() {
+        this.spinner = true;
+        await studentService.exportStudentTerm();
+        this.spinner = false;
       }
     },
     async created() {

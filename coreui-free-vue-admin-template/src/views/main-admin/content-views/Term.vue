@@ -28,8 +28,8 @@
                 placement="bottom-end"
               >
                 <CDropdownItem>Import Term</CDropdownItem>
-                <CDropdownItem>Download Term Template</CDropdownItem>
-                <CDropdownItem>Export Term</CDropdownItem>
+                <CDropdownItem @click="downloadTermTemplate">Download Term Template</CDropdownItem>
+                <CDropdownItem @click="exportTerm">Export Term</CDropdownItem>
               </CDropdown>
               <CButton
                 color="outline-info"
@@ -231,6 +231,19 @@ export default {
         let temp = res.errors[0].split(".")[2];
         this.errors = (" " + temp).slice(1);
       }
+    },
+    async importTerm() {
+    
+    },
+    async downloadTermTemplate() {
+      this.spinner = true;
+      await termService.downloadTermTemplate();
+      this.spinner = false;
+    },
+    async exportTerm() {
+      this.spinner = true;
+      await termService.exportTerm();
+      this.spinner = false;
     }
   },
   async created() {

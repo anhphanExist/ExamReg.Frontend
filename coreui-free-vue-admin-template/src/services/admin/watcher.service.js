@@ -12,12 +12,10 @@ const getCurrentExamProgram = async function () {
 
 const exportStudent = async function (examPeriodId, examRoomId) {
   let response = await watcherApi.exportStudent(examPeriodId, examRoomId);
-  let blob = await response.blob();
+  const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  console.log(url);
   link.href = url;
-  link.download = "Exam" + examPeriodId + "_" + examRoomId + ".docx";
+  link.download = "Exam" + examPeriodId + "_" + examRoomId + ".xlsx";
   link.click();
 };
 

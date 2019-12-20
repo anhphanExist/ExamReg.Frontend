@@ -34,7 +34,7 @@
                       size="sm"
                       square
                       variant="outline"
-                      @click="exportStudent(item.examPeriodId, item.examRoomId)"
+                      @click="exportStudent(item)"
               >Export
               </CButton>
             </td>
@@ -119,9 +119,20 @@
       discardModal() {
         this.alertModal = false;
       },
-      async exportStudent(examPeriodId, examRoomId) {
+      async exportStudent(item) {
         this.spinner = true;
-        await watcherService.exportStudent(examPeriodId, examRoomId);
+        const form = {
+          examPeriodId: item.examPeriodId,
+          examRoomId: item.examRoomId,
+          examProgramName: item.examProgramName,
+          examDate: item.examDate,
+          startHour: item.startHour,
+          finishHour: item.finishHour,
+          subjectName: item.subjectName,
+          examRoomNumber: item.examRoomNumber,
+          examRoomAmphitheaterName: item.examRoomAmphitheaterName
+        };
+        await watcherService.exportStudent(form);
         this.spinner = false;
         this.alertModal = true;
       }

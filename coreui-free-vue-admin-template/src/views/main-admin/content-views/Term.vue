@@ -4,21 +4,14 @@
     <CCardHeader>
       <slot name="header">
         <CRow>
-          <CCol sm="1">
-            <div class="pt-3">
+          <CCol sm="5">
+            <div class="pt-2">
               <CIcon name="cil-grid" />
               Subjects
               <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
-          <CCol sm="4" class="d-none d-md-block">
-            <div class="py-2">
-              <CSelect
-                class="float-left"
-                :options="['Semster 2019_2020_1','Semster 2019_2020_2','Semster 2019_2020_3']"
-              />
-            </div>
-          </CCol>
+          
           <CCol sm="7" class="d-none d-md-block">
             <div class="py-2">
               <CDropdown

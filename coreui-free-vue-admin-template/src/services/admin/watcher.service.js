@@ -10,12 +10,20 @@ const getCurrentExamProgram = async function () {
   return response.data;
 };
 
-const exportStudent = async function (examPeriodId, examRoomId) {
-  let response = await watcherApi.exportStudent(examPeriodId, examRoomId);
+const exportStudent = async function (form) {
+  let response = await watcherApi.exportStudent(form.examPeriodId, form.examRoomId);
   const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement("a");
   link.href = url;
-  link.download = "Exam" + examPeriodId + "_" + examRoomId + ".xlsx";
+  link.download = "Exam" +
+      form.examProgramName + "_" +
+      form.examRoomNumber +
+      form.examRoomAmphitheaterName + "_" +
+      form.examDate + "_" +
+      form.startHour + "_" +
+      form.finishHour + "_" +
+      form.subjectName +
+      ".xlsx";
   link.click();
 };
 

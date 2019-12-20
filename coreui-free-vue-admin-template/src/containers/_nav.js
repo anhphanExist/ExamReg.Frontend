@@ -10,7 +10,7 @@ export default [
         _name: "CSidebarNavItem",
         name: "Sinh viên",
         to: "/dashboard/student",
-        icon: "cil-speedometer"
+        icon: "cil-people"
       },
       {
         _name: "CSidebarNavItem",
@@ -24,11 +24,17 @@ export default [
         to: "/dashboard/subject",
         icon: "cil-pencil"
       },
+      // {
+      //   _name: "CSidebarNavItem",
+      //   name: "Sinh viên môn học",
+      //   to: "/dashboard",
+      //   icon: "cil-check"
+      // },
       {
         _name: "CSidebarNavItem",
         name: "Phòng thi",
         to: "/dashboard/room",
-        icon: "cil-cursor"
+        icon: "cil-location-pin"
       },
       {
         _name: "CSidebarNavItem",
@@ -41,6 +47,12 @@ export default [
         name: "Ca thi",
         to: "/dashboard/shift",
         icon: "cil-puzzle"
+      },
+      {
+        _name: "CSidebarNavItem",
+        name: "Theo dõi",
+        to: "/dashboard",
+        icon: "cil-laptop"
       }
     ]
   }

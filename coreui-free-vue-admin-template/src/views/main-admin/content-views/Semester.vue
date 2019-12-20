@@ -1,52 +1,54 @@
 <template>
-  <CCard>
-    <CCardHeader>
-      <slot name="header">
-        <CRow>
-          <CCol sm="5">
-            <div class="pt-2">
-              <CIcon name="cil-grid"/>
-              Semester List
-              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
-            </div>
-          </CCol>
-          <CCol class="d-none d-md-block" sm="7">
-            <CButton @click="myModal = true" class="float-right mr-4" color="outline-info">Add More</CButton>
-          </CCol>
-        </CRow>
-      </slot>
-    </CCardHeader>
-    <CCardBody>
-      <CDataTable
-              :fields="fields"
-              :items="listSemester"
-              :items-per-page=50
-              column-filter
-              fixed
-              hover
-              pagination
-              sorter
-      >
-        <template #number="{item, index}">
-          <td>
-            {{index + 1}}
-          </td>
-        </template>
-        <template #delete="{item, index}">
-          <td class="py-2 px-1">
-            <CButton
-                    @click="toggleDetails(index)"
-                    color="danger"
-                    size="sm"
-                    square
-                    variant="outline"
-            >Delete
-            </CButton>
-          </td>
-        </template>
-      </CDataTable>
-    
-    </CCardBody>
+  <div>
+    <CCard v-if="!spinner">
+      <CCardHeader>
+        <slot name="header">
+          <CRow>
+            <CCol sm="5">
+              <div class="pt-2">
+                <CIcon name="cil-grid"/>
+                Semester List
+                <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
+              </div>
+            </CCol>
+            <CCol class="d-none d-md-block" sm="7">
+              <CButton @click="myModal = true" class="float-right mr-4" color="outline-info">Add More</CButton>
+            </CCol>
+          </CRow>
+        </slot>
+      </CCardHeader>
+      <CCardBody>
+        <CDataTable
+                :fields="fields"
+                :items="listSemester"
+                :items-per-page=50
+                column-filter
+                fixed
+                hover
+                pagination
+                sorter
+        >
+          <template #number="{item, index}">
+            <td>
+              {{index + 1}}
+            </td>
+          </template>
+          <template #delete="{item, index}">
+            <td class="py-2 px-1">
+              <CButton
+                      @click="toggleDetails(index)"
+                      color="danger"
+                      size="sm"
+                      square
+                      variant="outline"
+              >Delete
+              </CButton>
+            </td>
+          </template>
+        </CDataTable>
+      
+      </CCardBody>
+    </CCard>
     <!-- Modal -->
     <CModal :centered="true" :show.sync="myModal" color="info" title="Add more Semesters">
       <CCol sm="12">
@@ -58,22 +60,22 @@
             <CRow>
               <CCol sm="12">
                 <CInput
+                        :is-valid="!$v.startYear.$invalid"
                         horizontal
                         label="Start year"
                         placeholder="Enter start year"
                         v-model="startYear"
-                        :is-valid="!$v.startYear.$invalid"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
                 <CInput
+                        :is-valid="!$v.endYear.$invalid"
                         horizontal
                         label="End year"
                         placeholder="Enter end year"
                         v-model="endYear"
-                        :is-valid="!$v.endYear.$invalid"
                 />
               </CCol>
             </CRow>
@@ -82,14 +84,14 @@
                 <label class="py-2"> Half</label>
               </CCol>
               <CCol sm="9">
-                <select 
-                class="form-control position-absolute"
-                v-model="isFirstHalf"
-                style="right: 115px;width:195px;"
+                <select
+                        class="form-control position-absolute"
+                        style="right: 115px;width:195px;"
+                        v-model="isFirstHalf"
                 >
-                    <option selected label="First Half" value="true">true</option>
-                    <option label="Second Half" value="false">false</option>
-                  </select>
+                  <option label="First Half" selected value="true">true</option>
+                  <option label="Second Half" value="false">false</option>
+                </select>
               </CCol>
             </CRow>
             <CRow>
@@ -108,16 +110,21 @@
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton @click="addSemester" color="outline-success" :disabled="$v.$invalid">Accept</CButton>
+        <CButton :disabled="$v.$invalid" @click="addSemester" color="outline-success">Accept</CButton>
       </template>
     </CModal>
-  </CCard>
+  
+    <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
+      <CSpinner color="success"/>
+    </div>
+  </div>
 </template>
 
 <script>
   import semester from './data/semesters'
-  import {required, numeric, maxLength, minLength, integer, not, sameAs} from "vuelidate/lib/validators";
+  import {integer, maxLength, minLength, not, numeric, required, sameAs} from "vuelidate/lib/validators";
   import semesterService from "../../../services/admin/semester.service";
+  
   const items = semester;
   const fields = [
     {
@@ -146,6 +153,7 @@
         items,
         fields,
         myModal: false,
+        spinner: false,
         isFirstHalf: true,
         startYear: "",
         endYear: "",
@@ -193,8 +201,7 @@
         if (res.errors.length > 0) {
           let temp = res.errors[0].split(".")[2];
           this.modalErrors = (" " + temp).slice(1);
-        }
-        else {
+        } else {
           this.myModal = false;
           this.modalErrors = "";
           this.startYear = "";
@@ -211,15 +218,16 @@
         if (!res.errors.length > 0) {
           this.errors = "";
           await this.$store.dispatch("listSemester");
-        }
-        else {
+        } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
       }
     },
     async created() {
+      this.spinner = true;
       await this.$store.dispatch("listSemester");
+      this.spinner = false;
     }
   };
 </script>

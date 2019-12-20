@@ -56,13 +56,14 @@
       sorter: false,
       filter: false
     },
-    {key: "subject", _style: "width:10%"},
-    {key: "roomNumber", label: "Room", _style: "width:5%"},
-    {key: "amphitheaterName", label: "amphi", _style: "width:5%"},
+    {key: "subjectName", _style: "width:15%"},
+    {key: "examRoomNumber", label: "Room", _style: "width:3%"},
+    {key: "examRoomAmphitheaterName", label: "amphi", _style: "width:3%"},
     {key: "examDate", _style: "width:5%"},
     {key: "startHour", label: "Start", _style: "width:1%"},
     {key: "finishHour", label: "Finish", _style: "width:1%"},
-    {key: "computerNumber", label: "PC Quantity", _style: "width:5%"},
+    {key: "examRoomComputerNumber", label: "PC Quantity", _style: "width:1%"},
+    {key: "currentNumberOfStudentRegistered", label: "Students", _style: "width:3%"},
     {
       key: "export",
       label: "",

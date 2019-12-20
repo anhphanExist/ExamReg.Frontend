@@ -1,5 +1,6 @@
 <template>
-  <CCard>
+  <div>
+  <CCard v-if="!spinner">
     <CCardHeader>
       <slot name="header">
         <CRow>
@@ -78,6 +79,7 @@
         </template>
       </CDataTable>
     </CCardBody>
+  </CCard>
     <!-- Modal -->
     <CModal title="Add more subject" :centered="true" :show.sync="myModal" color="info">
       <CCol sm="12">
@@ -119,7 +121,11 @@
         <CButton @click="addTerm" color="outline-success">Accept</CButton>
       </template>
     </CModal>
-  </CCard>
+  
+    <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
+      <CSpinner color="success"/>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -165,6 +171,7 @@ export default {
   data() {
     return {
       myModal: false,
+      spinner: false,
       items,
       fields,
       subjectName: "",
@@ -227,8 +234,10 @@ export default {
     }
   },
   async created() {
+    this.spinner = true;
     await this.$store.dispatch("listTerm");
     await this.$store.dispatch("termDropListSemester");
+    this.spinner = false;
   }
 };
 </script>

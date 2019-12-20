@@ -5,9 +5,9 @@
         <slot name="header">
           <CRow>
             <CCol sm="5">
-              <div class="pt-2">
-                <CIcon name="cil-grid"/>
-                Shift List {{ currentExamProgram.name }}
+              <div class="pt-1">
+                <CIcon class="mb-1" name="cil-grid"/>
+                {{ currentExamProgram.name }}
                 <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
               </div>
             </CCol>
@@ -40,7 +40,7 @@
               <CDropdown
                       class="text-secondary"
                       color="outline-muted"
-                      toggler-text="examRoomsCode"
+                      toggler-text="All rooms"
               >
                 <CDropdownItem :key="examRoom.id" v-for="examRoom in item.examRooms">{{ examRoom.code }}</CDropdownItem>
               </CDropdown>
@@ -49,6 +49,7 @@
           <template #edit="{item, index}">
             <td class="py-3">
               <CButton
+                      @click="editExamPeriod(item)"
                       color="warning"
                       size="sm"
                       square
@@ -114,11 +115,13 @@
                 />
               </CCol>
               <CCol sm="6">
-                <!--                <CSelect -->
-                <!--                        label="Subject Name" :options="[1, 2, 3, 4, 5]" />-->
                 <label>
                   Subject Name
-                  <select class="form-control" required v-model="selectedSubjectName">
+                  <select 
+                  class="form-control position-absolute" 
+                  style="width: 86%; top:30px"
+                  required 
+                  v-model="selectedSubjectName">
                     <option :key="term.id" v-for="term in dropListTerm">{{ term.subjectName }}</option>
                   </select>
                 </label>
@@ -133,7 +136,80 @@
         <CButton :disabled="$v.$invalid" @click="addExamPeriod" color="outline-success">Accept</CButton>
       </template>
     </CModal>
-    
+    <!-- Edit Modal  -->
+    <CModal :centered="true" :show.sync="editExamPeriodModal" color="info" title="Add more shifts">
+      <CCol sm="14">
+        <CCard>
+          <CCardHeader>
+            <strong>Shift Info</strong>
+          </CCardHeader>
+          <CCardBody>
+            <CRow>
+              <CCol sm="12">
+                <CInput
+                        :value="currentExamProgram.name"
+                        horizontal
+                        label="Exam Period"
+                        plaintext
+                />
+              </CCol>
+              <CCol sm="12">
+                <CInput
+                        :value="chosen_room.examDate"
+                        horizontal
+                        label="Exam Date"
+                        plaintext
+                        v-model="chosen_room.examDate"
+                />
+              </CCol>
+              
+              <CCol sm="3">
+                <CInput
+                        :value="chosen_room.startHour"
+                        label="Start time"
+                        plaintext
+                        v-model="chosen_room.startHour"
+                />
+              </CCol>
+              <CCol sm="3">
+                <CInput
+                        :value="chosen_room.finishHour"
+                        label="End time"
+                        plaintext
+                        v-model="chosen_room.finishHour"
+                />
+              </CCol>
+              <CCol sm="6">
+                <CInput
+                        :value="chosen_room.subjectName"
+                        label="Subject name"
+                        plaintext
+                        v-model="chosen_room.subjectName"
+                />
+              </CCol>
+              <CCol sm="12">
+                <label>Room Available</label>
+                  <multiselect 
+                    v-model="value_rooms"  
+                    placeholder="Search for a room" 
+                    label="code"  
+                    track-by="code" 
+                    :options="optional_rooms" 
+                    :multiple="true" 
+                    :taggable="true" 
+                    >
+                  </multiselect>
+              </CCol>
+            </CRow>
+          </CCardBody>
+        </CCard>
+      </CCol>
+      <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
+      <template #footer>
+        <CButton @click="discardModal" color="outline-danger">Discard</CButton>
+        <CButton :disabled="$v.$invalid" @click="discardModal" color="outline-success">Accept</CButton>
+      </template>
+    </CModal>
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
       <CSpinner color="success"/>
     </div>
@@ -141,6 +217,7 @@
 </template>
 
 <script>
+  import Multiselect from 'vue-multiselect'
   import shifts_data from "./data/shifts";
   import {integer, numeric, required} from "vuelidate/lib/validators";
   import examPeriodService from "../../../services/admin/exam-period.service";
@@ -184,6 +261,9 @@
   export default {
     name: "shifts",
     props: [],
+    components: {
+      Multiselect
+    },
     data() {
       return {
         addExamPeriodModal: false,
@@ -196,7 +276,10 @@
         startHour: "",
         finishHour: "",
         modalErrors: "",
-        errors: ""
+        errors: "",
+        chosen_room: {},
+        value_rooms:[],
+        optional_rooms: [],
       };
     },
     computed: {
@@ -227,6 +310,7 @@
     },
     methods: {
       discardModal() {
+        this.editExamPeriodModal = false;
         this.addExamPeriodModal = false;
         this.modalErrors = "";
         this.selectedSubjectName = "";
@@ -269,7 +353,31 @@
           this.errors = (" " + temp).slice(1);
         }
       },
-      async editExamPeriod(item, index) {
+      async editExamPeriod(item) {
+        this.chosen_room = item
+        this.value_rooms = item.examRooms;
+        this.optional_rooms = [
+          {
+            id: "552c71ca-a374-2bde-9e19-2944bfb64999",
+            code: "G3_111",
+            roomNumber: 111,
+            amphitheaterName: "G3",
+            computerNumber: 100
+          },
+          {
+            id: "552c71ca-a374-2bde-9e19-2944bfb65000",
+            code: "G3_222",
+            roomNumber: 222,
+            amphitheaterName: "G3",
+            computerNumber: 100
+          }
+        ]
+        for (let index = 0; index < this.value_rooms.length; index++) {
+          const element = this.value_rooms[index];
+          this.optional_rooms.push(element)
+        }
+        console.log(this.optional_rooms)
+        this.editExamPeriodModal = true
       }
     },
     async created() {

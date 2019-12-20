@@ -286,7 +286,7 @@
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton :disabled="$v.$invalid" @click="addStudent" color="outline-success">Accept</CButton>
+        <CButton :disabled="$v.$invalid" @click="discardModal" color="outline-success">Accept</CButton>
       </template>
     </CModal>
     

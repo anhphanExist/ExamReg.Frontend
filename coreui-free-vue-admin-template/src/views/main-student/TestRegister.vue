@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CRow>
+    <CRow v-if="!spinner">
       <CCol col="10">
         <CCard>
           <CCardHeader>
@@ -78,12 +78,14 @@
         <CButton @click="discardModal" color="primary">Ok</CButton>
       </template>
     </CModal>
+    <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
+      <CSpinner color="success"/>
+    </div>
   </div>
 </template>
 
 <script>
   import registerService from "../../services/student/register.service";
-  import examRegUtils from "../../utils/exam-reg-utils";
   
   export default {
     data() {
@@ -91,7 +93,8 @@
         alertModal: false,
         selectedExamPeriods: [],
         errors: "",
-        registerMessageResult: ""
+        registerMessageResult: "",
+        spinner: false
       };
     },
     computed: {
@@ -111,6 +114,7 @@
         this.errors = "";
       },
       async register() {
+        this.spinner = true;
         const form = {
           examPeriods: this.selectedExamPeriods
         };
@@ -125,13 +129,16 @@
           this.errors = (" " + temp).slice(1);
           this.registerMessageResult = res.message;
         }
+        this.spinner = false;
         this.alertModal = true;
       }
     },
     async created() {
+      this.spinner = true;
       await this.$store.dispatch("registerListTerm");
       await this.$store.dispatch("registerCurrentExamProgram");
       await this.$store.dispatch("registerListCurrentExamPeriod");
+      this.spinner = false;
     }
   };
 </script>

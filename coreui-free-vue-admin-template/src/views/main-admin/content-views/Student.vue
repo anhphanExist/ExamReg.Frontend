@@ -1,86 +1,88 @@
 <template>
-  <CCard>
-    <CCardHeader>
-      <slot name="header">
-        <CRow>
-          <CCol sm="5">
-            <div class="pt-2">
-              <CIcon name="cil-grid"/>
-              Student List
-              <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
-            </div>
-          </CCol>
-          <CCol class="d-none d-md-block" sm="7">
-            <CDropdown
-                    class="float-right"
-                    color="outline-info"
-                    placement="bottom-end"
-                    toggler-text="More Action"
-            >
-              <CDropdownItem>Import Student</CDropdownItem>
-              <CDropdownItem>Download Student Template</CDropdownItem>
-              <CDropdownItem>Export Student</CDropdownItem>
-              <CDropdownItem>Import Student</CDropdownItem>
-              <CDropdownItem>Download Student Term Template</CDropdownItem>
-              <CDropdownItem>Export Student Term</CDropdownItem>
-            </CDropdown>
-            <CButton @click="myModal = true" class="float-right mr-3" color="outline-info">Add More</CButton>
-          </CCol>
-        </CRow>
-      </slot>
-    </CCardHeader>
-    <CCardBody>
-      <CDataTable
-              :fields="fields"
-              :items="listStudent"
-              :items-per-page=50
-              column-filter
-              fixed
-              hover
-              pagination
-              sorter
-      >
-        <template #number="{item, index}">
-          <td>{{index + 1}}</td>
-        </template>
-        <template #reset="{item, index}">
-          <td class="py-2">
-            <CButton
-                    @click="resetPassword(item, index)"
-                    color="success"
-                    size="sm"
-                    square
-                    variant="outline"
-            >Reset
-            </CButton>
-          </td>
-        </template>
-        <template #edit="{item, index}">
-          <td class="py-2">
-            <CButton
-                    @click="toggleDetails(index)"
-                    color="warning"
-                    size="sm"
-                    square
-                    variant="outline"
-            >Edit
-            </CButton>
-          </td>
-        </template>
-        <template #delete="{item, index}">
-          <td class="py-2">
-            <CButton
-                    @click="deleteStudent(item, index)"
-                    color="danger"
-                    size="sm"
-                    square
-                    variant="outline"
-            >Delete
-            </CButton>
-          </td>
-        </template>
-      </CDataTable>
-    </CCardBody>
+  <div>
+    <CCard v-if="!spinner">
+      <CCardHeader>
+        <slot name="header">
+          <CRow>
+            <CCol sm="5">
+              <div class="pt-2">
+                <CIcon name="cil-grid"/>
+                Student List
+                <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
+              </div>
+            </CCol>
+            <CCol class="d-none d-md-block" sm="7">
+              <CDropdown
+                      class="float-right"
+                      color="outline-info"
+                      placement="bottom-end"
+                      toggler-text="More Action"
+              >
+                <CDropdownItem>Import Student</CDropdownItem>
+                <CDropdownItem>Download Student Template</CDropdownItem>
+                <CDropdownItem>Export Student</CDropdownItem>
+                <CDropdownItem>Import Student</CDropdownItem>
+                <CDropdownItem>Download Student Term Template</CDropdownItem>
+                <CDropdownItem>Export Student Term</CDropdownItem>
+              </CDropdown>
+              <CButton @click="myModal = true" class="float-right mr-3" color="outline-info">Add More</CButton>
+            </CCol>
+          </CRow>
+        </slot>
+      </CCardHeader>
+      <CCardBody>
+        <CDataTable
+                :fields="fields"
+                :items="listStudent"
+                :items-per-page=50
+                column-filter
+                fixed
+                hover
+                pagination
+                sorter
+        >
+          <template #number="{item, index}">
+            <td>{{index + 1}}</td>
+          </template>
+          <template #reset="{item, index}">
+            <td class="py-2">
+              <CButton
+                      @click="resetPassword(item, index)"
+                      color="success"
+                      size="sm"
+                      square
+                      variant="outline"
+              >Reset
+              </CButton>
+            </td>
+          </template>
+          <template #edit="{item, index}">
+            <td class="py-2">
+              <CButton
+                      @click="toggleDetails(index)"
+                      color="warning"
+                      size="sm"
+                      square
+                      variant="outline"
+              >Edit
+              </CButton>
+            </td>
+          </template>
+          <template #delete="{item, index}">
+            <td class="py-2">
+              <CButton
+                      @click="deleteStudent(item, index)"
+                      color="danger"
+                      size="sm"
+                      square
+                      variant="outline"
+              >Delete
+              </CButton>
+            </td>
+          </template>
+        </CDataTable>
+      </CCardBody>
+    </CCard>
     <!-- Modal -->
     <CModal :centered="true" :show.sync="myModal" color="info" title="Add more students">
       <CCol sm="12">
@@ -92,87 +94,87 @@
             <CRow>
               <CCol sm="12">
                 <CInput
-                        horizontal label="MSSV"
+                        :is-valid="!$v.student_add.mssv.$invalid" horizontal
+                        invalid-feedback="This field must be filled and only accepts 8 digit integer"
+                        label="MSSV"
                         placeholder="00000000"
                         v-model="student_add.mssv"
-                        :is-valid="!$v.student_add.mssv.$invalid"
-                        invalid-feedback="This field must be filled and only accepts 8 digit integer"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
                 <CInput
+                        :is-valid="!$v.student_add.firstName.$invalid"
                         horizontal
+                        invalid-feedback="This field must be filled"
                         label="First Name"
                         placeholder="Enter student first name"
                         v-model="student_add.firstName"
-                        :is-valid="!$v.student_add.firstName.$invalid"
-                        invalid-feedback="This field must be filled"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
                 <CInput
+                        :is-valid="!$v.student_add.lastName.$invalid"
                         horizontal
+                        invalid-feedback="This field must be filled"
                         label="Last Name"
                         placeholder="Enter student last name"
                         v-model="student_add.lastName"
-                        :is-valid="!$v.student_add.lastName.$invalid"
-                        invalid-feedback="This field must be filled"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
                 <CInput
+                        :is-valid="!$v.student_add.email.$invalid"
                         autocomplete="email"
                         horizontal
+                        invalid-feedback="This field must be filled and only accepts valid email"
                         label="Email"
                         placeholder="Enter student email"
                         type="email"
                         v-model="student_add.email"
-                        :is-valid="!$v.student_add.email.$invalid"
-                        invalid-feedback="This field must be filled and only accepts valid email"
                 />
               </CCol>
             </CRow>
             
             <CRow>
-
+              
               <Ccol sm="3">
                 <label class="py-2 px-3">
                   DOB
                 </label>
               </Ccol>
               
-              <CCol sm="3">                 
-                  <select
-                  style="width: 75%; left:57px;" 
-                  class="form-control position-absolute" 
-                  v-model="student_add.dob.day">
-                    <option v-for="index in 31" :key="index">{{ index }}</option>
-                  </select>
-               
+              <CCol sm="3">
+                <select
+                        class="form-control position-absolute"
+                        style="width: 75%; left:57px;"
+                        v-model="student_add.dob.day">
+                  <option :key="index" v-for="index in 31">{{ index }}</option>
+                </select>
+              
               </CCol>
               <CCol sm="3">
-                  <select 
-                  style="width: 75%;left:57px;" 
-                  class="form-control position-absolute" 
-                  v-model="student_add.dob.month">
-                    <option v-for="index in 12" :key="index">{{ index }}</option>
-                  </select>
-                
+                <select
+                        class="form-control position-absolute"
+                        style="width: 75%;left:57px;"
+                        v-model="student_add.dob.month">
+                  <option :key="index" v-for="index in 12">{{ index }}</option>
+                </select>
+              
               </CCol>
               <CCol sm="3">
-                  <select 
-                  style="width: 75%;left:57px" 
-                  class="form-control position-absolute" 
-                  v-model="student_add.dob.year">
-                    <option v-for="index in 50" :key="index">{{ index + 1970 }}</option>
-                  </select>
-                
+                <select
+                        class="form-control position-absolute"
+                        style="width: 75%;left:57px"
+                        v-model="student_add.dob.year">
+                  <option :key="index" v-for="index in 50">{{ index + 1970 }}</option>
+                </select>
+              
               </CCol>
             </CRow>
           </CCardBody>
@@ -181,17 +183,22 @@
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton @click="addStudent" color="outline-success" :disabled="$v.$invalid">Accept</CButton>
+        <CButton :disabled="$v.$invalid" @click="addStudent" color="outline-success">Accept</CButton>
       </template>
     </CModal>
-  </CCard>
+    
+    
+    <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
+      <CSpinner color="success"/>
+    </div>
+  </div>
 </template>
 
 <script>
   import user_data from "./data/students";
-  import {email, integer, minLength, maxLength, numeric, required} from "vuelidate/lib/validators";
+  import {email, integer, maxLength, minLength, numeric, required} from "vuelidate/lib/validators";
   import studentService from "../../../services/admin/student.service";
-
+  
   const fields = [
     {
       key: "number",
@@ -227,15 +234,16 @@
       filter: false
     }
   ];
-
+  
   const items = user_data;
-
+  
   export default {
     name: "tables",
     props: [],
     data() {
       return {
         myModal: false,
+        spinner: false,
         student_add: {
           mssv: "",
           firstName: "",
@@ -305,8 +313,7 @@
         if (res.errors.length > 0) {
           let temp = res.errors[0].split(".")[2];
           this.modalErrors = (" " + temp).slice(1);
-        }
-        else {
+        } else {
           this.myModal = false;
           this.modalErrors = "";
           await this.$store.dispatch("listStudent");
@@ -328,8 +335,7 @@
         if (!res.errors.length > 0) {
           this.errors = "";
           await this.$store.dispatch("listStudent");
-        }
-        else {
+        } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
@@ -343,21 +349,28 @@
         if (!res.errors.length > 0) {
           this.errors = "";
           await this.$store.dispatch("listStudent");
-        }
-        else {
+        } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
       },
-      async importStudent() {},
-      async downloadStudentTemplate() {},
-      async exportStudent() {},
-      async importStudentTerm() {},
-      async downloadStudentTermTemplate() {},
-      async exportStudentTerm() {}
+      async importStudent() {
+      },
+      async downloadStudentTemplate() {
+      },
+      async exportStudent() {
+      },
+      async importStudentTerm() {
+      },
+      async downloadStudentTermTemplate() {
+      },
+      async exportStudentTerm() {
+      }
     },
     async created() {
+      this.spinner = true;
       await this.$store.dispatch("listStudent");
+      this.spinner = false;
     }
   };
 </script>

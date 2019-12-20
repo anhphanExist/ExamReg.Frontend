@@ -53,8 +53,11 @@
                   </template>
                 </CInput>
                 <CRow>
-                  <CCol col="6">
+                  <CCol col="4">
                     <CButton class="px-4" color="success" @click="login" :disabled="$v.$invalid">Login</CButton>
+                  </CCol>
+                  <CCol col="1">
+                    <CSpinner v-if="spinner" color="success"/>
                   </CCol>
                   <CCol class="text-right" col="6">
                     <CButton class="px-0" color="link">Forgot password?</CButton>
@@ -82,7 +85,8 @@
       return {
         username: "",
         password: "",
-        errors: ""
+        errors: "",
+        spinner: false
       };
     },
     validations: {
@@ -97,6 +101,7 @@
     },
     methods: {
       async login() {
+        this.spinner = true;
         let form = {
           username: this.username,
           password: this.password
@@ -107,6 +112,7 @@
           this.errors = (" " + temp).slice(1);
         }
         else {
+          this.spinner = false;
           await this.$router.push("/dashboard");
         }
       }

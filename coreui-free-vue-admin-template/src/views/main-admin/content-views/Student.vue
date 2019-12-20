@@ -18,10 +18,16 @@
                       placement="bottom-end"
                       toggler-text="More Action"
               >
-                <CDropdownItem>Import Student</CDropdownItem>
+                <div>
+                  <input type="file" id="import-student" class="import" ref="studentFile" @change="handleFileUploadStudent()"/>
+                  <CDropdownItem @click="importStudent">Import Student</CDropdownItem>
+                </div>
                 <CDropdownItem @click="downloadStudentTemplate">Download Student Template</CDropdownItem>
                 <CDropdownItem @click="exportStudent">Export Student</CDropdownItem>
-                <CDropdownItem>Import Student</CDropdownItem>
+                <div>
+                  <input type="file" id="import-student-term" class="import" ref="studentTermFile" @change="handleFileUploadStudentTerm()"/>
+                  <CDropdownItem @click="importStudentTerm">Import Student Term</CDropdownItem>
+                </div>
                 <CDropdownItem @click="downloadStudentTermTemplate">Download Student Term Template</CDropdownItem>
                 <CDropdownItem @click="exportStudentTerm">Export Student Term</CDropdownItem>
               </CDropdown>
@@ -289,6 +295,28 @@
         <CButton :disabled="$v.$invalid" @click="discardModal" color="outline-success">Accept</CButton>
       </template>
     </CModal>
+  
+    
+    <CModal :centered="true" :show.sync="importResultModal" color="info" title="Alert">
+      <CCol sm="12">
+        <CCard>
+          <CCardHeader>
+            <strong>Import Result Message</strong>
+          </CCardHeader>
+          <CCardBody>
+            <CRow>
+              <CCol sm="12">
+                <div class="alert-success" v-if="!modalErrors.length > 0">{{ importResultMessage }}</div>
+                <div class="alert-danger" v-if="modalErrors.length > 0">{{ importResultMessage }}</div>
+              </CCol>
+            </CRow>
+          </CCardBody>
+        </CCard>
+      </CCol>
+      <template #footer>
+        <CButton @click="discardModal" color="primary">Ok</CButton>
+      </template>
+    </CModal>
     
     
     
@@ -348,6 +376,8 @@
       return {
         editModal: false,
         myModal: false,
+        importResultModal: false,
+        importResultMessage: "",
         spinner: false,
         student_edit_mssv: "",
         student_add: {
@@ -364,7 +394,8 @@
         items,
         fields,
         modalErrors: "",
-        errors: ""
+        errors: "",
+        file: ""
       };
     },
     validations: {
@@ -396,10 +427,12 @@
     methods: {
       editDetails (item) {
         this.student_edit_mssv = item.studentNumber
-        this.editModal = true;  
+        this.editModal = true;
       },
       discardModal() {
         this.myModal = false;
+        this.importResultModal = false;
+        this.importResultMessage = "";
         this.editModal = false;
         this.modalErrors = "";
         this.student_add.mssv = "";
@@ -466,6 +499,7 @@
         }
       },
       async importStudent() {
+        document.getElementById("import-student").click();
       },
       async downloadStudentTemplate() {
         this.spinner = true;
@@ -478,6 +512,7 @@
         this.spinner = false;
       },
       async importStudentTerm() {
+        document.getElementById("import-student-term").click();
       },
       async downloadStudentTermTemplate() {
         this.spinner = true;
@@ -488,6 +523,41 @@
         this.spinner = true;
         await studentService.exportStudentTerm();
         this.spinner = false;
+      },
+      async handleFileUploadStudent() {
+        this.spinner = true;
+        this.file = this.$refs["studentFile"].files[0];
+        let data = await studentService.importStudent(this.file);
+        if (data.errors.length > 0) {
+          this.spinner = false;
+          this.modalErrors = data.errors[0];
+          this.importResultMessage = data.message;
+          this.importResultModal = true;
+        }
+        else {
+          await this.$store.dispatch("listStudent");
+          this.spinner = false;
+          this.importResultMessage = data.message;
+          this.importResultModal = true;
+        }
+        
+      },
+      async handleFileUploadStudentTerm() {
+        this.spinner = true;
+        this.file = this.$refs["studentTermFile"].files[0];
+        let data = await studentService.importStudentTerm(this.file);
+        if (data.errors.length > 0) {
+          this.spinner = false;
+          this.modalErrors = data.errors[0];
+          this.importResultMessage = data.message;
+          this.importResultModal = true;
+        }
+        else {
+          await this.$store.dispatch("listStudent");
+          this.spinner = false;
+          this.importResultMessage = data.message;
+          this.importResultModal = true;
+        }
       }
     },
     async created() {
@@ -497,3 +567,12 @@
     }
   };
 </script>
+
+<style scoped>
+  .import {
+    display: block;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+</style>

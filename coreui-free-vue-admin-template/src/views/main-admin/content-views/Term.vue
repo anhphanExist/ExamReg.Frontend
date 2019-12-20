@@ -20,7 +20,10 @@
                 color="outline-info"
                 placement="bottom-end"
               >
-                <CDropdownItem>Import Term</CDropdownItem>
+                <div>
+                  <input type="file" id="import-term" class="import" ref="termFile" @change="handleFileUploadTerm()"/>
+                  <CDropdownItem @click="importTerm">Import Term</CDropdownItem>
+                </div>
                 <CDropdownItem @click="downloadTermTemplate">Download Term Template</CDropdownItem>
                 <CDropdownItem @click="exportTerm">Export Term</CDropdownItem>
               </CDropdown>
@@ -115,6 +118,29 @@
       </template>
     </CModal>
   
+  
+    <CModal :centered="true" :show.sync="importResultModal" color="info" title="Alert">
+      <CCol sm="12">
+        <CCard>
+          <CCardHeader>
+            <strong>Import Result Message</strong>
+          </CCardHeader>
+          <CCardBody>
+            <CRow>
+              <CCol sm="12">
+                <div class="alert-success" v-if="!modalErrors.length > 0">{{ importResultMessage }}</div>
+                <div class="alert-danger" v-if="modalErrors.length > 0">{{ importResultMessage }}</div>
+              </CCol>
+            </CRow>
+          </CCardBody>
+        </CCard>
+      </CCol>
+      <template #footer>
+        <CButton @click="discardModal" color="primary">Ok</CButton>
+      </template>
+    </CModal>
+    
+    
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
       <CSpinner color="success"/>
     </div>
@@ -164,6 +190,8 @@ export default {
   data() {
     return {
       myModal: false,
+      importResultModal: false,
+      importResultMessage: "",
       spinner: false,
       items,
       fields,
@@ -190,6 +218,8 @@ export default {
     discardModal() {
       this.modalErrors = "";
       this.myModal = false;
+      this.importResultModal = false;
+      this.importResultMessage = "";
       this.subjectName = "";
       this.semesterCode = "";
     },
@@ -226,7 +256,7 @@ export default {
       }
     },
     async importTerm() {
-    
+      document.getElementById("import-term").click();
     },
     async downloadTermTemplate() {
       this.spinner = true;
@@ -237,6 +267,22 @@ export default {
       this.spinner = true;
       await termService.exportTerm();
       this.spinner = false;
+    },
+    async handleFileUploadTerm() {
+      this.spinner = true;
+      this.file = this.$refs["termFile"].files[0];
+      let data = await termService.importTerm(this.file);
+      if (data.errors.length > 0) {
+        this.spinner = false;
+        this.modalErrors = data.errors[0];
+        this.importResultMessage = data.message;
+        this.importResultModal = true;
+      } else {
+        await this.$store.dispatch("listStudent");
+        this.spinner = false;
+        this.importResultMessage = data.message;
+        this.importResultModal = true;
+      }
     }
   },
   async created() {
@@ -247,3 +293,12 @@ export default {
   }
 };
 </script>
+
+<style>
+  .import {
+    display: block;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+</style>

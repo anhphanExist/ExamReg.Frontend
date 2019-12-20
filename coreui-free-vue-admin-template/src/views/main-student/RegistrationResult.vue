@@ -18,7 +18,7 @@
           <CRow>
             <CCol sm=4></CCol>
             <CCol sm=5>
-              <h3>{{ currentExamProgram.name }}</h3>
+              <h3 style="font-family:Lato,sans-serif;">{{ currentExamProgram.name }}</h3>
             </CCol>
             <CCol sm=3></CCol>
           </CRow>

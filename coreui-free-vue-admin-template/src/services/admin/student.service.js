@@ -62,10 +62,8 @@ const importStudent = async function (file) {
 
 const downloadStudentTemplate = async function () {
   let response = await studentApi.downloadStudentTemplate();
-  let blob = await response.blob();
+  const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  console.log(url);
   link.href = url;
   link.download = "StudentTemplate.xlsx";
   link.click();
@@ -73,10 +71,8 @@ const downloadStudentTemplate = async function () {
 
 const exportStudent = async function () {
   let response = await studentApi.exportStudent();
-  let blob = await response.blob();
+  const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  console.log(url);
   link.href = url;
   link.download = "Student.xlsx";
   link.click();
@@ -94,10 +90,8 @@ const importStudentTerm = async function (file) {
 
 const downloadStudentTermTemplate = async function () {
   let response = await studentApi.downloadStudentTermTemplate();
-  let blob = await response.blob();
+  const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  console.log(url);
   link.href = url;
   link.download = "StudentTermTemplate.xlsx";
   link.click();
@@ -105,10 +99,8 @@ const downloadStudentTermTemplate = async function () {
 
 const exportStudentTerm = async function () {
   let response = await studentApi.exportStudentTerm();
-  let blob = await response.blob();
+  const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  console.log(url);
   link.href = url;
   link.download = "StudentTerm.xlsx";
   link.click();

@@ -1,26 +1,37 @@
 import watcherService from "../../services/admin/watcher.service";
 
 const state = {
-    listExamRoomExamPeriod: [],
+    watcherListExamRoomExamPeriod: [],
+    watcherCurrentExamProgram: {},
     errors: []
 };
 
 const getters = {
-    listExamRoomExamPeriod(state) {
-        return state.listExamRoomExamPeriod;
+    watcherListExamRoomExamPeriod(state) {
+        return state.watcherListExamRoomExamPeriod;
+    },
+    watcherCurrentExamProgram(state) {
+        return state.watcherListExamRoomExamPeriod;
     }
 };
 
 const mutations = {
-    listExamRoomExamPeriod(state, listExamRoomExamPeriod) {
-        state.listExamRoomExamPeriod = [...listExamRoomExamPeriod];
+    watcherListExamRoomExamPeriod(state, listExamRoomExamPeriod) {
+        state.watcherListExamRoomExamPeriod = [...listExamRoomExamPeriod];
+    },
+    watcherCurrentExamProgram(state, currentExamProgram) {
+        state.watcherCurrentExamProgram = {...currentExamProgram};
     }
 };
 
 const actions = {
-    async listExamRoomExamPeriod({ commit }) {
+    async watcherListExamRoomExamPeriod({ commit }) {
         let data = await watcherService.listExamRoomExamPeriod();
-        commit("listExamRoomExamPeriod", data);
+        commit("watcherListExamRoomExamPeriod", data);
+    },
+    async watcherCurrentExamProgram({commit}) {
+        let data = await watcherService.getCurrentExamProgram();
+        commit("watcherCurrentExamProgram", data);
     }
 };
 

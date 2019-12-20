@@ -44,10 +44,8 @@ const importTerm = async function(file) {
 
 const downloadTermTemplate = async function() {
   let response = await termApi.downloadTermTemplate();
-  let blob = await response.blob();
+  const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  console.log(url);
   link.href = url;
   link.download = "TermTemplate.xlsx";
   link.click();
@@ -55,10 +53,8 @@ const downloadTermTemplate = async function() {
 
 const exportTerm = async function() {
   let response = await termApi.exportTerm();
-  let blob = await response.blob();
+  const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement("a");
-  const url = URL.createObjectURL(blob);
-  console.log(url);
   link.href = url;
   link.download = "Term.xlsx";
   link.click();

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <CCard>
+    <CCard v-if="!spinner">
       <CCardHeader>
         <slot name="header">
           <CRow>
             <CCol sm="5">
               <div class="pt-2">
                 <CIcon name="cil-grid"/>
-                Shift List
+                Shift List {{ currentExamProgram.name }}
                 <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
               </div>
             </CCol>
@@ -32,12 +32,18 @@
           <template #number="{item, index}">
             <td>{{index + 1}}</td>
           </template>
-          <template #rooms="{item, index}">
-            <td class>
-              <!--            <CSelect :options="item.rooms" />-->
-              <select class="form-control">
-                <option :key="examRoom.id" v-for="examRoom in listExamPeriod.examRooms">{{ examRoom.code }}</option>
-              </select>
+          <template #examRooms="{item, index}">
+            <td>
+              <!--              <select class="form-control">-->
+              <!--                <option :key="examRoom.id" v-for="examRoom in item.examRooms">{{ examRoom.code }}</option>-->
+              <!--              </select>-->
+              <CDropdown
+                      class="text-secondary"
+                      color="outline-muted"
+                      toggler-text="examRoomsCode"
+              >
+                <CDropdownItem :key="examRoom.id" v-for="examRoom in item.examRooms">{{ examRoom.code }}</CDropdownItem>
+              </CDropdown>
             </td>
           </template>
           <template #edit="{item, index}">
@@ -127,7 +133,7 @@
         <CButton :disabled="$v.$invalid" @click="addExamPeriod" color="outline-success">Accept</CButton>
       </template>
     </CModal>
-  
+    
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
       <CSpinner color="success"/>
     </div>

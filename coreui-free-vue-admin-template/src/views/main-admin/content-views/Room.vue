@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CCard>
+    <CCard v-if="!spinner">
       <CCardHeader>
         <slot name="header">
           <CRow>

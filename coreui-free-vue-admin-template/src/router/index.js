@@ -60,6 +60,8 @@ const User = () => import("@/views/users/User");
 
 // Main components
 const Dashboard = () => import("@/views/main-admin/Dashboard");
+const TestView = () => import("@/views/TestView")
+
 //Side bar
 const Room = () => import("@/views/main-admin/content-views/Room");
 const Semester = () => import("@/views/main-admin/content-views/Semester");
@@ -139,6 +141,10 @@ function configRoutes() {
           path: "/dashboard/exam-program",
           name: "ExamProgram",
           component: ExamProgram
+        },
+        {
+          path: "/dashboard/test",
+          component: TestView
         }
       ]
     },
@@ -182,9 +188,5 @@ function configRoutes() {
         }
       }
     },
-    // {
-    //   path: "*",
-    //   redirect: "/login"
-    // }
   ];
 }

@@ -59,7 +59,7 @@
           <template #edit="{item, index}">
             <td class="py-2">
               <CButton
-                      @click="toggleDetails(index)"
+                      @click="editDetails(item)"
                       color="warning"
                       size="sm"
                       square
@@ -83,7 +83,7 @@
         </CDataTable>
       </CCardBody>
     </CCard>
-    <!-- Modal -->
+    <!--Add Modal -->
     <CModal :centered="true" :show.sync="myModal" color="info" title="Add more students">
       <CCol sm="12">
         <CCard>
@@ -144,7 +144,7 @@
             <CRow>
               
               <CCol sm="3">
-                <label class="py-2 px-3">
+                <label class="py-2">
                   DOB
                 </label>
               </CCol>
@@ -152,7 +152,7 @@
               <CCol sm="3">
                 <select
                         class="form-control position-absolute"
-                        style="width: 75%; left:57px;"
+                        style="width: 75%; left:10px;"
                         v-model="student_add.dob.day">
                   <option :key="index" v-for="index in 31">{{ index }}</option>
                 </select>
@@ -161,7 +161,7 @@
               <CCol sm="3">
                 <select
                         class="form-control position-absolute"
-                        style="width: 75%;left:57px;"
+                        style="width: 75%;left:10px;"
                         v-model="student_add.dob.month">
                   <option :key="index" v-for="index in 12">{{ index }}</option>
                 </select>
@@ -170,7 +170,7 @@
               <CCol sm="3">
                 <select
                         class="form-control position-absolute"
-                        style="width: 75%;left:57px"
+                        style="width: 75%;left:10px"
                         v-model="student_add.dob.year">
                   <option :key="index" v-for="index in 50">{{ index + 1970 }}</option>
                 </select>
@@ -186,8 +186,109 @@
         <CButton :disabled="$v.$invalid" @click="addStudent" color="outline-success">Accept</CButton>
       </template>
     </CModal>
-    
-    
+    <!-- Edit Modal -->
+    <CModal :centered="true" :show.sync="editModal" color="info" title="Add more students">
+      <CCol sm="12">
+        <CCard>
+          <CCardHeader>
+            <strong>Student Info</strong>
+          </CCardHeader>
+          <CCardBody>
+            <CRow>
+              <CCol sm="12">
+                <CInput
+                        horizontal
+                        label="MSSV"
+                        :value="student_edit_mssv"
+                        v-model="student_edit_mssv"
+                        plaintext
+                />
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol sm="12">
+                <CInput
+                        :is-valid="!$v.student_add.firstName.$invalid"
+                        horizontal
+                        invalid-feedback="This field must be filled"
+                        label="First Name"
+                        placeholder="Enter student first name"
+                        v-model="student_add.firstName"
+                />
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol sm="12">
+                <CInput
+                        :is-valid="!$v.student_add.lastName.$invalid"
+                        horizontal
+                        invalid-feedback="This field must be filled"
+                        label="Last Name"
+                        placeholder="Enter student last name"
+                        v-model="student_add.lastName"
+                />
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol sm="12">
+                <CInput
+                        :is-valid="!$v.student_add.email.$invalid"
+                        autocomplete="email"
+                        horizontal
+                        invalid-feedback="This field must be filled and only accepts valid email"
+                        label="Email"
+                        placeholder="Enter student email"
+                        type="email"
+                        v-model="student_add.email"
+                />
+              </CCol>
+            </CRow>
+            
+            <CRow>
+              
+              <CCol sm="3">
+                <label class="py-2">
+                  DOB
+                </label>
+              </CCol>
+              
+              <CCol sm="3">
+                <select
+                        class="form-control position-absolute"
+                        style="width: 75%; left:10px;"
+                        v-model="student_add.dob.day">
+                  <option :key="index" v-for="index in 31">{{ index }}</option>
+                </select>
+              
+              </CCol>
+              <CCol sm="3">
+                <select
+                        class="form-control position-absolute"
+                        style="width: 75%;left:10px;"
+                        v-model="student_add.dob.month">
+                  <option :key="index" v-for="index in 12">{{ index }}</option>
+                </select>
+              
+              </CCol>
+              <CCol sm="3">
+                <select
+                        class="form-control position-absolute"
+                        style="width: 75%;left:10px"
+                        v-model="student_add.dob.year">
+                  <option :key="index" v-for="index in 50">{{ index + 1970 }}</option>
+                </select>
+              
+              </CCol>
+            </CRow>
+          </CCardBody>
+        </CCard>
+      </CCol>
+      <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
+      <template #footer>
+        <CButton @click="discardModal" color="outline-danger">Discard</CButton>
+        <CButton :disabled="$v.$invalid" @click="addStudent" color="outline-success">Accept</CButton>
+      </template>
+    </CModal>
     
     
     
@@ -245,8 +346,10 @@
     props: [],
     data() {
       return {
+        editModal: false,
         myModal: false,
         spinner: false,
+        student_edit_mssv: "",
         student_add: {
           mssv: "",
           firstName: "",
@@ -291,8 +394,13 @@
       }
     },
     methods: {
+      editDetails (item) {
+        this.student_edit_mssv = item.studentNumber
+        this.editModal = true;  
+      },
       discardModal() {
         this.myModal = false;
+        this.editModal = false;
         this.modalErrors = "";
         this.student_add.mssv = "";
         this.student_add.firstName = "";

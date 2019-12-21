@@ -86,7 +86,7 @@
                 <CInput
                         :value="currentExamProgram.name"
                         horizontal
-                        label="Current Exam Program"
+                        label="Program"
                         plaintext
                 />
               </CCol>
@@ -152,7 +152,7 @@
                 <CInput
                         :value="currentExamProgram.name"
                         horizontal
-                        label="Current Exam Program"
+                        label="Program"
                         plaintext
                 />
               </CCol>

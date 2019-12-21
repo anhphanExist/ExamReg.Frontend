@@ -63,7 +63,7 @@
                     <CButton class="px-0" color="link">Forgot password?</CButton>
                   </CCol>
                 </CRow>
-                <p class="text-danger mt-2" v-if="errors.length > 0">{{ errors }}</p>
+                <div class="alert alert-danger mt-2" v-if="errors.length > 0">{{ errors }}</div>
               </CForm>
             </CCardBody>
           </CCard>
@@ -102,12 +102,14 @@
     methods: {
       async login() {
         this.spinner = true;
+        this.errors = "";
         let form = {
           username: this.username,
           password: this.password
         };
         let res = await authService.login(form);
         if (res.errors.length > 0) {
+          this.spinner = false;
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }

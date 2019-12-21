@@ -9,7 +9,7 @@
           </CCardHeader>
           <CCardBody>
             <div :key="term.id" v-for="(term, index) in listTerm">
-              <CRow v-if="'term.isQualified'">
+              <CRow v-if="term.isQualified">
                 <CCol col="8">
                   <CAlert class="alert-dismissible" color="success">
                     {{ term.subjectName }}
@@ -32,7 +32,7 @@
                     </select>
                 </CCol>
               </CRow>
-              <CRow v-else>
+              <CRow v-if="!term.isQualified">
                 <CCol col="8">
                   <CAlert class="alert-dismissible" color="danger">
                     {{ term.subjectName }}
@@ -41,15 +41,9 @@
                             color="danger"
                             style="right:10px;top: 50%;transform: translateY(-50%);"
                             :disabled="true"
-                    >Unqualified!
+                    >Disqualified!
                     </CButton>
                   </CAlert>
-                </CCol>
-                <CCol col="2">
-                  <CSelect :options="['Restricted']" class="py-2" disabled/>
-                </CCol>
-                <CCol col="2">
-                  <CSelect :options="['Restricted']" class="py-2" disabled/>
                 </CCol>
               </CRow>
             </div>

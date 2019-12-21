@@ -23,8 +23,12 @@
                   </CAlert>
                 </CCol>
                 <CCol col="3">
-                    <select class="form-control mt-2" v-model="selectedExamPeriods[index]">
-                      <option v-for="examPeriod in term.examPeriods" :key="examPeriod.id" :value="examPeriod">{{ examPeriod.examDate }}. {{ examPeriod.startHour }}:00 - {{examPeriod.finishHour}}:00</option>
+                    <select class="form-control mt-2" :required="true" v-model="selectedExamPeriods[index]">
+                      <option
+                              v-for="examPeriod in term.examPeriods"
+                              :key="examPeriod.id"
+                              :value="examPeriod"
+                      >{{ examPeriod.examDate }}. {{ examPeriod.startHour }}:00 - {{examPeriod.finishHour}}:00</option>
                     </select>
                 </CCol>
               </CRow>
@@ -139,6 +143,15 @@
       await this.$store.dispatch("registerCurrentExamProgram");
       await this.$store.dispatch("registerListCurrentExamPeriod");
       this.spinner = false;
+    },
+    async mounted() {
+      for (let i = 0; i < this.listTerm.length; i++) {
+        for (let j = 0; j < this.listTerm[i].examPeriods.length; j++) {
+          if (this.listCurrentExamPeriod.some(c => c.id == this.listTerm[i].examPeriods[j].id)) {
+            this.selectedExamPeriods[i] = this.listTerm[i].examPeriods[j];
+          }
+        }
+      }
     }
   };
 </script>

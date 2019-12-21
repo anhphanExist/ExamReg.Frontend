@@ -23,7 +23,7 @@ const mutations = {
     state.registerListTerm = [...listTerm];
   },
   registerListCurrentExamPeriod(state, listCurrentExamPeriod) {
-    state.listCurrentExamPeriod = [...listCurrentExamPeriod];
+    state.registerListCurrentExamPeriod = [...listCurrentExamPeriod];
   },
   registerCurrentExamProgram(state, currentExamProgram) {
     state.registerCurrentExamProgram = {...currentExamProgram};

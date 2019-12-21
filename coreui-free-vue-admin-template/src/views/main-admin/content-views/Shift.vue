@@ -99,33 +99,34 @@
                         v-model="examDate"
                 />
               </CCol>
-              <CRow></CRow>
-              <CCol sm="3">
+              <CCol sm="12">
+                <label class="mb-4">
+                  Subject Name
+                </label>
+                <b-form-select
+                  class="form-control position-absolute" 
+                  style="width: 70%; left: 124px; bottom: 20px;"
+                  aria-describedby="input-1-live-feedback"
+                  :state="$v.selectedSubjectName.$dirty ? !$v.selectedSubjectName.$error : null"
+                  v-model="$v.selectedSubjectName.$model">
+                    <option :key="term.id" v-for="term in dropListTerm">{{ term.subjectName }}</option>
+                  </b-form-select>
+              </CCol>
+              <CCol sm="6">
                 <CInput
                         :is-valid="!$v.startHour.$invalid"
                         label="Start time"
                         v-model="startHour"
                 />
               </CCol>
-              <CCol sm="3">
+              <CCol sm="6">
                 <CInput
                         :is-valid="!$v.finishHour.$invalid"
                         label="End time"
                         v-model="finishHour"
                 />
               </CCol>
-              <CCol sm="6">
-                <label>
-                  Subject Name
-                  <select 
-                  class="form-control position-absolute" 
-                  style="width: 86%; top:30px"
-                  required 
-                  v-model="selectedSubjectName">
-                    <option :key="term.id" v-for="term in dropListTerm">{{ term.subjectName }}</option>
-                  </select>
-                </label>
-              </CCol>
+              
             </CRow>
           </CCardBody>
         </CCard>
@@ -133,7 +134,7 @@
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton :disabled="$v.$invalid" @click="addExamPeriod" color="outline-success">Accept</CButton>
+        <CButton :disabled="$v.examDate.$invalid || $v.startHour.$invalid || $v.finishHour.$invalid || $v.selectedSubjectName.$invalid" @click="addExamPeriod" color="outline-success">Accept</CButton>
       </template>
     </CModal>
     <!-- Edit Modal  -->
@@ -207,7 +208,7 @@
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton :disabled="$v.$invalid" @click="discardModal" color="outline-success">Accept</CButton>
+        <CButton :disabled="$v.invalid" @click="discardModal" color="outline-success">Accept</CButton>
       </template>
     </CModal>
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
@@ -306,6 +307,12 @@
         required,
         numeric,
         integer
+      },
+      selectedSubjectName: {
+        required
+      },
+      value_rooms: {
+        required
       }
     },
     methods: {

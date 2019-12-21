@@ -1,48 +1,75 @@
 <template>
-<div>
-  <label class="">Tagging</label>
-  <multiselect 
-    v-model="value" 
-    tag-placeholder="Add this as new tag" 
-    placeholder="Search or add a tag" 
-    label="name" 
-    track-by="code" 
-    :options="options" 
-    :multiple="true" 
-    :taggable="true" 
-    >
-  </multiselect>
-  <pre class="language-json"><code>{{ value  }}</code></pre>
-</div>
+  <div>
+    <b-form @submit.stop.prevent="onSubmit">
+      <b-form-group id="example-input-group-1" label="Name" label-for="example-input-1">
+        <b-form-input
+          id="example-input-1"
+          name="example-input-1"
+          v-model="$v.form.name.$model"
+          :state="$v.form.name.$dirty ? !$v.form.name.$error : null"
+          aria-describedby="input-1-live-feedback"
+        ></b-form-input>
+
+        <b-form-invalid-feedback id="input-1-live-feedback">
+          This is a required field and must be at least 3 characters.
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group id="example-input-group-2" label="Food" label-for="example-input-2">
+        <b-form-select
+          id="example-input-2"
+          name="example-input-2"
+          v-model="$v.form.food.$model"
+          :options="foods"
+          :state="$v.form.food.$dirty ? !$v.form.food.$error : null"
+          aria-describedby="input-2-live-feedback"
+        ></b-form-select>
+
+        <b-form-invalid-feedback id="input-2-live-feedback">
+          This is a required field.
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-button type="submit" variant="primary" :disabled="$v.form.$invalid">Submit</b-button>
+    </b-form>
+  </div>
 </template>
 
 <script>
-import Multiselect from 'vue-multiselect'
-export default {
-  components: {
-    Multiselect
-  },
-  data () {
-    return {
-      value: [
-        { name: 'Javascript', code: 'js' }
-      ],
-      options: [
-        { name: 'Vue.js', code: 'vu' },
-        { name: 'Javascript', code: 'js' },
-        { name: 'Open Source', code: 'os' }
-      ]
-    }
-  },
-  methods: {
-    addTag (newTag) {
-      const tag = {
-        name: newTag,
-        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+  import { validationMixin } from 'vuelidate'
+  import { required, minLength } from 'vuelidate/lib/validators'
+
+  export default {
+    mixins: [validationMixin],
+    data() {
+      return {
+        foods: ['apple', 'orange'],
+        form: {
+          name: null,
+          food: null
+        }
       }
-      this.options.push(tag)
-      this.value.push(tag)
+    },
+    validations: {
+      form: {
+        food: {
+          required
+        },
+        name: {
+          required,
+          minLength: minLength(3)
+        }
+      }
+    },
+    methods: {
+      onSubmit() {
+        this.$v.form.$touch()
+        if (this.$v.form.$anyError) {
+          return
+        }
+
+        // Form submit logic
+      }
     }
   }
-}
 </script>

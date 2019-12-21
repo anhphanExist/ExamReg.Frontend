@@ -80,7 +80,7 @@
       </CCardBody>
     </CCard>
     <!-- Modal -->
-    <CModal :centered="true" :show.sync="myModal" color="info" title="Add more Exam Period">
+    <CModal :centered="true" :show.sync="myModal" color="info" title="Add more Exam Program">
       <CCol sm="12">
         <CCard>
           <CCardHeader>
@@ -117,12 +117,32 @@
           </CCardBody>
         </CCard>
       </CCol>
+      <div class="d-flex justify-content-center align-items-center" role="status" v-if="modalSpinner">
+        <CSpinner color="success"/>
+      </div>
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
         <CButton @click="addExamProgram" color="outline-success">Accept</CButton>
       </template>
     </CModal>
+  
+    <CModal :centered="true" :show.sync="successModal" color="info" title="Alert">
+      <CCol sm="12">
+        <CCard>
+          <CRow>
+            <CCol sm="12">
+              <div class="alert-success">Thành công</div>
+            </CCol>
+          </CRow>
+        </CCard>
+      </CCol>
+      <template #footer>
+        <CButton @click="discardModal" color="primary">Ok</CButton>
+      </template>
+    </CModal>
+    
+    
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
       <CSpinner color="success"/>
     </div>
@@ -175,12 +195,14 @@
       return {
         items,
         fields,
+        successModal: false,
         myModal: false,
         name: "",
         semesterCode: "",
         modalErrors: "",
         errors: "",
-        spinner: false
+        spinner: false,
+        modalSpinner: false
       };
     },
     computed: {
@@ -198,17 +220,20 @@
     },
     methods: {
       discardModal() {
+        this.successModal = false;
         this.myModal = false;
         this.modalErrors = "";
         this.name = "";
         this.semesterCode = "";
       },
       async addExamProgram() {
+        this.modalSpinner = true;
         const form = {
           name: this.name,
           semesterCode: this.semesterCode
         };
         let res = await examProgramService.createExamProgram(form);
+        this.modalSpinner = false;
         if (res.errors.length > 0) {
           let temp = res.errors[0].split(".")[2];
           this.modalErrors = (" " + temp).slice(1);
@@ -221,17 +246,20 @@
         }
       },
       async deleteExamProgram(item, index) {
+        this.spinner = true;
         const form = {
           id: item.id
         };
         let res = await examProgramService.deleteExamProgram(form);
         if (!res.errors.length > 0) {
+          this.successModal = true;
           this.errors = "";
           await this.$store.dispatch("listExamProgram");
         } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
+        this.spinner = false;
       },
       async setCurrent(item, index) {
         const form = {

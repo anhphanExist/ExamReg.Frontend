@@ -92,10 +92,28 @@
           </CCardBody>
         </CCard>
       </CCol>
+      <div class="d-flex justify-content-center align-items-center" role="status" v-if="modalSpinner">
+        <CSpinner color="success"/>
+      </div>
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
         <CButton @click="addExamRoom" color="outline-success">Accept</CButton>
+      </template>
+    </CModal>
+  
+    <CModal :centered="true" :show.sync="successModal" color="info" title="Alert">
+      <CCol sm="12">
+        <CCard>
+          <CRow>
+            <CCol sm="12">
+              <div class="alert-success">Thành công</div>
+            </CCol>
+          </CRow>
+        </CCard>
+      </CCol>
+      <template #footer>
+        <CButton @click="discardModal" color="primary">Ok</CButton>
       </template>
     </CModal>
     
@@ -142,8 +160,10 @@
     props: [],
     data() {
       return {
+        successModal: false,
         myModal: false,
         spinner: false,
+        modalSpinner: false,
         items,
         fields,
         roomNumber: "",
@@ -174,6 +194,7 @@
     },
     methods: {
       discardModal() {
+        this.successModal = false;
         this.myModal = false;
         this.roomNumber = "";
         this.amphitheaterName = "";
@@ -181,12 +202,14 @@
         this.modalErrors = ""
       },
       async addExamRoom() {
+        this.modalSpinner = true;
         const form = {
           roomNumber: this.roomNumber,
           amphitheaterName: this.amphitheaterName,
           computerNumber: this.computerNumber
         };
         let res = await examRoomService.createExamRoom(form);
+        this.modalSpinner = false;
         if (res.errors.length > 0) {
           let temp = res.errors[0].split(".")[2];
           this.modalErrors = (" " + temp).slice(1);
@@ -200,17 +223,20 @@
         }
       },
       async deleteExamRoom(item, index) {
+        this.spinner = true;
         const form = {
           id: item.id
         };
         let res = await examRoomService.deleteExamRoom(form);
         if (!res.errors.length > 0) {
+          this.successModal = true;
           this.errors = "";
           await this.$store.dispatch("listExamRoom");
         } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
+        this.spinner = false;
       }
     },
     async created() {

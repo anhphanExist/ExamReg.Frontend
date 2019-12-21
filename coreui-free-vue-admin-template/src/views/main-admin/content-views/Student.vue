@@ -165,10 +165,13 @@
           </CCardBody>
         </CCard>
       </CCol>
+      <div class="d-flex justify-content-center align-items-center" role="status" v-if="modalSpinner">
+        <CSpinner color="success"/>
+      </div>
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton :disabled="$v.$invalid" @click="addStudent" color="outline-success">Accept</CButton>
+        <CButton :disabled="$v.student_add.$invalid" @click="addStudent" color="outline-success">Accept</CButton>
       </template>
     </CModal>
     
@@ -184,70 +187,74 @@
             <CRow>
               <CCol sm="12">
                 <CInput
-                        :value="student_edit_mssv"
+                        :value="student_edit.mssv"
                         horizontal
                         label="Student No"
                         plaintext
-                        v-model="student_edit_mssv"
+                        v-model="student_edit.mssv"
+                        :disabled="true"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
                 <CInput
-                        :is-valid="!$v.student_add.lastName.$invalid"
+                        :is-valid="!$v.student_edit.lastName.$invalid"
                         horizontal
                         invalid-feedback="This field must be filled"
                         label="Last Name"
                         placeholder="Enter student first name"
-                        v-model="student_add.lastName"
+                        v-model="student_edit.lastName"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
                 <CInput
-                        :is-valid="!$v.student_add.firstName.$invalid"
+                        :is-valid="!$v.student_edit.firstName.$invalid"
                         horizontal
                         invalid-feedback="This field must be filled"
                         label="First Name"
                         placeholder="Enter student last name"
-                        v-model="student_add.firstName"
+                        v-model="student_edit.firstName"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
                 <CInput
-                        :is-valid="!$v.student_add.email.$invalid"
+                        :is-valid="!$v.student_edit.email.$invalid"
                         autocomplete="email"
                         horizontal
                         invalid-feedback="This field must be filled and only accepts valid email"
                         label="Email"
                         placeholder="Enter student email"
                         type="email"
-                        v-model="student_add.email"
+                        v-model="student_edit.email"
                 />
               </CCol>
             </CRow>
             <CRow>
               <CCol sm="12">
                 <CInput
-                        :is-valid="!$v.student_add.birthday.$invalid"
+                        :is-valid="!$v.student_edit.birthday.$invalid"
                         horizontal
                         label="Birthday"
                         type="date"
-                        v-model="student_add.birthday"
+                        v-model="student_edit.birthday"
                 />
               </CCol>
             </CRow>
           </CCardBody>
         </CCard>
       </CCol>
+      <div class="d-flex justify-content-center align-items-center" role="status" v-if="modalSpinner">
+        <CSpinner color="success"/>
+      </div>
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton :disabled="$v.$invalid" @click="discardModal" color="outline-success">Accept</CButton>
+        <CButton :disabled="$v.student_edit.$invalid" @click="acceptEdit" color="outline-success">Accept</CButton>
       </template>
     </CModal>
     
@@ -349,7 +356,15 @@
         importResultModal: false,
         importResultMessage: "",
         spinner: false,
-        student_edit_mssv: "",
+        modalSpinner: false,
+        student_edit: {
+          id: "",
+          mssv: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          birthday: ""
+        },
         student_add: {
           mssv: "",
           firstName: "",
@@ -386,6 +401,28 @@
         birthday: {
           required
         }
+      },
+      student_edit: {
+        mssv: {
+          required,
+          numeric,
+          integer,
+          minLen: minLength(8),
+          maxLen: maxLength(8)
+        },
+        firstName: {
+          required
+        },
+        lastName: {
+          required
+        },
+        email: {
+          required,
+          email
+        },
+        birthday: {
+          required
+        }
       }
     },
     computed: {
@@ -394,14 +431,6 @@
       }
     },
     methods: {
-      editDetails(item) {
-        this.student_edit_mssv = item.studentNumber;
-        this.student_add.firstName = item.givenName;
-        this.student_add.lastName = item.lastName;
-        this.student_add.email = item.email;
-        this.student_add.birthday = examRegUtils.inverseDate(item.birthday);
-        this.editModal = true;
-      },
       discardModal() {
         this.myModal = false;
         this.importResultModal = false;
@@ -416,6 +445,7 @@
         this.student_add.birthday = "";
       },
       async addStudent() {
+        this.modalSpinner = true;
         const form = {
           studentNumber: this.student_add.mssv,
           lastName: this.student_add.lastName,
@@ -423,8 +453,8 @@
           birthday: examRegUtils.inverseDate(this.student_add.birthday),
           email: this.student_add.email
         };
-        
         let res = await studentService.createStudent(form);
+        this.modalSpinner = false;
         if (res.errors.length > 0) {
           let temp = res.errors[0].split(".")[2];
           this.modalErrors = (" " + temp).slice(1);
@@ -433,7 +463,39 @@
           await this.$store.dispatch("listStudent");
         }
       },
+      editDetails(item) {
+        this.student_edit.id = item.id;
+        this.student_edit.mssv = item.studentNumber;
+        this.student_edit.firstName = item.givenName;
+        this.student_edit.lastName = item.lastName;
+        this.student_edit.email = item.email;
+        this.student_edit.birthday = examRegUtils.inverseDate(item.birthday);
+        this.editModal = true;
+      },
+      async acceptEdit() {
+        this.modalSpinner = true;
+        const form = {
+          id: this.student_edit.id,
+          studentNumber: this.student_edit.mssv,
+          lastName: this.student_edit.lastName,
+          givenName: this.student_edit.firstName,
+          birthday: examRegUtils.inverseDate(this.student_edit.birthday),
+          email: this.student_edit.email
+        };
+        let res = await studentService.updateStudent(form);
+        this.modalSpinner = false;
+        if (res.errors.length > 0) {
+          let temp = res.errors[0].split(".")[2];
+          this.modalErrors = (" " + temp).slice(1);
+        } else {
+          this.discardModal();
+          this.spinner = true;
+          await this.$store.dispatch("listStudent");
+          this.spinner = false;
+        }
+      },
       async deleteStudent(item, index) {
+        this.spinner = true;
         const form = {
           id: item.id,
           studentNumber: item.studentNumber
@@ -447,6 +509,7 @@
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
+        this.spinner = false;
       },
       async resetPassword(item, index) {
         const form = {

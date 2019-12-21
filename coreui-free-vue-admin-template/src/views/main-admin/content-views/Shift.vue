@@ -349,20 +349,14 @@
           examProgramId: this.currentExamProgram.id
         };
         let res = await examPeriodService.createExamPeriod(form);
+        this.modalSpinner = false;
         if (res.errors.length > 0) {
-          this.modalSpinner = false;
           let temp = res.errors[0].split(".")[2];
           this.modalErrors = (" " + temp).slice(1);
         } else {
-          this.addExamPeriodModal = false;
-          this.modalSpinner = false;
+          this.discardModal();
           this.spinner = true;
-          this.modalErrors = "";
           await this.$store.dispatch("listExamPeriod");
-          this.selectedSubjectName = "";
-          this.examDate = "";
-          this.startHour = "";
-          this.finishHour = "";
           this.spinner = false;
         }
       },

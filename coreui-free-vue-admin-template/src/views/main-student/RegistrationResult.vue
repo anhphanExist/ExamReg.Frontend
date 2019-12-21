@@ -14,7 +14,7 @@
             </CRow>
           </slot>
         </CCardHeader>
-        <CCardBody>
+        <CCardBody id="section-to-print">
           <CRow>
             <CCol sm=4></CCol>
             <CCol sm=5>
@@ -22,27 +22,24 @@
             </CCol>
             <CCol sm=3></CCol>
           </CRow>
-          <CRow class="pt-2 px-5">
+          <CRow class="pt-3 px-5">
             <CCol sm="3">
               <CInput
                       :value="studentInfo.lastName + ' ' + studentInfo.givenName"
-                      horizontal
-                      label="Name:"
+                      label="Họ và tên:"
                       plaintext
               />
             </CCol>
             <CCol sm="3">
               <CInput
                       :value="studentInfo.studentNumber"
-                      horizontal
-                      label="MSSV:"
+                      label="Mã số sinh viên:"
                       plaintext
               />
             </CCol>
             <CCol sm="3">
               <CInput
                       :value="studentInfo.email"
-                      horizontal
                       label="Email:"
                       plaintext
               />
@@ -50,8 +47,7 @@
             <CCol sm="3">
               <CInput
                       :value="studentInfo.birthday"
-                      horizontal
-                      label="DOB:"
+                      label="Ngày sinh:"
                       plaintext
               />
             </CCol>
@@ -69,13 +65,15 @@
               <td>{{index + 1}}</td>
             </template>
           </CDataTable>
-          <CCol>
-            <CButton class="float-right px-4 mr-4" color="primary" @click="exportResult">Export Result</CButton>
-          </CCol>
-          <CCol>
-            <CButton class="float-right px-4 mr-4" color="info" @click="printResult">Print Result</CButton>
-          </CCol>
         </CCardBody>
+        <CCardFooter>
+          <CCol>
+            <CButton @click="exportResult" class="btn float-right px-4 mr-4" color="primary">Export Result</CButton>
+          </CCol>
+          <CCol>
+            <CButton @click="printResult" class="btn float-right px-4 mr-4" color="info">Print Result</CButton>
+          </CCol>
+        </CCardFooter>
       </CCard>
     </div>
     
@@ -159,3 +157,19 @@
     }
   };
 </script>
+
+<style>
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    #section-to-print, #section-to-print * {
+      visibility: visible;
+    }
+    #section-to-print {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+</style>

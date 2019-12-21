@@ -142,9 +142,6 @@
       await this.$store.dispatch("registerListTerm");
       await this.$store.dispatch("registerCurrentExamProgram");
       await this.$store.dispatch("registerListCurrentExamPeriod");
-      this.spinner = false;
-    },
-    async mounted() {
       for (let i = 0; i < this.listTerm.length; i++) {
         for (let j = 0; j < this.listTerm[i].examPeriods.length; j++) {
           if (this.listCurrentExamPeriod.some(c => c.id == this.listTerm[i].examPeriods[j].id)) {
@@ -152,6 +149,7 @@
           }
         }
       }
+      this.spinner = false;
     }
   };
 </script>

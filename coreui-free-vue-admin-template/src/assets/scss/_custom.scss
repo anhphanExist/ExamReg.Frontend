@@ -1,4 +1,7 @@
 // Here you can add other styles
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+
 .form-control-plaintext {
     font-weight: bold;
     color: #2eb85c;

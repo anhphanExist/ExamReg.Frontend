@@ -1,44 +1,45 @@
 <template>
   <div>
     <CRow v-if="!spinner">
-      <CCol col="10">
+      <CCol col="12">
         <CCard>
-          <CCardHeader>
+          <CCardHeader class="border-white">
             <CIcon name="cil-justify-center"/>
             <strong>{{ currentExamProgram.name }}</strong>
           </CCardHeader>
-          <CCardBody>
+          <CCardBody class="border-white">
             <div :key="term.id" v-for="(term, index) in listTerm">
               <CRow v-if="term.isQualified">
-                <CCol col="8">
-                  <CAlert class="alert-dismissible" color="success">
+                <CCol col="12">
+                  <div class="alert alert-success">
                     {{ term.subjectName }}
                     <CButton
                             class="position-absolute"
-                            color="success"
-                            style="right:10px;top: 50%;transform: translateY(-50%);"
+                            style="right:28%;top: 50%;transform: translateY(-50%);"
                             :disabled="true"
                     >Pick your exam time
                     </CButton>
-                  </CAlert>
-                </CCol>
-                <CCol col="3">
-                    <select class="form-control mt-2" :required="true" v-model="selectedExamPeriods[index]">
+                    <select
+                            class="form-control"
+                            style="right:10px;top: 50%;transform: translateY(-50%); width: 25%; position: absolute;"
+                            :required="true"
+                            v-model="selectedExamPeriods[index]"
+                    >
                       <option
                               v-for="examPeriod in term.examPeriods"
                               :key="examPeriod.id"
                               :value="examPeriod"
                       >{{ examPeriod.examDate }}. {{ examPeriod.startHour }}:00 - {{examPeriod.finishHour}}:00</option>
                     </select>
+                  </div>
                 </CCol>
               </CRow>
               <CRow v-if="!term.isQualified">
-                <CCol col="8">
+                <CCol col="12">
                   <CAlert class="alert-dismissible" color="danger">
                     {{ term.subjectName }}
                     <CButton
                             class="position-absolute"
-                            color="danger"
                             style="right:10px;top: 50%;transform: translateY(-50%);"
                             :disabled="true"
                     >Disqualified!
@@ -47,12 +48,19 @@
                 </CCol>
               </CRow>
             </div>
+          </CCardBody>
+          <CCardFooter class="border-white">
             <CRow>
-              <CCol>
-                <CButton class="float-right px-4 mt-3 mr-4" color="primary" @click="register">Register</CButton>
+              <CCol col="12">
+                <CButton
+                        class="float-right btn-lg"
+                        style="width:20%;"
+                        color="primary"
+                        @click="register"
+                >Register</CButton>
               </CCol>
             </CRow>
-          </CCardBody>
+          </CCardFooter>
         </CCard>
       </CCol>
     </CRow>

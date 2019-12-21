@@ -19,13 +19,16 @@
                       toggler-text="More Action"
               >
                 <div>
-                  <input type="file" id="import-student" class="import" ref="studentFile" @change="handleFileUploadStudent()"/>
+                  <input @change="handleFileUploadStudent()" class="import" id="import-student" ref="studentFile"
+                         type="file"/>
                   <CDropdownItem @click="importStudent">Import Student</CDropdownItem>
                 </div>
                 <CDropdownItem @click="downloadStudentTemplate">Download Student Template</CDropdownItem>
                 <CDropdownItem @click="exportStudent">Export Student</CDropdownItem>
                 <div>
-                  <input type="file" id="import-student-term" class="import" ref="studentTermFile" @change="handleFileUploadStudentTerm()"/>
+                  <input @change="handleFileUploadStudentTerm()" class="import" id="import-student-term"
+                         ref="studentTermFile"
+                         type="file"/>
                   <CDropdownItem @click="importStudentTerm">Import Student Term</CDropdownItem>
                 </div>
                 <CDropdownItem @click="downloadStudentTermTemplate">Download Student Term Template</CDropdownItem>
@@ -89,6 +92,8 @@
         </CDataTable>
       </CCardBody>
     </CCard>
+    
+    
     <!--Add Modal -->
     <CModal :centered="true" :show.sync="myModal" color="info" title="Add more students">
       <CCol sm="12">
@@ -102,21 +107,9 @@
                 <CInput
                         :is-valid="!$v.student_add.mssv.$invalid" horizontal
                         invalid-feedback="This field must be filled and only accepts 8 digit integer"
-                        label="MSSV"
+                        label="Student No"
                         placeholder="00000000"
                         v-model="student_add.mssv"
-                />
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol sm="12">
-                <CInput
-                        :is-valid="!$v.student_add.firstName.$invalid"
-                        horizontal
-                        invalid-feedback="This field must be filled"
-                        label="First Name"
-                        placeholder="Enter student first name"
-                        v-model="student_add.firstName"
                 />
               </CCol>
             </CRow>
@@ -127,8 +120,20 @@
                         horizontal
                         invalid-feedback="This field must be filled"
                         label="Last Name"
-                        placeholder="Enter student last name"
+                        placeholder="Enter student first name"
                         v-model="student_add.lastName"
+                />
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol sm="12">
+                <CInput
+                        :is-valid="!$v.student_add.firstName.$invalid"
+                        horizontal
+                        invalid-feedback="This field must be filled"
+                        label="First Name"
+                        placeholder="Enter student last name"
+                        v-model="student_add.firstName"
                 />
               </CCol>
             </CRow>
@@ -146,41 +151,15 @@
                 />
               </CCol>
             </CRow>
-            
             <CRow>
-              
-              <CCol sm="3">
-                <label class="py-2">
-                  DOB
-                </label>
-              </CCol>
-              
-              <CCol sm="3">
-                <select
-                        class="form-control position-absolute"
-                        style="width: 75%; left:10px;"
-                        v-model="student_add.dob.day">
-                  <option :key="index" v-for="index in 31">{{ index }}</option>
-                </select>
-              
-              </CCol>
-              <CCol sm="3">
-                <select
-                        class="form-control position-absolute"
-                        style="width: 75%;left:10px;"
-                        v-model="student_add.dob.month">
-                  <option :key="index" v-for="index in 12">{{ index }}</option>
-                </select>
-              
-              </CCol>
-              <CCol sm="3">
-                <select
-                        class="form-control position-absolute"
-                        style="width: 75%;left:10px"
-                        v-model="student_add.dob.year">
-                  <option :key="index" v-for="index in 50">{{ index + 1970 }}</option>
-                </select>
-              
+              <CCol sm="12">
+                <CInput
+                        :is-valid="!$v.student_add.birthday.$invalid"
+                        horizontal
+                        label="Birthday"
+                        type="date"
+                        v-model="student_add.birthday"
+                />
               </CCol>
             </CRow>
           </CCardBody>
@@ -192,8 +171,10 @@
         <CButton :disabled="$v.$invalid" @click="addStudent" color="outline-success">Accept</CButton>
       </template>
     </CModal>
+    
+    
     <!-- Edit Modal -->
-    <CModal :centered="true" :show.sync="editModal" color="info" title="Add more students">
+    <CModal :centered="true" :show.sync="editModal" color="info" title="Edit">
       <CCol sm="12">
         <CCard>
           <CCardHeader>
@@ -203,23 +184,11 @@
             <CRow>
               <CCol sm="12">
                 <CInput
-                        horizontal
-                        label="MSSV"
                         :value="student_edit_mssv"
-                        v-model="student_edit_mssv"
-                        plaintext
-                />
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol sm="12">
-                <CInput
-                        :is-valid="!$v.student_add.firstName.$invalid"
                         horizontal
-                        invalid-feedback="This field must be filled"
-                        label="First Name"
-                        placeholder="Enter student first name"
-                        v-model="student_add.firstName"
+                        label="Student No"
+                        plaintext
+                        v-model="student_edit_mssv"
                 />
               </CCol>
             </CRow>
@@ -230,8 +199,20 @@
                         horizontal
                         invalid-feedback="This field must be filled"
                         label="Last Name"
-                        placeholder="Enter student last name"
+                        placeholder="Enter student first name"
                         v-model="student_add.lastName"
+                />
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol sm="12">
+                <CInput
+                        :is-valid="!$v.student_add.firstName.$invalid"
+                        horizontal
+                        invalid-feedback="This field must be filled"
+                        label="First Name"
+                        placeholder="Enter student last name"
+                        v-model="student_add.firstName"
                 />
               </CCol>
             </CRow>
@@ -249,41 +230,15 @@
                 />
               </CCol>
             </CRow>
-            
             <CRow>
-              
-              <CCol sm="3">
-                <label class="py-2">
-                  DOB
-                </label>
-              </CCol>
-              
-              <CCol sm="3">
-                <select
-                        class="form-control position-absolute"
-                        style="width: 75%; left:10px;"
-                        v-model="student_add.dob.day">
-                  <option :key="index" v-for="index in 31">{{ index }}</option>
-                </select>
-              
-              </CCol>
-              <CCol sm="3">
-                <select
-                        class="form-control position-absolute"
-                        style="width: 75%;left:10px;"
-                        v-model="student_add.dob.month">
-                  <option :key="index" v-for="index in 12">{{ index }}</option>
-                </select>
-              
-              </CCol>
-              <CCol sm="3">
-                <select
-                        class="form-control position-absolute"
-                        style="width: 75%;left:10px"
-                        v-model="student_add.dob.year">
-                  <option :key="index" v-for="index in 50">{{ index + 1970 }}</option>
-                </select>
-              
+              <CCol sm="12">
+                <CInput
+                        :is-valid="!$v.student_add.birthday.$invalid"
+                        horizontal
+                        label="Birthday"
+                        type="date"
+                        v-model="student_add.birthday"
+                />
               </CCol>
             </CRow>
           </CCardBody>
@@ -295,7 +250,7 @@
         <CButton :disabled="$v.$invalid" @click="discardModal" color="outline-success">Accept</CButton>
       </template>
     </CModal>
-  
+    
     
     <CModal :centered="true" :show.sync="importResultModal" color="info" title="Alert">
       <CCol sm="12">
@@ -318,7 +273,20 @@
       </template>
     </CModal>
     
-    
+    <CModal :centered="true" :show.sync="successModal" color="info" title="Alert">
+      <CCol sm="12">
+        <CCard>
+          <CRow>
+            <CCol sm="12">
+              <div class="alert-success">Thành công</div>
+            </CCol>
+          </CRow>
+        </CCard>
+      </CCol>
+      <template #footer>
+        <CButton @click="discardModal" color="primary">Ok</CButton>
+      </template>
+    </CModal>
     
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
       <CSpinner color="success"/>
@@ -330,6 +298,7 @@
   import user_data from "./data/students";
   import {email, integer, maxLength, minLength, numeric, required} from "vuelidate/lib/validators";
   import studentService from "../../../services/admin/student.service";
+  import examRegUtils from "../../../utils/exam-reg-utils";
   
   const fields = [
     {
@@ -374,6 +343,7 @@
     props: [],
     data() {
       return {
+        successModal: false,
         editModal: false,
         myModal: false,
         importResultModal: false,
@@ -385,11 +355,7 @@
           firstName: "",
           lastName: "",
           email: "",
-          dob: {
-            day: "",
-            month: "",
-            year: ""
-          }
+          birthday: ""
         },
         items,
         fields,
@@ -416,6 +382,9 @@
         email: {
           required,
           email
+        },
+        birthday: {
+          required
         }
       }
     },
@@ -425,13 +394,18 @@
       }
     },
     methods: {
-      editDetails (item) {
-        this.student_edit_mssv = item.studentNumber
+      editDetails(item) {
+        this.student_edit_mssv = item.studentNumber;
+        this.student_add.firstName = item.givenName;
+        this.student_add.lastName = item.lastName;
+        this.student_add.email = item.email;
+        this.student_add.birthday = examRegUtils.inverseDate(item.birthday);
         this.editModal = true;
       },
       discardModal() {
         this.myModal = false;
         this.importResultModal = false;
+        this.successModal = false;
         this.importResultMessage = "";
         this.editModal = false;
         this.modalErrors = "";
@@ -439,17 +413,14 @@
         this.student_add.firstName = "";
         this.student_add.lastName = "";
         this.student_add.email = "";
-        this.student_add.dob.day = "";
-        this.student_add.dob.month = "";
-        this.student_add.dob.year = "";
+        this.student_add.birthday = "";
       },
       async addStudent() {
-        const birthday = new Date(Date.UTC(this.student_add.dob.year, this.student_add.dob.month - 1, this.student_add.dob.day));
         const form = {
           studentNumber: this.student_add.mssv,
           lastName: this.student_add.lastName,
           givenName: this.student_add.firstName,
-          birthday: birthday,
+          birthday: examRegUtils.inverseDate(this.student_add.birthday),
           email: this.student_add.email
         };
         
@@ -458,16 +429,8 @@
           let temp = res.errors[0].split(".")[2];
           this.modalErrors = (" " + temp).slice(1);
         } else {
-          this.myModal = false;
-          this.modalErrors = "";
+          this.discardModal();
           await this.$store.dispatch("listStudent");
-          this.student_add.mssv = "";
-          this.student_add.firstName = "";
-          this.student_add.lastName = "";
-          this.student_add.email = "";
-          this.student_add.dob.day = "";
-          this.student_add.dob.month = "";
-          this.student_add.dob.year = "";
         }
       },
       async deleteStudent(item, index) {
@@ -477,10 +440,9 @@
         };
         let res = await studentService.deleteStudent(form);
         if (!res.errors.length > 0) {
-          this.spinner = true;
+          this.successModal = true;
           this.errors = "";
           await this.$store.dispatch("listStudent");
-          this.spinner = false;
         } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
@@ -493,10 +455,9 @@
         };
         let res = await studentService.resetPassword(form);
         if (!res.errors.length > 0) {
-          this.spinner = true;
+          this.successModal = true;
           this.errors = "";
           await this.$store.dispatch("listStudent");
-          this.spinner = false;
         } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
@@ -537,8 +498,7 @@
           this.modalErrors = data.errors[0];
           this.importResultMessage = data.message;
           this.importResultModal = true;
-        }
-        else {
+        } else {
           await this.$store.dispatch("listStudent");
           this.spinner = false;
           this.importResultMessage = data.message;
@@ -555,8 +515,7 @@
           this.modalErrors = data.errors[0];
           this.importResultMessage = data.message;
           this.importResultModal = true;
-        }
-        else {
+        } else {
           await this.$store.dispatch("listStudent");
           this.spinner = false;
           this.importResultMessage = data.message;

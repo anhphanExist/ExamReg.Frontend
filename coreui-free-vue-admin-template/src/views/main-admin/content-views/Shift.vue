@@ -86,7 +86,7 @@
                 <CInput
                         :value="currentExamProgram.name"
                         horizontal
-                        label="Exam Period"
+                        label="Current Exam Program"
                         plaintext
                 />
               </CCol>
@@ -117,11 +117,11 @@
               <CCol sm="6">
                 <label>
                   Subject Name
-                  <select 
-                  class="form-control position-absolute" 
-                  style="width: 86%; top:30px"
-                  required 
-                  v-model="selectedSubjectName">
+                  <select
+                          class="form-control position-absolute"
+                          required
+                          style="width: 86%; top:30px"
+                          v-model="selectedSubjectName">
                     <option :key="term.id" v-for="term in dropListTerm">{{ term.subjectName }}</option>
                   </select>
                 </label>
@@ -130,6 +130,9 @@
           </CCardBody>
         </CCard>
       </CCol>
+      <div class="d-flex justify-content-center align-items-center" role="status" v-if="modalSpinner">
+        <CSpinner color="success"/>
+      </div>
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
@@ -137,7 +140,7 @@
       </template>
     </CModal>
     <!-- Edit Modal  -->
-    <CModal :centered="true" :show.sync="editExamPeriodModal" color="info" title="Add more shifts">
+    <CModal :centered="true" :show.sync="editExamPeriodModal" color="info" title="Edit shifts">
       <CCol sm="14">
         <CCard>
           <CCardHeader>
@@ -149,65 +152,69 @@
                 <CInput
                         :value="currentExamProgram.name"
                         horizontal
-                        label="Exam Period"
+                        label="Current Exam Program"
                         plaintext
                 />
               </CCol>
               <CCol sm="12">
                 <CInput
-                        :value="chosen_room.examDate"
+                        :value="chosenExamPeriod.examDate"
                         horizontal
                         label="Exam Date"
                         plaintext
-                        v-model="chosen_room.examDate"
+                        v-model="chosenExamPeriod.examDate"
                 />
               </CCol>
               
               <CCol sm="3">
                 <CInput
-                        :value="chosen_room.startHour"
+                        :value="chosenExamPeriod.startHour"
                         label="Start time"
                         plaintext
-                        v-model="chosen_room.startHour"
+                        v-model="chosenExamPeriod.startHour"
                 />
               </CCol>
               <CCol sm="3">
                 <CInput
-                        :value="chosen_room.finishHour"
+                        :value="chosenExamPeriod.finishHour"
                         label="End time"
                         plaintext
-                        v-model="chosen_room.finishHour"
+                        v-model="chosenExamPeriod.finishHour"
                 />
               </CCol>
               <CCol sm="6">
                 <CInput
-                        :value="chosen_room.subjectName"
+                        :value="chosenExamPeriod.subjectName"
                         label="Subject name"
                         plaintext
-                        v-model="chosen_room.subjectName"
+                        v-model="chosenExamPeriod.subjectName"
                 />
               </CCol>
               <CCol sm="12">
                 <label>Room Available</label>
-                  <multiselect 
-                    v-model="value_rooms"  
-                    placeholder="Search for a room" 
-                    label="code"  
-                    track-by="code" 
-                    :options="optional_rooms" 
-                    :multiple="true" 
-                    :taggable="true" 
-                    >
-                  </multiselect>
+                <multiselect
+                        :multiple="true"
+                        :options="optional_rooms"
+                        :taggable="true"
+                        label="code"
+                        placeholder="Search for a room"
+                        track-by="code"
+                        v-model="value_rooms"
+                >
+                </multiselect>
               </CCol>
             </CRow>
           </CCardBody>
         </CCard>
       </CCol>
+      <div class="d-flex justify-content-center align-items-center" role="status" v-if="modalSpinner">
+        <CSpinner color="success"/>
+      </div>
+      <div class="alert alert-danger" v-show="!validateEditRooms">Yêu cầu ca thi phải có phòng thi</div>
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton :disabled="$v.$invalid" @click="discardModal" color="outline-success">Accept</CButton>
+        <CButton :disabled="!validateEditRooms" @click="acceptUpdateExamPeriod" color="outline-success">Accept</CButton>
       </template>
     </CModal>
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
@@ -221,6 +228,7 @@
   import shifts_data from "./data/shifts";
   import {integer, numeric, required} from "vuelidate/lib/validators";
   import examPeriodService from "../../../services/admin/exam-period.service";
+  import examRegUtils from "../../../utils/exam-reg-utils";
   
   const fields = [
     {
@@ -269,6 +277,7 @@
         addExamPeriodModal: false,
         editExamPeriodModal: false,
         spinner: false,
+        modalSpinner: false,
         items,
         fields,
         selectedSubjectName: "",
@@ -277,8 +286,8 @@
         finishHour: "",
         modalErrors: "",
         errors: "",
-        chosen_room: {},
-        value_rooms:[],
+        chosenExamPeriod: {},
+        value_rooms: [],
         optional_rooms: [],
       };
     },
@@ -291,6 +300,9 @@
       },
       currentExamProgram() {
         return this.$store.getters.examPeriodCurrentExamProgram;
+      },
+      validateEditRooms() {
+        return this.value_rooms.length > 0;
       }
     },
     validations: {
@@ -316,31 +328,39 @@
         this.selectedSubjectName = "";
         this.examDate = "";
         this.startHour = "";
-        this.finishHour = ""
+        this.finishHour = "";
+        this.value_rooms = [];
+        this.optional_rooms = [];
       },
       async addExamPeriod() {
+        this.modalSpinner = true;
         const form = {
-          examDate: this.examDate,
+          examDate: examRegUtils.inverseDate(this.examDate),
           startHour: this.startHour,
           finishHour: this.finishHour,
           subjectName: this.selectedSubjectName,
-          examProgramName: this.currentExamProgram.name
+          examProgramId: this.currentExamProgram.id
         };
         let res = await examPeriodService.createExamPeriod(form);
         if (res.errors.length > 0) {
+          this.modalSpinner = false;
           let temp = res.errors[0].split(".")[2];
           this.modalErrors = (" " + temp).slice(1);
         } else {
           this.addExamPeriodModal = false;
+          this.modalSpinner = false;
+          this.spinner = true;
           this.modalErrors = "";
           await this.$store.dispatch("listExamPeriod");
           this.selectedSubjectName = "";
           this.examDate = "";
           this.startHour = "";
-          this.finishHour = ""
+          this.finishHour = "";
+          this.spinner = false;
         }
       },
       async deleteExamPeriod(item, index) {
+        this.spinner = true;
         const form = {
           id: item.id
         };
@@ -352,32 +372,42 @@
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
+        this.spinner = false;
       },
       async editExamPeriod(item) {
-        this.chosen_room = item
-        this.value_rooms = item.examRooms;
-        this.optional_rooms = [
-          {
-            id: "552c71ca-a374-2bde-9e19-2944bfb64999",
-            code: "G3_111",
-            roomNumber: 111,
-            amphitheaterName: "G3",
-            computerNumber: 100
-          },
-          {
-            id: "552c71ca-a374-2bde-9e19-2944bfb65000",
-            code: "G3_222",
-            roomNumber: 222,
-            amphitheaterName: "G3",
-            computerNumber: 100
-          }
-        ]
+        this.chosenExamPeriod = item;
+        this.value_rooms = [...item.examRooms];
+        const form = {
+          examDate: item.examDate,
+          startHour: item.startHour,
+          finishHour: item.finishHour
+        };
+        this.optional_rooms = [...await examPeriodService.selectListAvailableExamRoom(form)];
         for (let index = 0; index < this.value_rooms.length; index++) {
           const element = this.value_rooms[index];
-          this.optional_rooms.push(element)
+          this.optional_rooms.push(element);
         }
-        console.log(this.optional_rooms)
-        this.editExamPeriodModal = true
+        this.editExamPeriodModal = true;
+      },
+      async acceptUpdateExamPeriod() {
+        this.modalSpinner = true;
+        const form = {
+          id: this.chosenExamPeriod.id,
+          examRooms: this.value_rooms
+        };
+        let res = await examPeriodService.updateExamPeriod(form);
+        this.modalSpinner = false;
+        if (res.errors.length > 0) {
+          let temp = res.errors[0].split(".")[2];
+          this.modalErrors = (" " + temp).slice(1);
+        } else {
+          this.discardModal();
+          this.spinner = true;
+          await this.$store.dispatch("examPeriodCurrentExamProgram");
+          await this.$store.dispatch("examPeriodDropListTerm");
+          await this.$store.dispatch("listExamPeriod");
+          this.spinner = false;
+        }
       }
     },
     async created() {

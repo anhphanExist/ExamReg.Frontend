@@ -477,8 +477,10 @@
         };
         let res = await studentService.deleteStudent(form);
         if (!res.errors.length > 0) {
+          this.spinner = true;
           this.errors = "";
           await this.$store.dispatch("listStudent");
+          this.spinner = false;
         } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
@@ -491,8 +493,10 @@
         };
         let res = await studentService.resetPassword(form);
         if (!res.errors.length > 0) {
+          this.spinner = true;
           this.errors = "";
           await this.$store.dispatch("listStudent");
+          this.spinner = false;
         } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);

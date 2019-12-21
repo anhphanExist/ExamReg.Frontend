@@ -11,7 +11,7 @@ const createExamPeriod = async function (form) {
     startHour: form.startHour,
     finishHour: form.finishHour,
     subjectName: form.subjectName,
-    examProgramName: form.examProgramName
+    examProgramId: form.examProgramId
   };
   let response = await examPeriodApi.createExamPeriod(examPeriodRequestDTO);
   return response.data;
@@ -20,11 +20,6 @@ const createExamPeriod = async function (form) {
 const updateExamPeriod = async function (form) {
   let examPeriodRequestDTO = {
     id: form.id,
-    examDate: form.examDate,
-    startHour: form.startHour,
-    finishHour: form.finishHour,
-    subjectName: form.subjectName,
-    examProgramName: form.examProgramName,
     examRooms: form.examRooms
   };
   let response = await examPeriodApi.updateExamPeriod(examPeriodRequestDTO);

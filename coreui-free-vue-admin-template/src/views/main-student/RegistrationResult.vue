@@ -70,7 +70,10 @@
             </template>
           </CDataTable>
           <CCol>
-            <CButton class="float-right px-4 mr-4" color="outline-info">Export Result</CButton>
+            <CButton class="float-right px-4 mr-4" color="primary" @click="exportResult">Export Result</CButton>
+          </CCol>
+          <CCol>
+            <CButton class="float-right px-4 mr-4" color="info" @click="printResult">Print Result</CButton>
           </CCol>
         </CCardBody>
       </CCard>
@@ -84,6 +87,8 @@
 </template>
 
 <script>
+  import registerResultService from "../../services/student/register-result.service";
+  
   const items = [
     {
       subjectName: "Computer Network",
@@ -133,6 +138,16 @@
       },
       listExamRoomExamPeriod() {
         return this.$store.getters.registerResultListExamRoomExamPeriod;
+      }
+    },
+    methods: {
+      printResult() {
+        window.print();
+      },
+      async exportResult() {
+        this.spinner = true;
+        await registerResultService.printExamRegisterResult();
+        this.spinner = false;
       }
     },
     async created() {

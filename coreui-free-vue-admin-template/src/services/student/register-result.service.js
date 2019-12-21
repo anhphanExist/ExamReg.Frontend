@@ -16,7 +16,12 @@ const listExamRoomExamPeriod = async function () {
 };
 
 const printExamRegisterResult = async function () {
-  return await registerResultApi.printExamRegisterResult();
+  let response = await registerResultApi.printExamRegisterResult();
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "RegisterResult.docx";
+  link.click();
 };
 
 export default {

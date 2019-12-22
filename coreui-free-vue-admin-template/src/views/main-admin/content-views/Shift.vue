@@ -215,7 +215,7 @@
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton :disabled="!validateEditRooms || $v.$invalid" @click="acceptUpdateExamPeriod" color="outline-success">Accept</CButton>
+        <CButton :disabled="!validateEditRooms" @click="acceptUpdateExamPeriod" color="outline-success">Accept</CButton>
       </template>
     </CModal>
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">

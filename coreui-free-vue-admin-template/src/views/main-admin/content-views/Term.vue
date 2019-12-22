@@ -270,6 +270,7 @@ export default {
         id: item.id
       };
       let res = await termService.deleteTerm(form);
+      this.spinner = false;
       if (!res.errors.length > 0) {
         this.successModal = true;
         this.errors = "";
@@ -279,7 +280,6 @@ export default {
         let temp = res.errors[0].split(".")[2];
         this.errors = (" " + temp).slice(1);
       }
-      this.spinner = false;
     },
     async importTerm() {
       document.getElementById("import-term").click();

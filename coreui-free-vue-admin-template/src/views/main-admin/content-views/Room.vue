@@ -228,6 +228,7 @@
           id: item.id
         };
         let res = await examRoomService.deleteExamRoom(form);
+        this.spinner = false;
         if (!res.errors.length > 0) {
           this.successModal = true;
           this.errors = "";
@@ -236,7 +237,6 @@
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
-        this.spinner = false;
       }
     },
     async created() {

@@ -251,6 +251,7 @@
           id: item.id
         };
         let res = await examProgramService.deleteExamProgram(form);
+        this.spinner = false;
         if (!res.errors.length > 0) {
           this.successModal = true;
           this.errors = "";
@@ -259,7 +260,6 @@
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
-        this.spinner = false;
       },
       async setCurrent(item, index) {
         const form = {
@@ -267,6 +267,7 @@
         };
         let res = await examProgramService.setCurrentExamProgram(form);
         if (!res.errors.length > 0) {
+          this.successModal = true;
           this.errors = "";
           await this.$store.dispatch("listExamProgram");
         } else {

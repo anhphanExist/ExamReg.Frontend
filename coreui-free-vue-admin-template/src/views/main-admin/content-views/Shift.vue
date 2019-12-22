@@ -107,9 +107,9 @@
                   class="form-control position-absolute"
                   style="width: 70%; left: 124px; bottom: 20px;"
                   aria-describedby="input-1-live-feedback"
-                  :state="$v.selectedSubjectName.$dirty ? !$v.selectedSubjectName.$error : null"
-                  v-model="$v.selectedSubjectName.$model">
-                    <option :key="term.id" v-for="term in dropListTerm">{{ term.subjectName }}</option>
+                  :state="$v.selectedTermId.$dirty ? !$v.selectedTermId.$error : null"
+                  v-model="$v.selectedTermId.$model">
+                    <option :key="term.id" v-for="term in dropListTerm" :value="term.id">{{ term.subjectName }}</option>
                   </b-form-select>
               </CCol>
               <CCol sm="6">
@@ -137,7 +137,7 @@
       <div class="alert alert-danger" v-if="modalErrors.length > 0">{{ modalErrors }}</div>
       <template #footer>
         <CButton @click="discardModal" color="outline-danger">Discard</CButton>
-        <CButton :disabled="$v.examDate.$invalid || $v.startHour.$invalid || $v.finishHour.$invalid || $v.selectedSubjectName.$invalid" @click="addExamPeriod" color="outline-success">Accept</CButton>
+        <CButton :disabled="$v.examDate.$invalid || $v.startHour.$invalid || $v.finishHour.$invalid || $v.selectedTermId.$invalid" @click="addExamPeriod" color="outline-success">Accept</CButton>
       </template>
     </CModal>
     <!-- Edit Modal  -->
@@ -218,6 +218,24 @@
         <CButton :disabled="!validateEditRooms" @click="acceptUpdateExamPeriod" color="outline-success">Accept</CButton>
       </template>
     </CModal>
+  
+  
+    <CModal :centered="true" :show.sync="successModal" color="info" title="Alert">
+      <CCol sm="12">
+        <CCard>
+          <CRow>
+            <CCol sm="12">
+              <div class="alert-success">Thành công</div>
+            </CCol>
+          </CRow>
+        </CCard>
+      </CCol>
+      <template #footer>
+        <CButton @click="discardModal" color="primary">Ok</CButton>
+      </template>
+    </CModal>
+    
+    
     <div class="d-flex justify-content-center align-items-center" role="status" v-if="spinner">
       <CSpinner color="success"/>
     </div>
@@ -275,13 +293,14 @@
     },
     data() {
       return {
+        successModal: false,
         addExamPeriodModal: false,
         editExamPeriodModal: false,
         spinner: false,
         modalSpinner: false,
         items,
         fields,
-        selectedSubjectName: "",
+        selectedTermId: "",
         examDate: "",
         startHour: "",
         finishHour: "",
@@ -320,7 +339,7 @@
         numeric,
         integer
       },
-      selectedSubjectName: {
+      selectedTermId: {
         required
       },
       value_rooms: {
@@ -329,10 +348,11 @@
     },
     methods: {
       discardModal() {
+        this.successModal = false;
         this.editExamPeriodModal = false;
         this.addExamPeriodModal = false;
         this.modalErrors = "";
-        this.selectedSubjectName = "";
+        this.selectedTermId = "";
         this.examDate = "";
         this.startHour = "";
         this.finishHour = "";
@@ -345,7 +365,7 @@
           examDate: examRegUtils.inverseDate(this.examDate),
           startHour: this.startHour,
           finishHour: this.finishHour,
-          subjectName: this.selectedSubjectName,
+          termId: this.selectedTermId,
           examProgramId: this.currentExamProgram.id
         };
         let res = await examPeriodService.createExamPeriod(form);
@@ -366,14 +386,15 @@
           id: item.id
         };
         let res = await examPeriodService.deleteExamPeriod(form);
+        this.spinner = false;
         if (!res.errors.length > 0) {
+          this.successModal = true;
           this.errors = "";
           await this.$store.dispatch("listExamPeriod");
         } else {
           let temp = res.errors[0].split(".")[2];
           this.errors = (" " + temp).slice(1);
         }
-        this.spinner = false;
       },
       async editExamPeriod(item) {
         this.chosenExamPeriod = item;

@@ -44,6 +44,7 @@
                       size="sm"
                       square
                       variant="outline"
+                      :disabled="item.id == currentExamProgram.semesterId"
               >Delete
               </CButton>
             </td>
@@ -182,6 +183,9 @@
     computed: {
       listSemester() {
         return this.$store.getters.listSemester;
+      },
+      currentExamProgram() {
+        return this.$store.getters.examPeriodCurrentExamProgram;
       }
     },
     validations: {
@@ -254,6 +258,7 @@
     async created() {
       this.spinner = true;
       await this.$store.dispatch("listSemester");
+      await this.$store.dispatch("examPeriodCurrentExamProgram");
       this.spinner = false;
     }
   };

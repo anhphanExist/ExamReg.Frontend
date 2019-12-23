@@ -3,7 +3,7 @@
     <CSidebarBrand
       :imgFull="{ width: 118, height: 46, alt: 'Logo', src: '/img/brand/exam-svgrepo-com.svg'}"
       :imgMinimized="{ width: 118, height: 46, alt: 'Logo', src: '/img/brand/exam-svgrepo-com.svg'}"
-      :wrappedInLink="{ href: 'https://coreui.io/', target: '_blank'}"
+      :wrappedInLink="{ href: '/'}"
     />
     <CRenderFunction flat :content-to-render="nav" />
     <CSidebarMinimizer class="d-md-down-none" @click.native="minimize = !minimize" />

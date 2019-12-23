@@ -41,7 +41,7 @@ function configRoutes() {
   return [
     {
       path: "/",
-      name: "Main",
+      name: "Quản trị viên",
       redirect: "/dashboard",
       component: TheContainer,
       beforeEnter(to, from, next) {
@@ -56,54 +56,55 @@ function configRoutes() {
         }
       },
       children: [
-        {
-          path: "dashboard/student/test-register",
-          component: TestRegister
-        },
+        // {
+        //   path: "dashboard/student/test-register",
+        //   name: "",
+        //   component: TestRegister
+        // },
         {
           path: "dashboard",
-          name: "",
+          name: "Theo dõi đăng ký thi",
           component: Dashboard
         },
         {
           path: "/dashboard/room",
-          name: "Room",
+          name: "Phòng thi",
           component: Room
         },
         {
           path: "/dashboard/semester",
-          name: "Semester",
+          name: "Kì học",
           component: Semester
         },
         {
           path: "/dashboard/shift",
-          name: "Shift",
+          name: "Ca thi",
           component: Shift
         },
         {
           path: "/dashboard/student",
-          name: "Student",
+          name: "Sinh viên",
           component: Student
         },
         {
           path: "/dashboard/subject",
-          name: "Subject",
+          name: "Môn học",
           component: Term
         },
         {
           path: "/dashboard/exam-program",
-          name: "ExamProgram",
+          name: "Kì thi",
           component: ExamProgram
         },
-        {
-          path: "/dashboard/test",
-          component: TestView
-        }
+        // {
+        //   path: "/dashboard/test",
+        //   component: TestView
+        // }
       ]
     },
     {
       path: "/student-role",
-      name: "Student Role",
+      name: "Sinh viên",
       component: StudentContainer,
       beforeEnter(to, from, next) {
         if (Cookies.get("token")) {
@@ -119,19 +120,19 @@ function configRoutes() {
       redirect: "student-role/registration-result",
       children: [{
         path: "/student-role/exam-registration",
-        name: "Exam Registration",
+        name: "Đăng ký thi",
         component: TestRegister,
       },
         {
           path: "/student-role/registration-result",
-          name: "Registration Result",
+          name: "Phiếu báo dự thi",
           component: RegistrationResult
         },
       ]
     },
     {
       path: "/login",
-      name: "Login",
+      name: "Đăng nhập",
       component: Login,
       beforeEnter(to, from, next) {
         if (!Cookies.get("token")) {

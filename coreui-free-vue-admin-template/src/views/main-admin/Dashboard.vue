@@ -7,7 +7,7 @@
             <CCol sm="5">
               <div class="pt-2">
                 <CIcon name="cil-grid"/>
-                Watcher {{ currentExamProgram.name }}
+                Danh sách đăng ký học {{ currentExamProgram.name }}
               </div>
             </CCol>
           </CRow>
@@ -82,14 +82,14 @@
       sorter: false,
       filter: false
     },
-    {key: "subjectName", _style: "width:15%"},
-    {key: "examRoomNumber", label: "Room", _style: "width:3%"},
-    {key: "examRoomAmphitheaterName", label: "amphi", _style: "width:3%"},
-    {key: "examDate", _style: "width:5%"},
+    {key: "subjectName", label: "Môn học",_style: "width:15%"},
+    {key: "examRoomNumber", label: "Phòng", _style: "width:3%"},
+    {key: "examRoomAmphitheaterName", label: "G.đường", _style: "width:3%"},
+    {key: "examDate", label: "Ngày thi",_style: "width:5%"},
     {key: "startHour", label: "Start", _style: "width:1%"},
     {key: "finishHour", label: "Finish", _style: "width:1%"},
-    {key: "examRoomComputerNumber", label: "PC Quantity", _style: "width:1%"},
-    {key: "currentNumberOfStudentRegistered", label: "Students", _style: "width:3%"},
+    {key: "examRoomComputerNumber", label: "Số máy", _style: "width:3%"},
+    {key: "currentNumberOfStudentRegistered", label: "Sĩ số", _style: "width:3%"},
     {
       key: "export",
       label: "",

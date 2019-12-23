@@ -7,12 +7,12 @@
             <CCol sm="5">
               <div class="pt-1">
                 <CIcon class="mb-1" name="cil-grid"/>
-                {{ currentExamProgram.name }}
+                Danh sách ca thi: {{ currentExamProgram.name }}
                 <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
               </div>
             </CCol>
             <CCol class="d-none d-md-block" sm="7">
-              <CButton @click="addExamPeriodModal = true" class="float-right mr-3" color="outline-info">Add More
+              <CButton @click="addExamPeriodModal = true" class="float-right mr-3" color="outline-info">Thêm mới
               </CButton>
             </CCol>
           </CRow>
@@ -54,7 +54,7 @@
                       size="sm"
                       square
                       variant="outline"
-              >Edit Room
+              >Sửa phòng thi
               </CButton>
             </td>
           </template>
@@ -66,7 +66,7 @@
                       size="sm"
                       square
                       variant="outline"
-              >Delete
+              >Xoá
               </CButton>
             </td>
           </template>
@@ -78,7 +78,7 @@
       <CCol sm="14">
         <CCard>
           <CCardHeader>
-            <strong>Shift Info</strong>
+            <strong>Ca thi</strong>
           </CCardHeader>
           <CCardBody>
             <CRow>
@@ -86,7 +86,7 @@
                 <CInput
                         :value="currentExamProgram.name"
                         horizontal
-                        label="Program"
+                        label="Kì thi"
                         plaintext
                 />
               </CCol>
@@ -94,14 +94,14 @@
                 <CInput
                         :is-valid="!$v.examDate.$invalid"
                         horizontal
-                        label="Exam Date"
+                        label="Ngày thi"
                         type="date"
                         v-model="examDate"
                 />
               </CCol>
               <CCol sm="12">
                 <label class="mb-4">
-                  Subject Name
+                  Tên môn học
                 </label>
                 <b-form-select
                   class="form-control position-absolute"
@@ -115,14 +115,14 @@
               <CCol sm="6">
                 <CInput
                         :is-valid="!$v.startHour.$invalid"
-                        label="Start time"
+                        label="Giờ bắt đầu"
                         v-model="startHour"
                 />
               </CCol>
               <CCol sm="6">
                 <CInput
                         :is-valid="!$v.finishHour.$invalid"
-                        label="End time"
+                        label="Giờ kết thúc"
                         v-model="finishHour"
                 />
               </CCol>
@@ -145,7 +145,7 @@
       <CCol sm="14">
         <CCard>
           <CCardHeader>
-            <strong>Shift Info</strong>
+            <strong>Ca thi</strong>
           </CCardHeader>
           <CCardBody>
             <CRow>
@@ -153,7 +153,7 @@
                 <CInput
                         :value="currentExamProgram.name"
                         horizontal
-                        label="Program"
+                        label="Kì thi"
                         plaintext
                 />
               </CCol>
@@ -161,7 +161,7 @@
                 <CInput
                         :value="chosenExamPeriod.examDate"
                         horizontal
-                        label="Exam Date"
+                        label="Ngày thi"
                         plaintext
                         v-model="chosenExamPeriod.examDate"
                 />
@@ -170,7 +170,7 @@
               <CCol sm="3">
                 <CInput
                         :value="chosenExamPeriod.startHour"
-                        label="Start time"
+                        label="Giờ bắt đầu"
                         plaintext
                         v-model="chosenExamPeriod.startHour"
                 />
@@ -178,7 +178,7 @@
               <CCol sm="3">
                 <CInput
                         :value="chosenExamPeriod.finishHour"
-                        label="End time"
+                        label="Giờ kết thúc"
                         plaintext
                         v-model="chosenExamPeriod.finishHour"
                 />
@@ -186,13 +186,13 @@
               <CCol sm="6">
                 <CInput
                         :value="chosenExamPeriod.subjectName"
-                        label="Subject name"
+                        label="Tên môn học"
                         plaintext
                         v-model="chosenExamPeriod.subjectName"
                 />
               </CCol>
               <CCol sm="12">
-                <label>Room Available</label>
+                <label>Phòng thi khả dụng</label>
                 <multiselect
                         :multiple="true"
                         :options="optional_rooms"
@@ -257,13 +257,13 @@
       sorter: false,
       filter: false
     },
-    {key: "subjectName", _style: "width:10%"},
-    {key: "examDate", _style: "width:5%"},
-    {key: "startHour", _style: "width:5%"},
-    {key: "finishHour", _style: "width:5%"},
+    {key: "subjectName", label: "Môn học", _style: "width:10%"},
+    {key: "examDate", label: "Ngày thi", _style: "width:5%"},
+    {key: "startHour", label: "Bắt đầu", _style: "width:5%"},
+    {key: "finishHour", label: "Kết thúc", _style: "width:5%"},
     {
       key: "examRooms",
-      label: "Rooms",
+      label: "Các phòng thi",
       _style: "width:5%",
       sorter: false,
       filter: false

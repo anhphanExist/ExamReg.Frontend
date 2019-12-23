@@ -7,7 +7,7 @@
             <CCol sm="5">
               <div class="pt-2">
                 <CIcon name="cil-grid"/>
-                Student List
+                Danh sách sinh viên
                 <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
               </div>
             </CCol>
@@ -34,7 +34,7 @@
                 <CDropdownItem @click="downloadStudentTermTemplate">Download Student Term Template</CDropdownItem>
                 <CDropdownItem @click="exportStudentTerm">Export Student Term</CDropdownItem>
               </CDropdown>
-              <CButton @click="myModal = true" class="float-right mr-3" color="outline-info">Add More</CButton>
+              <CButton @click="myModal = true" class="float-right mr-3" color="outline-info">Thêm mới</CButton>
             </CCol>
           </CRow>
         </slot>
@@ -106,8 +106,8 @@
               <CCol sm="12">
                 <CInput
                         :is-valid="!$v.student_add.mssv.$invalid" horizontal
-                        invalid-feedback="This field must be filled and only accepts 8 digit integer"
-                        label="Student No"
+                        invalid-feedback="Chỉ chấp nhận số tự nhiên có 8 kí tự"
+                        label="Mã sinh viên"
                         placeholder="00000000"
                         v-model="student_add.mssv"
                 />
@@ -118,9 +118,9 @@
                 <CInput
                         :is-valid="!$v.student_add.lastName.$invalid"
                         horizontal
-                        invalid-feedback="This field must be filled"
-                        label="Last Name"
-                        placeholder="Enter student first name"
+                        invalid-feedback="Trường bắt buộc"
+                        label="Họ"
+                        placeholder="Enter student last name"
                         v-model="student_add.lastName"
                 />
               </CCol>
@@ -130,9 +130,9 @@
                 <CInput
                         :is-valid="!$v.student_add.firstName.$invalid"
                         horizontal
-                        invalid-feedback="This field must be filled"
-                        label="First Name"
-                        placeholder="Enter student last name"
+                        invalid-feedback="Trường bắt buộc"
+                        label="Tên"
+                        placeholder="Enter student first name"
                         v-model="student_add.firstName"
                 />
               </CCol>
@@ -143,7 +143,7 @@
                         :is-valid="!$v.student_add.email.$invalid"
                         autocomplete="email"
                         horizontal
-                        invalid-feedback="This field must be filled and only accepts valid email"
+                        invalid-feedback="Vui lòng nhập email hợp lệ"
                         label="Email"
                         placeholder="Enter student email"
                         type="email"
@@ -156,7 +156,7 @@
                 <CInput
                         :is-valid="!$v.student_add.birthday.$invalid"
                         horizontal
-                        label="Birthday"
+                        label="Ngày sinh"
                         type="date"
                         v-model="student_add.birthday"
                 />
@@ -189,7 +189,7 @@
                 <CInput
                         :value="student_edit.mssv"
                         horizontal
-                        label="Student No"
+                        label="Mã sinh viên"
                         plaintext
                         v-model="student_edit.mssv"
                         :disabled="true"
@@ -201,9 +201,9 @@
                 <CInput
                         :is-valid="!$v.student_edit.lastName.$invalid"
                         horizontal
-                        invalid-feedback="This field must be filled"
-                        label="Last Name"
-                        placeholder="Enter student first name"
+                        invalid-feedback="Trường bắt buộc"
+                        label="HỌ"
+                        placeholder="Enter student last name"
                         v-model="student_edit.lastName"
                 />
               </CCol>
@@ -213,9 +213,9 @@
                 <CInput
                         :is-valid="!$v.student_edit.firstName.$invalid"
                         horizontal
-                        invalid-feedback="This field must be filled"
-                        label="First Name"
-                        placeholder="Enter student last name"
+                        invalid-feedback="Trường bắt buộc"
+                        label="Tên"
+                        placeholder="Enter student given name"
                         v-model="student_edit.firstName"
                 />
               </CCol>
@@ -226,7 +226,7 @@
                         :is-valid="!$v.student_edit.email.$invalid"
                         autocomplete="email"
                         horizontal
-                        invalid-feedback="This field must be filled and only accepts valid email"
+                        invalid-feedback="Vui lòng nhập email hợp lệ"
                         label="Email"
                         placeholder="Enter student email"
                         type="email"
@@ -239,7 +239,7 @@
                 <CInput
                         :is-valid="!$v.student_edit.birthday.$invalid"
                         horizontal
-                        label="Birthday"
+                        label="Ngày sinh"
                         type="date"
                         v-model="student_edit.birthday"
                 />
@@ -315,11 +315,11 @@
       sorter: false,
       filter: false
     },
-    {key: "studentNumber", _style: "width:17.5%"},
-    {key: "lastName", _style: "width:10%"},
-    {key: "givenName", _style: "width: 17.5%"},
-    {key: "birthday", _style: "width:17.5%;"},
-    {key: "email", _style: "width:17.5%;"},
+    {key: "studentNumber", label: "Mssv",_style: "width:17.5%"},
+    {key: "lastName", label: "Họ",_style: "width:10%"},
+    {key: "givenName", label: "Tên", _style: "width: 17.5%"},
+    {key: "birthday", label: "Ngày sinh",_style: "width:17.5%;"},
+    {key: "email", label: "Email",_style: "width:17.5%;"},
     {
       key: "reset",
       label: "",

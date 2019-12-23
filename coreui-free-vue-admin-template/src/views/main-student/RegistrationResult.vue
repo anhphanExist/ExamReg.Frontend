@@ -8,7 +8,7 @@
               <CCol sm="5">
                 <div>
                   <CIcon name="cil-grid"/>
-                  Registration Result
+                  Phiếu báo dự thi
                 </div>
               </CCol>
             </CRow>

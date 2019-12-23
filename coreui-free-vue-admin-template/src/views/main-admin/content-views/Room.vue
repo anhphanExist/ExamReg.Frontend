@@ -7,12 +7,12 @@
             <CCol sm="5">
               <div class="pt-2">
                 <CIcon name="cil-grid"/>
-                Room List
+                Danh sách phòng thi
                 <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
               </div>
             </CCol>
             <CCol class="d-none d-md-block" sm="7">
-              <CButton @click="myModal = true" class="float-right mr-3" color="outline-info">Add More</CButton>
+              <CButton @click="myModal = true" class="float-right mr-3" color="outline-info">Thêm mới</CButton>
             </CCol>
           </CRow>
         </slot>
@@ -39,7 +39,7 @@
                       size="sm"
                       square
                       variant="outline"
-              >Edit
+              >Sửa
               </CButton>
             </td>
           </template>
@@ -51,7 +51,7 @@
                       size="sm"
                       square
                       variant="outline"
-              >Delete
+              >Xoá
               </CButton>
             </td>
           </template>
@@ -70,21 +70,21 @@
               <CCol sm="4">
                 <CInput
                         :is-valid="!$v.roomNumber.$invalid"
-                        label="Room Number"
+                        label="Số phòng"
                         v-model="roomNumber"
                 />
               </CCol>
               <CCol sm="4">
                 <CInput
                         :is-valid="!$v.amphitheaterName.$invalid"
-                        label="Amphitheater"
+                        label="Giảng đường"
                         v-model="amphitheaterName"
                 />
               </CCol>
               <CCol sm="4">
                 <CInput
                         :is-valid="!$v.computerNumber.$invalid"
-                        label="PC Quantity"
+                        label="Số máy tính"
                         v-model="computerNumber"
                 />
               </CCol>
@@ -136,9 +136,9 @@
       sorter: false,
       filter: false
     },
-    {key: "roomNumber", label: "Room", _style: "width:17.5%"},
-    {key: "amphitheaterName", label: "Amphitheater Name", _style: "width:17.5%"},
-    {key: "computerNumber", label: "PC Quantity", _style: "width:17.5%"},
+    {key: "roomNumber", label: "Số phòng", _style: "width:17.5%"},
+    {key: "amphitheaterName", label: "Giảng đường", _style: "width:17.5%"},
+    {key: "computerNumber", label: "Số máy tính", _style: "width:17.5%"},
     {
       key: "edit",
       label: "",

@@ -4,7 +4,7 @@ export default [
     _children: [
       {
         _name: "CSidebarNavTitle",
-        _children: ["Admin"]
+        _children: ["Quản trị viên"]
       },
       {
         _name: "CSidebarNavItem",

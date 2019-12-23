@@ -7,7 +7,7 @@
             <CCol sm="5">
               <div class="pt-2">
                 <CIcon name="cil-grid"/>
-                Semester List
+                Danh sách kì học
                 <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
               </div>
             </CCol>
@@ -16,7 +16,7 @@
                       @click="myModal = true"
                       class="float-right mr-4"
                       color="outline-info"
-              >Add More
+              >Thêm mới
               </CButton>
             </CCol>
           </CRow>
@@ -45,7 +45,7 @@
                       square
                       variant="outline"
                       :disabled="item.id == currentExamProgram.semesterId"
-              >Delete
+              >Xoá
               </CButton>
             </td>
           </template>
@@ -70,7 +70,7 @@
                 <CInput
                         :is-valid="!$v.startYear.$invalid"
                         horizontal
-                        label="Start year"
+                        label="Năm bắt đầu"
                         placeholder="Enter start year"
                         v-model="startYear"
                 />
@@ -81,7 +81,7 @@
                 <CInput
                         :is-valid="!$v.endYear.$invalid"
                         horizontal
-                        label="End year"
+                        label="Năm kết thúc"
                         placeholder="Enter end year"
                         v-model="endYear"
                 />
@@ -89,7 +89,7 @@
             </CRow>
             <CRow>
               <CCol sm="3">
-                <label class="py-1">Half</label>
+                <label class="py-1">Nửa kì</label>
               </CCol>
               <CCol sm="9">
                 <b-form-select
@@ -153,7 +153,7 @@
     },
     {
       key: "code",
-      label: "Semester Code",
+      label: "Mã kì học",
       _style: "width:17.5%"
     },
     {

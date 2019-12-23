@@ -7,12 +7,12 @@
             <CCol sm="5">
               <div class="pt-2">
                 <CIcon name="cil-grid"/>
-                Exam Program List
+                Danh sách Kì thi
                 <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
               </div>
             </CCol>
             <CCol class="d-none d-md-block" sm="7">
-              <CButton @click="myModal = true" class="float-right mr-4" color="outline-info">Add more</CButton>
+              <CButton @click="myModal = true" class="float-right mr-4" color="outline-info">Thêm mới</CButton>
             </CCol>
           </CRow>
         </slot>
@@ -46,7 +46,7 @@
                       square
                       v-if="!item.current"
                       variant="outline"
-              >Set Current
+              >Mở
               </CButton>
             </td>
           </template>
@@ -59,7 +59,7 @@
                       size="sm"
                       square
                       variant="outline"
-              >Edit
+              >Sửa
               </CButton>
             </td>
           </template>
@@ -72,7 +72,7 @@
                       size="sm"
                       square
                       variant="outline"
-              >Delete
+              >Xoá
               </CButton>
             </td>
           </template>
@@ -162,13 +162,13 @@
       sorter: false,
       filter: false
     },
-    {key: "name", _style: "width:13.5%"},
-    {key: "semesterCode", _style: "width: 13.5%"},
-    {key: "isCurrent", sorter: false, filter: false, _style: "width: 1%"},
+    {key: "name", label: "Tên kì thi", _style: "width:13.5%"},
+    {key: "semesterCode", label: "Mã kì học", _style: "width: 13.5%"},
+    {key: "isCurrent", label:"Đang mở", sorter: false, filter: false, _style: "width: 3%"},
     {
       key: "set_current",
       label: "",
-      _style: "width:2%",
+      _style: "width:1%",
       sorter: false,
       filter: false
     },

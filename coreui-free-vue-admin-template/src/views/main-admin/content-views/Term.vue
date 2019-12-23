@@ -7,7 +7,7 @@
           <CCol sm="5">
             <div class="pt-2">
               <CIcon name="cil-grid" />
-              Subjects
+              Danh sách Môn học
               <span class="text-danger ml-4" v-if="errors.length > 0">{{ errors }}</span>
             </div>
           </CCol>
@@ -31,7 +31,7 @@
                 color="outline-info"
                 @click="myModal = true"
                 class="float-right mr-3"
-              >Add More</CButton>
+              >Thêm mới</CButton>
             </div>
           </CCol>
         </CRow>
@@ -59,7 +59,7 @@
               square
               size="sm"
               @click="toggleDetails(index)"
-            >Edit</CButton>
+            >Sửa</CButton>
           </td>
         </template>
         <template #delete="{item, index}">
@@ -70,7 +70,7 @@
               square
               size="sm"
               @click="deleteTerm(item, index)"
-            >Delete</CButton>
+            >Xoá</CButton>
           </td>
         </template>
       </CDataTable>
@@ -87,7 +87,7 @@
             <CRow>
               <CCol sm="12">
                 <CInput
-                        horizontal label="Name"
+                        horizontal label="Tên môn học"
                         placeholder="Enter Subject Name"
                         v-model="subjectName"
                         :is-valid="!$v.subjectName.$invalid"
@@ -97,7 +97,7 @@
             <CRow>
               <CCol sm="3">
                 <label class="py-2">
-                  Semester
+                  Kì học
                 </label>
               </CCol>
               <CCol sm="9">
@@ -181,12 +181,12 @@ const fields = [
   },
   {
     key: "subjectName",
-    label: "Subject Name",
+    label: "Tên môn học",
     _style: "width:17.5%"
   },
   {
     key: "semesterCode",
-    label: "Semester Code",
+    label: "Mã kì học",
     _style: "width: 10%"
   },
   {

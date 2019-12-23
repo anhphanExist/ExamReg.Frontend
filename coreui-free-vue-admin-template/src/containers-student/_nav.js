@@ -4,17 +4,17 @@ export default [
     _children: [
       {
         _name: "CSidebarNavTitle",
-        _children: ["Student"]
+        _children: ["Sinh viên"]
       },
       {
         _name: "CSidebarNavItem",
-        name: "Exam Registration",
+        name: "Đăng ký thi",
         to: "/student-role/exam-registration",
         icon: "cil-speedometer"
       },
       {
         _name: "CSidebarNavItem",
-        name: "Registration Result",
+        name: "Phiếu báo dự thi",
         to: "/student-role/registration-result",
         icon: "cil-drop"
       },

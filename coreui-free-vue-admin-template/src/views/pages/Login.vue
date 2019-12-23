@@ -12,8 +12,8 @@
                   variant='outline'
           >
             <h2>EXAM REGISTRATION</h2>
-            <p class="text-muted">This is a a login pages, you need to login to access to the one of the best test registration product in
-              Vietnam, feels free to contact us if you have further discussion.</p>
+            <p class="text-muted">Màn hình đăng nhập, bạn cần đăng nhập để tiếp tục truy cập vào nền tảng đăng ký thi tốt nhất
+              Việt Nam.</p>
 <!--            <CButton-->
 <!--                    class="mt-3"-->
 <!--                    color="danger"-->
@@ -26,9 +26,9 @@
           <CCard class="p-4 justify-content-center">
             <CCardBody>
               <CForm>
-                <p class="text-muted">Sign In to your account</p>
+                <p class="text-muted">Vui lòng điền thông tin</p>
                 <CInput
-                        label="Username"
+                        label="Tài khoản"
                         :is-valid="!$v.username.$invalid"
                         v-model = "username"
                         autocomplete="username email"
@@ -40,7 +40,7 @@
                   </template>
                 </CInput>
                 <CInput
-                        label="Password"
+                        label="Mật khẩu"
                         autocomplete="curent-password"
                         placeholder="Password"
                         type="password"
@@ -60,7 +60,7 @@
                     <CSpinner v-if="spinner" color="success"/>
                   </CCol>
                   <CCol class="text-right" col="6">
-                    <CButton class="px-0" color="link">Forgot password?</CButton>
+                    <CButton class="px-0" color="link">Quên mật khẩu?</CButton>
                   </CCol>
                 </CRow>
                 <div class="alert alert-danger mt-2" v-if="errors.length > 0">{{ errors }}</div>

@@ -10,20 +10,20 @@
         </CHeaderNavLink>
       </template>
       <CDropdownHeader class="text-center" color="light" tag="div">
-        <strong>Settings</strong>
+        <strong>Cài đặt</strong>
       </CDropdownHeader>
       <CDropdownItem>
         <CIcon name="cil-user"/>
-        Profile
+        Thông tin cá nhân
       </CDropdownItem>
       <CDropdownItem>
         <CIcon name="cil-settings"/>
-        Settings
+        Cài đặt
       </CDropdownItem>
       <CDropdownDivider/>
       <CDropdownItem @click="logout">
         <CIcon name="cil-lock-locked"/>
-        Logout
+        Đăng xuất
       </CDropdownItem>
     </CDropdown>
   </div>

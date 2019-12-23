@@ -1,6 +1,6 @@
 <template>
   <div class="d-inline-flex">
-    <span class="text-info mt-2 mr-2 font-weight-bold">admin</span>
+    <span class="text-info mt-2 mr-2 font-weight-bold">Quản trị viên</span>
     <CDropdown add-menu-classes="pt-0" class="c-header-nav-items" inNav placement="bottom-end">
       <template #toggler>
         <CHeaderNavLink>
@@ -10,20 +10,20 @@
         </CHeaderNavLink>
       </template>
       <CDropdownHeader class="text-center" color="light" tag="div">
-        <strong>Settings</strong>
+        <strong>Cài đặt</strong>
       </CDropdownHeader>
       <CDropdownItem>
         <CIcon name="cil-user"/>
-        Profile
+        Thông tin cá nhân
       </CDropdownItem>
       <CDropdownItem>
         <CIcon name="cil-settings"/>
-        Settings
+        Cài đặt
       </CDropdownItem>
       <CDropdownDivider/>
       <CDropdownItem @click="logout">
         <CIcon name="cil-lock-locked"/>
-        Logout
+        Đăng xuất
       </CDropdownItem>
     </CDropdown>
   </div>

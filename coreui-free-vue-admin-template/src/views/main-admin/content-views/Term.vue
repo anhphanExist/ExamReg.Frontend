@@ -304,7 +304,7 @@ export default {
         this.importResultMessage = data.message;
         this.importResultModal = true;
       } else {
-        await this.$store.dispatch("listStudent");
+        await this.$store.dispatch("listTerm");
         this.spinner = false;
         this.importResultMessage = data.message;
         this.importResultModal = true;

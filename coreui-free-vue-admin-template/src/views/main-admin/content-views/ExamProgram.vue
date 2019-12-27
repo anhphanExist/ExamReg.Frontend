@@ -93,7 +93,7 @@
                         :is-valid="!$v.name.$invalid"
                         horizontal
                         label="Name"
-                        placeholder="Enter exam period name"
+                        placeholder="Enter exam program name"
                         v-model="name"
                 />
               </CCol>

@@ -62,15 +62,10 @@
           <CCardBody>
             <CRow>
               <CCol sm="12">
-                <CInput horizontal label="Code" plaintext value="Auto generated id 2019_2020_1"/>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol sm="12">
                 <CInput
                         :is-valid="!$v.startYear.$invalid"
                         horizontal
-                        label="Năm bắt đầu"
+                        label="Bắt đầu"
                         placeholder="Enter start year"
                         v-model="startYear"
                 />
@@ -81,7 +76,7 @@
                 <CInput
                         :is-valid="!$v.endYear.$invalid"
                         horizontal
-                        label="Năm kết thúc"
+                        label="Kết thúc"
                         placeholder="Enter end year"
                         v-model="endYear"
                 />
